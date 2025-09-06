@@ -1,0 +1,30 @@
+{
+    "name": "household-budget",
+    "dockerComposeFile": [
+        "../../compose.devcontainer.yml"
+    ],
+    "service": "frontend",
+    "postCreateCommand": "npm install -g npm@11.4.2 @google/gemini-cli",
+    "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-vscode-remote.remote-containers",
+                "ms-vscode-remote.remote-wsl",
+                "esbenp.prettier-vscode",
+                "ms-vscode.vscode-typescript-next",
+                "ms-dotnettools.csharp",
+                "ms-dotnettools.csdevkit",
+                "yzhang.markdown-all-in-one",
+                "editorconfig.editorconfig",
+                "ms-vscode.vscode-json",
+                "streetsidesoftware.code-spell-checker"
+            ],
+            "settings": {
+                "terminal.integrated.defaultProfile.linux": "bash",
+                "editor.formatOnSave": true
+            }
+        }
+    },
+    "remoteUser": "node"
+}
