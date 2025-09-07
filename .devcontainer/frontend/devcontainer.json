@@ -4,22 +4,43 @@
         "../../compose.devcontainer.yml"
     ],
     "service": "frontend",
-    "postCreateCommand": "npm install -g npm@11.4.2 @google/gemini-cli",
     "workspaceFolder": "/workspace",
+    "features": {
+        "ghcr.io/dhoeric/features/hadolint:1": {}
+    },
     "customizations": {
         "vscode": {
             "extensions": [
                 "ms-vscode-remote.remote-containers",
                 "ms-vscode-remote.remote-wsl",
-                "esbenp.prettier-vscode",
                 "ms-vscode.vscode-typescript-next",
                 "ms-dotnettools.csharp",
                 "ms-dotnettools.csdevkit",
-                "yzhang.markdown-all-in-one",
-                "editorconfig.editorconfig",
                 "ms-vscode.vscode-json",
+                "ms-azuretools.vscode-docker",
+                "yzhang.markdown-all-in-one",
                 "streetsidesoftware.code-spell-checker",
-                "ms-azuretools.vscode-docker"
+                "google.geminicodeassist",
+                "exiasr.hadolint",
+                "mosapride.zenkaku",
+                "tamasfe.even-better-toml",
+                "kreativ-software.csharpextensions",
+                "k--kato.docomment",
+                "redhat.vscode-yaml",
+                "vscode.json-language-features",
+                "angular.ng-template",
+                "christian-kohler.path-intellisense",
+                "biomejs.biome",
+                "wallabyjs.console-ninja",
+                "wallabyjs.quokka-vscode",
+                "mylesmurphy.prettify-ts",
+                "yoavbls.pretty-ts-errors",
+                "vincaslt.highlight-matching-tag",
+                "johnpapa.angular-essentials",
+                "johnpapa.angular2",
+                "nrwl.angular-console",
+                "bradlc.vscode-tailwindcss",
+                "cyrilletuzi.angular-schematics"
             ],
             "settings": {
                 "terminal.integrated.defaultProfile.linux": "bash",
