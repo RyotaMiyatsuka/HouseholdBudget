@@ -1,11 +1,11 @@
 {
-    "name": "household-budget",
+    "name": "household-budget-frontend",
     "dockerComposeFile": [
         "../../compose.devcontainer.yml"
     ],
     "service": "frontend",
     "postCreateCommand": "npm install -g npm@11.4.2 @google/gemini-cli",
-    "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+    "workspaceFolder": "/workspace",
     "customizations": {
         "vscode": {
             "extensions": [
@@ -18,7 +18,8 @@
                 "yzhang.markdown-all-in-one",
                 "editorconfig.editorconfig",
                 "ms-vscode.vscode-json",
-                "streetsidesoftware.code-spell-checker"
+                "streetsidesoftware.code-spell-checker",
+                "ms-azuretools.vscode-docker"
             ],
             "settings": {
                 "terminal.integrated.defaultProfile.linux": "bash",

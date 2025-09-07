@@ -1,36 +1,41 @@
-version: '3.8'
-
 services:
-
-
   backend:
     build:
       context: .
-      dockerfile: app/backend/Dockerfile
+      dockerfile: .devcontainer/backend/Dockerfile
     volumes:
-      - .:/workspace
+      - type: bind
+        source: ./
+        target: /workspace
+    working_dir: /workspace
     networks:
       - app-network
     ports:
       - "8000:8000"
     env_file:
       - .env
+    command: ["tail", "-f", "/dev/null"]
+
     # depends_on:
     #   db:
     #     condition: service_healthy
 
-  # frontend:
-  #   build:
-  #     context: .
-  #     dockerfile: app/frontend/Dockerfile
-  #   volumes:
-  #     - .:/workspace:consistent
-  #   networks:
-  #     - app-network
-  #   ports:
-  #     - "8501:8501"
-  #   depends_on:
-  #     - backend
+  frontend:
+    build:
+      context: .
+      dockerfile: .devcontainer/frontend/Dockerfile
+    volumes:
+      - type: bind
+        source: ./
+        target: /workspace
+    working_dir: /workspace
+    networks:
+      - app-network
+    ports:
+      - "8501:8501"
+    depends_on:
+      - backend
+    command: ["tail", "-f", "/dev/null"]
 
 # volumes:
 #   db_data:
