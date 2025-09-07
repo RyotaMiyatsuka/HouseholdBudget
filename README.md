@@ -28,7 +28,11 @@
 - 下記のリポジトリをクローンする。
   - [HouseholdBudget](https://github.com/RyotaMiyatsuka/HouseholdBudget)
 
-### 2. DevContainerの起動
+### 2. .envファイルの作成
+- `./.env.sample` をコピーし、`./.env` を作成する。
+- ※ 内容は別途共有
+
+### 3. DevContainerの起動
 1. VSCode でこのプロジェクトを開き、`ctrl + shift + p` を押下し、`Dev Containers: Open Folder in Container...` を選択してこのフォルダを開く。
 2. 開発対象に合わせて下記を選択する。
    1. バックエンドの場合: `household-budget-backend`
