@@ -63,5 +63,6 @@
     },
     "cSpell.words": [
         "Swashbuckle"
-    ]
+    ],
+    "dotnet.automaticallyCreateSolutionInWorkspace": false
 }
