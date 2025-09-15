@@ -1,4 +1,23 @@
 services:
+  db:
+    image: mysql:8.4.6
+    container_name: mysql_host
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: test_database
+      MYSQL_USER: docker
+      MYSQL_PASSWORD: docker
+      TZ: 'Asia/Tokyo'
+    command: mysqld --port=3307 --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+    - ./.docker/db/data:/var/lib/mysql
+    - ./.docker/db/my.cnf:/etc/mysql/conf.d/my.cnf
+    - ./.docker/db/sql:/docker-entrypoint-initdb.d
+    ports:
+    - 3307:3307
+    networks:
+      - app-network
+
   backend:
     build:
       context: .
@@ -10,15 +29,9 @@ services:
     working_dir: /workspace
     networks:
       - app-network
-    ports:
-      - "8000:8000"
     env_file:
       - .env
     command: ["tail", "-f", "/dev/null"]
-
-    # depends_on:
-    #   db:
-    #     condition: service_healthy
 
   frontend:
     build:
@@ -31,14 +44,9 @@ services:
     working_dir: /workspace
     networks:
       - app-network
-    ports:
-      - "8501:8501"
     depends_on:
       - backend
     command: ["tail", "-f", "/dev/null"]
-
-# volumes:
-#   db_data:
 
 networks:
   app-network:
