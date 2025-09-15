@@ -3,12 +3,12 @@ using Microsoft.AspNetCore.Mvc;
 namespace Presentation.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("/")]
 public class HealthCheckController : ControllerBase
 {
     [HttpGet]
     public IActionResult Get()
     {
-        return Ok("OK");
+        return Ok("Server is running!");
     }
 }

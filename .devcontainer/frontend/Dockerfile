@@ -18,5 +18,4 @@ RUN npm install -g npm@11.4.2 @google/gemini-cli
 # uv インストール
 RUN curl -LsSf https://astral.sh/uv/install.sh | sh
 ENV PATH="/home/node/.local/bin:${PATH}"
-
 WORKDIR /workspace

@@ -1,0 +1,305 @@
+openapi: 3.1.0
+info:
+  title: Household Budget API
+  version: 1.0.0
+  description: API for managing household budget.
+
+servers:
+  - url: http://localhost:5000/api
+    description: Local development server
+
+paths:
+  /users:
+    post:
+      summary: Create a new user
+      operationId: createUser
+      tags:
+        - User
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewUser"
+      responses:
+        "201":
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "400":
+          description: Invalid input
+
+  /users/{userId}:
+    put:
+      summary: Update a user
+      operationId: updateUser
+      tags:
+        - User
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateUser"
+      responses:
+        "200":
+          description: User updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "404":
+          description: User not found
+
+  /auth/login:
+    post:
+      summary: User login
+      operationId: loginUser
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequest"
+      responses:
+        "200":
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoginResponse"
+        "401":
+          description: Unauthorized
+
+  /transactions:
+    get:
+      summary: Get a list of transactions
+      operationId: getTransactions
+      tags:
+        - Transaction
+      parameters:
+        - name: month
+          in: query
+          schema:
+            type: integer
+        - name: year
+          in: query
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: A list of transactions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Transaction"
+
+    post:
+      summary: Record a new transaction
+      operationId: createTransaction
+      tags:
+        - Transaction
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewTransaction"
+      responses:
+        "201":
+          description: Transaction created successfully
+
+  /transactions/{transactionId}:
+    put:
+      summary: Update a transaction
+      operationId: updateTransaction
+      tags:
+        - Transaction
+      parameters:
+        - name: transactionId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateTransaction"
+      responses:
+        "200":
+          description: Transaction updated successfully
+        "404":
+          description: Transaction not found
+
+  /transactions/bulk:
+    post:
+      summary: Bulk insert transactions
+      operationId: createBulkTransactions
+      tags:
+        - Transaction
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/NewTransaction"
+      responses:
+        "201":
+          description: Transactions created successfully
+
+  /transactions/export:
+    get:
+      summary: Export transactions
+      operationId: exportTransactions
+      tags:
+        - Transaction
+      responses:
+        "200":
+          description: CSV file of transactions
+          content:
+            text/csv:
+              schema:
+                type: string
+
+  /transactions/summary:
+    get:
+      summary: Get transaction summary
+      operationId: getTransactionSummary
+      tags:
+        - Transaction
+      responses:
+        "200":
+          description: Transaction summary data
+
+  /recurring-transactions:
+    post:
+      summary: Create a new recurring transaction
+      operationId: createRecurringTransaction
+      tags:
+        - Recurring Transaction
+      responses:
+        "201":
+          description: Recurring transaction created successfully
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+
+    NewUser:
+      type: object
+      required:
+        - name
+        - email
+        - password
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+
+    UpdateUser:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+
+    LoginRequest:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+
+    LoginResponse:
+      type: object
+      properties:
+        token:
+          type: string
+
+    Transaction:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        date:
+          type: string
+          format: date
+        amount:
+          type: number
+        description:
+          type: string
+        categoryId:
+          type: string
+          format: uuid
+
+    NewTransaction:
+      type: object
+      required:
+        - date
+        - amount
+        - categoryId
+      properties:
+        date:
+          type: string
+          format: date
+        amount:
+          type: number
+        description:
+          type: string
+        categoryId:
+          type: string
+          format: uuid
+
+    UpdateTransaction:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        amount:
+          type: number
+        description:
+          type: string
+        categoryId:
+          type: string
+          format: uuid
