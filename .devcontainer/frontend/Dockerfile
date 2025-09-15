@@ -15,9 +15,6 @@ USER node
 # Gemini CLI インストール
 RUN npm install -g npm@11.4.2 @google/gemini-cli
 
-# Angular CLI インストール
-RUN npm install -g @angular/cli
-
 # uv インストール
 RUN curl -LsSf https://astral.sh/uv/install.sh | sh
 ENV PATH="/home/node/.local/bin:${PATH}"
