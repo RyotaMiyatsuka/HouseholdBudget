@@ -1,0 +1,15 @@
+.header-logo-container {
+  display: flex;
+  flex-direction: row;
+  height: 10dvh;
+}
+.header-title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-left: 1rem;
+  align-self: center;
+}
+.header-logo {
+  height: 60%;
+  align-self: center;
+}
