@@ -1,0 +1,52 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  width: 100%;
+  background-color: black;
+  border-bottom: 1px solid rgb(177, 177, 177);
+}
+.header__logo-container {
+  display: flex;
+  flex-direction: row;
+  height: 7dvh;
+  padding: 5px;
+}
+.header__logo {
+  height: 100%;
+  align-self: center;
+}
+.header__title {
+  color: white;
+  font-size: 3dvh;
+  align-self: center;
+  margin-left: 10px;
+}
+
+.header__auth {
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  padding-right: 10px;
+  color: white;
+  width: 50dvw;
+}
+
+.header__auth-button {
+  height: 60%;
+  border-radius: 10px;
+  padding: 5px 10px;
+  width: 100px;
+  font-size: 2dvh;
+  background-color: black;
+  color: white;
+  border: none;
+}
+
+.header__auth-button:hover {
+  background-color: rgb(51, 153, 255);
+  cursor: pointer;
+  transition: 0.7s;
+}
