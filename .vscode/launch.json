@@ -12,7 +12,8 @@
             "stopAtEntry": false,
             "serverReadyAction": {
                 "action": "openExternally",
-                "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
+                "pattern": "\\bNow listening on:\\s+(http://\\S+)",
+                "uriFormat": "%s/swagger"
             },
             "env": {
                 "ASPNETCORE_ENVIRONMENT": "Development"
@@ -20,6 +21,28 @@
             "sourceFileMap": {
                 "/Views": "${workspaceFolder}/Views"
             }
+        },
+        {
+            "name": "Launch Frontend (Angular)",
+            "type": "node-terminal",
+            "request": "launch",
+            "command": "npm start",
+            "cwd": "${workspaceFolder}/app/frontend",
+            "serverReadyAction": {
+                "pattern": "Local:\\s+(http://localhost:\\d+/)",
+                "uriFormat": "%s",
+                "action": "openExternally"
+            }
+        }
+    ],
+    "compounds": [
+        {
+            "name": "Launch Backend & Frontend",
+            "configurations": [
+                "Launch Backend (.NET)",
+                "Launch Frontend (Angular)"
+            ],
+            "stopAll": true
         }
     ]
 }

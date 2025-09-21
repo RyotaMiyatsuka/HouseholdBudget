@@ -12,11 +12,12 @@ RUN wget https://packages.microsoft.com/config/debian/12/packages-microsoft-prod
 
 USER node
 
+RUN npm install -g @angular/cli
+
 # Gemini CLI インストール
 RUN npm install -g npm@11.4.2 @google/gemini-cli
 
 # uv インストール
 RUN curl -LsSf https://astral.sh/uv/install.sh | sh
 ENV PATH="/home/node/.local/bin:${PATH}"
-
 WORKDIR /workspace
