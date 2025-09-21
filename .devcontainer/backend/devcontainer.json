@@ -26,7 +26,6 @@
                 "mosapride.zenkaku",
                 "tamasfe.even-better-toml",
                 "kreativ-software.csharpextensions",
-                "k--kato.docomment",
                 "redhat.vscode-yaml",
                 "vscode.json-language-features",
                 "angular.ng-template",
@@ -41,7 +40,8 @@
                 "johnpapa.angular2",
                 "nrwl.angular-console",
                 "bradlc.vscode-tailwindcss",
-                "cyrilletuzi.angular-schematics"
+                "cyrilletuzi.angular-schematics",
+                "mikestead.dotenv"
             ],
             "settings": {
                 "terminal.integrated.defaultProfile.linux": "bash",

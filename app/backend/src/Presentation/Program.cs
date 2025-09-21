@@ -3,6 +3,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllers();
 
+// Add infrastructure services
+builder.Services.AddInfrastructure(builder.Configuration);
+
 // Swagger を有効化
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
