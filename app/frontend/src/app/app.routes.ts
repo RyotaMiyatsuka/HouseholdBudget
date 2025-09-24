@@ -4,8 +4,8 @@ import { Home } from './components/home/home';
 import { Input } from './components/input/input';
 import { Report } from './components/report/report';
 import { Settings } from './components/settings/settings';
-import { Signin } from './components/signin/signin';
-import { Signup } from './components/signup/signup';
+import { Login } from './components/login/login';
+import { Register } from './components/register/register';
 
 export const routes: Routes = [
   {
@@ -34,13 +34,13 @@ export const routes: Routes = [
     title: 'Settings',
   },
   {
-    path: 'signin',
-    component: Signin,
-    title: 'Signin',
+    path: 'login',
+    component: Login,
+    title: 'Login',
   },
   {
-    path: 'signup',
-    component: Signup,
-    title: 'Signup',
+    path: 'register',
+    component: Register,
+    title: 'Register',
   }
 ];

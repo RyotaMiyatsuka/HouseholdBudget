@@ -11,6 +11,7 @@
   flex-direction: row;
   height: 7dvh;
   padding: 5px;
+  width: 50dvw;
 }
 .header__logo {
   height: 100%;
@@ -28,8 +29,6 @@
   justify-content: flex-end;
   flex-direction: row;
   align-items: center;
-  gap: 10px;
-  padding-right: 10px;
   color: white;
   width: 50dvw;
 }
@@ -45,8 +44,12 @@
   border: none;
 }
 
+.header__auth-button.register {
+  margin-right: 10px;
+}
+
 .header__auth-button:hover {
-  background-color: rgb(51, 153, 255);
+  background-color: var(--main-blueColor);
   cursor: pointer;
   transition: 0.7s;
 }

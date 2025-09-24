@@ -1,0 +1,16 @@
+<div class="register-board">
+  <div class="register-board__header">
+    <h2 class="register-board__title">register</h2>
+  </div>
+  <button
+    type="submit"
+    [disabled]="registerForm.invalid"
+    (click)="register()"
+    class="register-board__button"
+  >
+    Continue with Google
+  </button>
+  <p class="register-board__footer">
+    Have an account?<a routerLink="/login" class="register-board__link">Login</a>
+  </p>
+</div>

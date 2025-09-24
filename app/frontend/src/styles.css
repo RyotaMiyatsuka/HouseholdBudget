@@ -10,3 +10,9 @@ a,
 u {
   text-decoration: none;
 }
+
+:root {
+  --main-blueColor: rgb(51, 153, 255);
+  --main-blueColor-hover: rgba(51, 153, 255, 0.8);
+  --transition-time: 0.7s;
+}
