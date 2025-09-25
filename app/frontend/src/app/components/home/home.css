@@ -1,3 +1,14 @@
+.article__catch-copy,
+.article__explanation {
+  font-size: 24px;
+  font-weight: bold;
+  font-family: serif;
+  color: white;
+  text-align: center;
+}
+.article__register-button-container {
+  text-align: center;
+}
 .article__register-button {
   background-color: var(--main-blueColor);
   border: none;
@@ -10,11 +21,4 @@
   font-size: 16px;
   margin: 4px 2px;
   cursor: pointer;
-}
-.article__catch-copy,
-.article__explanation {
-  font-size: 24px;
-  font-weight: bold;
-  font-family: serif;
-  color: white;
 }
