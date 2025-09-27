@@ -14,19 +14,19 @@ public class Transactions
     /// 取引を記録したユーザー
     /// </summary>
     [Required]
-    [ForeignKey("User")]
+    [ForeignKey(nameof(Users))]
     public string UserId { get; set; }
 
     /// <summary>
     /// csv取り込みした取引と紐づく
     /// </summary>
-    [ForeignKey("CsvImport")]
+    [ForeignKey(nameof(CsvImports))]
     public string? CsvImportId { get; set; }
 
     /// <summary>
     /// 定期取引と紐づく
     /// </summary>
-    [ForeignKey("RecurringTransaction")]
+    [ForeignKey(nameof(RecurringTransactions))]
     public string? RecurringTransactionId { get; set; }
 
     /// <summary>

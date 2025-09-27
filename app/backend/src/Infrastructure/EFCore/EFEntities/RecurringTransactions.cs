@@ -12,7 +12,7 @@ public class RecurringTransactions
     /// 登録したユーザー
     /// </summary>
     [Required]
-    [ForeignKey("User")]
+    [ForeignKey(nameof(Users))]
     public string UserId { get; set; }
 
     public virtual Users User { get; set; }
