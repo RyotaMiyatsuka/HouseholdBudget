@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { Auth } from '../../services/auth';
 
 @Component({
   selector: 'app-register',
@@ -9,8 +10,22 @@ import { RouterModule } from '@angular/router';
 })
 export class Register {
   protected registerForm: { invalid: boolean }; // Placeholder for the actual form type
-  constructor() {this.registerForm = { invalid: false }; }
+
+  constructor(private authService: Auth) {
+    this.registerForm = { invalid: false };
+  }
+
   register() {
-    console.log('Register button clicked');
+    this.authService.registerWithGoogle().subscribe({
+      next: (response) => {
+        if (response.success) {
+          console.log('Registration successful:', response.message);
+          console.log('User:', response.user);
+        }
+      },
+      error: (error) => {
+        console.error('Registration failed:', error);
+      }
+    });
   }
 }
