@@ -1,5 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
+
+export interface HttpRequestState<T> {
+  isLoading: boolean;
+  value?: T;
+  error?: HttpErrorResponse | Error;
+}
 
 export interface User {
   id: string;
@@ -27,7 +34,6 @@ export class Auth {
     };
 
     this.currentUser = mockUser;
-
     return of({
       success: true,
       user: mockUser,

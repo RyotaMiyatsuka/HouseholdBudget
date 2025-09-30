@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Component, inject } from '@angular/core';
+import { RouterModule, Router } from '@angular/router';
 import { Auth } from '../../services/auth';
 
 @Component({
@@ -9,6 +9,7 @@ import { Auth } from '../../services/auth';
   styleUrl: './register.css'
 })
 export class Register {
+  private router = inject(Router);
   protected registerForm: { invalid: boolean }; // Placeholder for the actual form type
 
   constructor(private authService: Auth) {
@@ -21,6 +22,7 @@ export class Register {
         if (response.success) {
           console.log('Registration successful:', response.message);
           console.log('User:', response.user);
+          this.router.navigate(['/input']);
         }
       },
       error: (error) => {
