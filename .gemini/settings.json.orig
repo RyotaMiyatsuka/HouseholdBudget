@@ -1,9 +1,10 @@
 {
-  "context": {
-    "fileName": [
-      "GEMINI.md"
-    ]
-  },
+  "sandbox": false,
+  "theme": "GitHub",
+  "model": "gemini-2.5-pro",
+  "contextFileName": [
+    "GEMINI.md"
+  ],
   "mcpServers": {
     "serena": {
       "command": "uvx",
@@ -19,14 +20,5 @@
         "${PWD}"
       ]
     }
-  },
-  "model": {
-    "name": "gemini-2.5-pro"
-  },
-  "tools": {
-    "sandbox": false
-  },
-  "ui": {
-    "theme": "GitHub"
   }
 }

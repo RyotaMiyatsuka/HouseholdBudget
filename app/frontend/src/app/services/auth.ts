@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { delay, Observable, of, startWith } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 
 export interface HttpRequestState<T> {
   isLoading: boolean;
+  success?: boolean;
   value?: T;
   error?: HttpErrorResponse | Error;
 }
@@ -14,47 +15,35 @@ export interface User {
   name: string;
 }
 
-export interface AuthResponse {
-  success: boolean;
-  user?: User;
-  message?: string;
-}
-
 @Injectable({
   providedIn: 'root'
 })
 export class Auth {
   private currentUser: User | null = null;
-
-  loginWithGoogle(): Observable<AuthResponse> {
+  loginWithGoogle(): Observable<HttpRequestState<User>> {
     const mockUser: User = {
       id: 'mock-google-user-id',
       email: 'user@gmail.com',
       name: 'Mock Google User'
     };
-
-    this.currentUser = mockUser;
-    return of({
-      success: true,
-      user: mockUser,
-      message: 'Successfully logged in with Google'
-    });
+    return of(
+      { isLoading: false, success: true, value: mockUser, error: undefined }
+    ).pipe(
+      delay(Math.random() * 1000),
+    );
   }
 
-  registerWithGoogle(): Observable<AuthResponse> {
+  registerWithGoogle(): Observable<HttpRequestState<User>> {
     const mockUser: User = {
       id: 'mock-google-register-id',
       email: 'newuser@gmail.com',
       name: 'New Google User'
     };
-
-    this.currentUser = mockUser;
-
-    return of({
-      success: true,
-      user: mockUser,
-      message: 'Successfully registered with Google'
-    });
+    return of(
+      { isLoading: false, success: true, value: mockUser, error: undefined }
+    ).pipe(
+      delay(Math.random() * 1000),
+    );
   }
 
   getCurrentUser(): User | null {

@@ -11,17 +11,19 @@ import { Auth } from '../../services/auth';
 export class Register {
   private router = inject(Router);
   protected registerForm: { invalid: boolean }; // Placeholder for the actual form type
-
+  buttonText = 'Sign up with Google';
   constructor(private authService: Auth) {
     this.registerForm = { invalid: false };
   }
 
   register() {
+    this.buttonText = 'Signing up...';
     this.authService.registerWithGoogle().subscribe({
       next: (response) => {
-        if (response.success) {
-          console.log('Registration successful:', response.message);
-          console.log('User:', response.user);
+        if (response.value) {
+          this.buttonText = 'Sign in with Google';
+          console.log('Registration successful:', response.value);
+          console.log('User:', response.value);
           this.router.navigate(['/input']);
         }
       },

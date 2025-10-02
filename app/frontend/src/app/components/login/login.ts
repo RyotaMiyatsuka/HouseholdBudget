@@ -12,17 +12,19 @@ import { Auth } from '../../services/auth';
 export class Login {
   private router = inject(Router);
   protected loginForm: { invalid: boolean }; // Placeholder for the actual form type
-
+  buttonText = 'Sign in with Google';
   constructor(private authService: Auth) {
     this.loginForm = { invalid: false };
   }
 
   login() {
+    this.buttonText = 'Signing in...';
     this.authService.loginWithGoogle().subscribe({
       next: (response) => {
-        if (response.success) {
-          console.log('Login successful:', response.message);
-          console.log('User:', response.user);
+        if (response.value) {
+          this.buttonText = 'Sign in with Google';
+          console.log('Login successful:', response.value);
+          console.log('User:', response.value);
           this.router.navigate(['/input']);
         }
       },
