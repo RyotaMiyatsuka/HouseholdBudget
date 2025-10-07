@@ -1,34 +1,39 @@
 /* Place the navbar at the bottom of the page, and make it stick */
-.navbar {
-  background-color: white;
-  overflow: hidden;
-  position: fixed;
-  bottom: 0;
+.navbar__container {
+  height: 7dvh;
   width: 100%;
+  display: flex;
+  justify-content: center;
+  position: fixed;
+  bottom: 10px;
+}
+.navbar {
+  background-color: rgb(173, 175, 235);
+  width: 90%;
   height: 7dvh;
   display: flex;
   align-items: center;
+  justify-content: center;
+  border-radius: 15px;
   z-index: 1000;
-  justify-content: space-evenly;
 }
 
 /* Style the links inside the navigation bar */
 .navbar a {
-  background-color: white;
-  padding: 14px 16px;
+  background-color: transparent;
   height: 7dvh;
   display: flex;
   width: 25%;
   justify-content: center;
+  align-items: center;
 }
 
 /* Change the color of links on hover */
 .navbar a:hover {
-  background-color: white;
+  background-color: rgba(255, 255, 255, 0.2);
   color: black;
 }
 
 .navbar__icon {
-  height: 30px;
-  width: 30px;
+  height: 6dvh;
 }
