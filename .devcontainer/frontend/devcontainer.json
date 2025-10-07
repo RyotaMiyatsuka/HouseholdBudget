@@ -6,7 +6,8 @@
     "service": "frontend",
     "workspaceFolder": "/workspace",
     "features": {
-        "ghcr.io/dhoeric/features/hadolint:1": {}
+        "ghcr.io/dhoeric/features/hadolint:1": {},
+        "ghcr.io/anthropics/devcontainer-features/claude-code:1.0": {}
     },
     "customizations": {
         "vscode": {
