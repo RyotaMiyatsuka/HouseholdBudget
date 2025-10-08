@@ -33,7 +33,7 @@ public class Transactions
     /// 取引額
     /// </summary>
     [Required]
-    public int Amount { get; set; }
+    public int Price { get; set; }
 
     /// <summary>
     /// 取引種別

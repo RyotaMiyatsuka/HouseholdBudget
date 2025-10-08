@@ -11,3 +11,4 @@
 - B_API008_取引取得API
 - B_API009_取引集計API
 - B_API010_定期取引登録API
+- B_API003_GoogleログインAPI

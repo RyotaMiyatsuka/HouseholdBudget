@@ -15,7 +15,7 @@
 - `recurring_transaction_id`
   - 外部キー(recurring_transactions)
   - 定期取引と紐づく
-- `amount`
+- `price`
   - 取引額
 - `type`
   - 取引種別
