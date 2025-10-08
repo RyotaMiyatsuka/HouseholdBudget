@@ -6,9 +6,10 @@
   justify-content: center;
   position: fixed;
   bottom: 10px;
+  background-color: transparent;
 }
 .navbar {
-  background-color: rgb(173, 175, 235);
+  background-color: var(--main-blueColor);
   width: 90%;
   height: 7dvh;
   display: flex;
@@ -35,5 +36,8 @@
 }
 
 .navbar__icon {
-  height: 6dvh;
+  height: 80%;
+  filter: invert(1);
+  z-index: 2000;
+  background-color: transparent;
 }
