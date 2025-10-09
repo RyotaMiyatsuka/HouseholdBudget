@@ -5,8 +5,10 @@
     </a>
     <h1 class="header__title">Budget</h1>
   </div>
+  @if (authButtonsVisible) {
   <div class="header__auth">
     <button class="header__auth-button login" routerLink="/login">Login</button>
     <button class="header__auth-button register" routerLink="/register">Register</button>
   </div>
+  }
 </header>
