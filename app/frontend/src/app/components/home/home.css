@@ -5,9 +5,11 @@
   font-family: serif;
   color: white;
   text-align: center;
+  margin: 10px;
 }
 .article__register-button-container {
   text-align: center;
+  margin-top: 20px;
 }
 .article__register-button {
   background-color: var(--main-blueColor);
