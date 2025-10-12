@@ -1,5 +1,3 @@
-using System.Text.RegularExpressions;
-
 namespace HouseholdBudget.Core.Domain.Users.ValueObjects;
 
 public record UserName

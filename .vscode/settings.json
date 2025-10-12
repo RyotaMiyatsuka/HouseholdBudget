@@ -62,7 +62,9 @@
         "editor.tabSize": 4,
     },
     "cSpell.words": [
-        "Swashbuckle"
+        "nonreadonly",
+        "Swashbuckle",
+        "VSTHRD"
     ],
     "dotnet.automaticallyCreateSolutionInWorkspace": false
 }

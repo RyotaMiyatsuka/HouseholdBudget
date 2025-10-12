@@ -7,7 +7,7 @@ namespace HouseholdBudget.Core.Domain.Transactions.ValueObjects;
 /// </summary>
 public record Price
 {
-    private const int MIN_AMOUNT = 0;
+    private const int _minAmount = 0;
     public decimal Amount { get; }
     public Currency Currency { get; }
 
@@ -23,9 +23,9 @@ public record Price
         string invalidAmountErrorMessage = "{0} は {1} 以上である必要があります。";
 
         // バリデーション
-        if (amount < MIN_AMOUNT)
+        if (amount < _minAmount)
         {
-            throw new ArgumentException(string.Format(invalidAmountErrorMessage, nameof(Amount), MIN_AMOUNT.ToString()));
+            throw new ArgumentException(string.Format(invalidAmountErrorMessage, nameof(Amount), _minAmount.ToString()));
         }
 
         Amount = amount;

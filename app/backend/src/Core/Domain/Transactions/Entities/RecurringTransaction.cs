@@ -3,26 +3,18 @@ using HouseholdBudget.Core.Domain.Users.ValueObjects;
 namespace HouseholdBudget.Core.Domain.Transactions.Entities;
 
 /// <summary>
-/// 取引エンティティ
+/// 定期取引エンティティ
 /// </summary>
-public class Transaction
+public class RecurringTransaction
 {
     /// <summary>
     /// Id.
     /// </summary>
     public string Id { get; private set; }
     /// <summary>
-    /// 取引を記録したユーザーのログインId.
+    /// 取り込みを行ったユーザーのログインId.
     /// </summary>
     public LoginId UserId { get; private set; }
-    /// <summary>
-    /// csv取り込みした取引と紐づく
-    /// </summary>
-    public string? CsvImportId { get; private set; }
-    /// <summary>
-    /// 定期取引と紐づく
-    /// </summary>
-    public string? RecurringTransactionId { get; private set; }
     /// <summary>
     /// 取引額
     /// </summary>
@@ -54,18 +46,14 @@ public class Transaction
     /// <param name="userId"></param>
     /// <param name="price"></param>
     /// <param name="type"></param>
-    /// <param name="csvImportId"></param>
-    /// <param name="recurringTransactionId"></param>
     /// <param name="category"></param>
     /// <param name="memo"></param>
     /// <param name="place"></param>
     /// <param name="isDeleted"></param>
-    public Transaction(
+    public RecurringTransaction(
         LoginId userId,
         int price,
         string type,
-        string? csvImportId = null,
-        string? recurringTransactionId = null,
         string? category = null,
         string? memo = null,
         string? place = null,
@@ -76,8 +64,6 @@ public class Transaction
         this.UserId = userId;
         this.Price = price;
         this.Type = type;
-        this.CsvImportId = csvImportId;
-        this.RecurringTransactionId = recurringTransactionId;
         this.Category = category;
         this.Memo = memo;
         this.Place = place;
@@ -91,19 +77,15 @@ public class Transaction
     /// <param name="userId"></param>
     /// <param name="price"></param>
     /// <param name="type"></param>
-    /// <param name="csvImportId"></param>
-    /// <param name="recurringTransactionId"></param>
     /// <param name="category"></param>
     /// <param name="memo"></param>
     /// <param name="place"></param>
     /// <param name="isDeleted"></param>
-    public Transaction(
+    public RecurringTransaction(
         string id,
         LoginId userId,
         int price,
         string type,
-        string? csvImportId = null,
-        string? recurringTransactionId = null,
         string? category = null,
         string? memo = null,
         string? place = null,
@@ -114,8 +96,6 @@ public class Transaction
         this.UserId = userId;
         this.Price = price;
         this.Type = type;
-        this.CsvImportId = csvImportId;
-        this.RecurringTransactionId = recurringTransactionId;
         this.Category = category;
         this.Memo = memo;
         this.Place = place;

@@ -41,7 +41,8 @@
                 "nrwl.angular-console",
                 "bradlc.vscode-tailwindcss",
                 "cyrilletuzi.angular-schematics",
-                "mikestead.dotenv"
+                "mikestead.dotenv",
+                "editorconfig.editorconfig"
             ],
             "settings": {
                 "terminal.integrated.defaultProfile.linux": "bash",
