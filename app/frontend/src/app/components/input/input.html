@@ -1,3 +1,9 @@
 <p>入力</p>
-<input type="text" [formControl]="inputControl" />
-<button (click)="register()">登録</button>
+<div class="input__container">
+  <input class="mainForm" type="number" [formControl]="inputControl" />
+  <div class="genres">
+    <button class="food-button">food</button>
+    <button class="clothes-button">clothes</button>
+  </div>
+  <button class="submit-button" (click)="register()">登録</button>
+</div>
