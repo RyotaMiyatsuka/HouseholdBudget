@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using HouseholdBudget.Core.Domain.Transactions.Entities;
 using HouseholdBudget.Core.Domain.Users.Entities;
+using HouseholdBudget.Core.Domain.Users.ValueObjects;
 
 namespace HouseholdBudget.Infrastructure.EFCore.EntityConfigurations;
 
@@ -18,14 +19,19 @@ public class RecurringTransactionsConfiguration : BaseEntityConfiguration<Recurr
 
         builder.ToTable("recurring_transactions");
         builder.HasKey(r => r.Id);
+        builder.HasOne<User>()
+            .WithMany()
+            .HasForeignKey(r => r.UserId)
+            .HasPrincipalKey(r => r.LoginId)
+            .OnDelete(DeleteBehavior.Cascade);
 
         builder.Property(r => r.Id)
             .HasMaxLength(36)
             .IsRequired();
-        builder.HasOne<User>()
-            .WithMany()
-            .HasForeignKey(r => r.UserId)
-            .OnDelete(DeleteBehavior.Cascade);
+        builder.Property(r => r.UserId)
+            .HasMaxLength(100)
+            .IsRequired()
+            .HasConversion(v => v.Value, v => new LoginId(v));
         builder.Property(r => r.Price)
             .IsRequired();
         builder.Property(r => r.Type)

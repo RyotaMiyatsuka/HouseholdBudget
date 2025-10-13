@@ -20,10 +20,10 @@ public class CsvImport
     /// コンストラクタ (ユニークキー自動生成)
     /// </summary>
     /// <param name="userId"></param>
-    public CsvImport(string userId)
+    public CsvImport(LoginId userId)
     {
         this.Id = Guid.NewGuid().ToString();
-        this.UserId = new LoginId(userId);
+        this.UserId = userId;
     }
 
     /// <summary>

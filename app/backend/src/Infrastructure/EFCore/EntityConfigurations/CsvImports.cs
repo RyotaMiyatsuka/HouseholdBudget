@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using HouseholdBudget.Core.Domain.Transactions.Entities;
 using HouseholdBudget.Core.Domain.Users.Entities;
+using HouseholdBudget.Core.Domain.Users.ValueObjects;
 
 namespace HouseholdBudget.Infrastructure.EFCore.EFEntities;
 
@@ -20,13 +21,18 @@ public class CsvImportsConfiguration : BaseEntityConfiguration<CsvImport>
 
         builder.ToTable("csv_imports");
         builder.HasKey(c => c.Id);
+        builder.HasOne<User>()
+            .WithMany()
+            .HasForeignKey(c => c.UserId)
+            .HasPrincipalKey(c => c.LoginId)
+            .OnDelete(DeleteBehavior.Cascade);
 
         builder.Property(c => c.Id)
             .HasMaxLength(36)
             .IsRequired();
-        builder.HasOne<User>()
-            .WithMany()
-            .HasForeignKey(c => c.UserId)
-            .OnDelete(DeleteBehavior.Cascade);
+        builder.Property(c => c.UserId)
+            .HasMaxLength(100)
+            .IsRequired()
+            .HasConversion(v => v.Value, v => new LoginId(v));
     }
 }

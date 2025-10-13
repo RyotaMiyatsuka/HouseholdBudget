@@ -34,11 +34,11 @@ public class User
     /// <param name="loginId"></param>
     /// <param name="userName"></param>
     /// <param name="mailAddress"></param>
-    public User(string loginId, string userName, string mailAddress)
+    public User(LoginId loginId, UserName userName, string mailAddress)
     {
         this.Id = Guid.NewGuid().ToString();
-        this.LoginId = new LoginId(loginId);
-        this.UserName = new UserName(userName);
+        this.LoginId = loginId;
+        this.UserName = userName;
         this.MailAddress = mailAddress;
         this.IsVerified = false;
     }
@@ -50,11 +50,11 @@ public class User
     /// <param name="loginId"></param>
     /// <param name="userName"></param>
     /// <param name="mailAddress"></param>
-    public User(string id, string loginId, string userName, string mailAddress)
+    public User(string id, LoginId loginId, UserName userName, string mailAddress)
     {
         this.Id = id;
-        this.LoginId = new LoginId(loginId);
-        this.UserName = new UserName(userName);
+        this.LoginId = loginId;
+        this.UserName = userName;
         this.MailAddress = mailAddress;
         this.IsVerified = false;
     }

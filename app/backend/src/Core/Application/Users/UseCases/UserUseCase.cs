@@ -32,7 +32,11 @@ public class UserUseCase : IUserUseCase
     /// <exception cref="UserExistsException"></exception>
     public void Register(string loginId, string userName, string mailAddress)
     {
-        User user = new(loginId, userName, mailAddress);
+        User user = new(
+            new LoginId(loginId),
+            new UserName(userName),
+            mailAddress
+        );
 
         // 存在確認
         if (this.userService.Exists(user))
