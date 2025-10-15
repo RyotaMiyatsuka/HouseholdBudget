@@ -1,9 +1,16 @@
-<p>入力</p>
+<p class="title">入力</p>
 <div class="input__container">
-  <input class="mainForm" type="number" [formControl]="inputControl" />
+  <input
+    class="mainForm"
+    type="number"
+    [formControl]="inputControl"
+    placeholder="支出を入力してください"
+  />
   <div class="genres">
     @for(genre of genres; track genre) { @if(genre === '+') {
-    <button class="plus-button">+</button>
+    <button class="plus-button">
+      <img class="plus-icon" src="plus-icon.png" alt="plus-icon" />
+    </button>
     } @else {
     <button class="genre-button">{{ genre }}</button>
     } }

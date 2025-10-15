@@ -1,4 +1,11 @@
 @media (max-width: 768px) {
+  .title {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 20px;
+    color: var(--main-blueColor);
+  }
   .input__container {
     display: flex;
     flex-direction: column;
@@ -22,10 +29,11 @@
     color: white;
     padding: 10px 20px;
     font-size: 18px;
-    width:90%;
+    width: 90%;
     cursor: pointer;
     transition: background-color 0.3s ease;
   }
+
   .genre-button {
     background-color: var(--main-greenColor);
     border: none;
@@ -34,7 +42,6 @@
     font-size: 18px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    width: 22%;
     aspect-ratio: 1/1;
   }
   .genre-button:hover {
@@ -42,23 +49,33 @@
   }
 
   .plus-button {
-    background-color: var(--main-blueColor);
     border: none;
     border-radius: 8px;
-    color: white;
-    font-size: 18px;
+    background-color: rgb(81, 173, 169);
     cursor: pointer;
     transition: background-color 0.3s ease;
-    width: 22%;
     aspect-ratio: 1/1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
   }
+
+  .plus-icon {
+    filter: invert(1);
+    background-color: transparent;
+    width: 60%;
+    height: 60%;
+    object-fit: contain;
+  }
+
   .plus-button:hover {
     background-color: var(--main-blueColor-hover);
   }
 
   .genres {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
     gap: 10px;
     width: 90%;
     padding: 1rem 0;
