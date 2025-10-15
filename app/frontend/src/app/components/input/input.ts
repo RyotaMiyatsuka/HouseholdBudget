@@ -10,6 +10,8 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 export class Input {
   inputControl = new FormControl('');
 
+  genres = ['分類', '分類', '分類', '分類', '分類', '分類', '分類', '分類', '分類', '分類', '+'];
+
   get value() {
     return this.inputControl.value;
   }

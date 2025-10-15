@@ -22,18 +22,45 @@
     color: white;
     padding: 10px 20px;
     font-size: 18px;
+    width:90%;
     cursor: pointer;
     transition: background-color 0.3s ease;
   }
-  .food-button,
-  .clothes-button {
+  .genre-button {
+    background-color: var(--main-greenColor);
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 22%;
+    aspect-ratio: 1/1;
+  }
+  .genre-button:hover {
+    background-color: var(--main-greenColor-hover);
+  }
+
+  .plus-button {
     background-color: var(--main-blueColor);
     border: none;
     border-radius: 8px;
     color: white;
-    padding: 10px 20px;
     font-size: 18px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    width: 22%;
+    aspect-ratio: 1/1;
+  }
+  .plus-button:hover {
+    background-color: var(--main-blueColor-hover);
+  }
+
+  .genres {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    width: 90%;
+    padding: 1rem 0;
   }
 }
