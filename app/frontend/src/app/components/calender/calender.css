@@ -1,0 +1,147 @@
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.calendar-container {
+  padding: 20px;
+  max-width: 1200px;
+  height: 75dvh;
+  margin: 0 auto;
+}
+
+/* FullCalendar custom styling */
+:host ::ng-deep .fc {
+  font-family: inherit;
+}
+
+:host ::ng-deep .fc-toolbar-title {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+:host ::ng-deep .fc-button {
+  background-color: var(--main-blueColor);
+  border: none;
+  padding: 8px 16px;
+  text-transform: capitalize;
+}
+
+:host ::ng-deep .fc-button:hover {
+  background-color: var(--main-blueColor);
+}
+
+:host ::ng-deep .fc-button-active {
+  background-color: var(--main-blueColor) !important;
+}
+
+:host ::ng-deep .fc-icon.fc-icon-chevron-left, :host ::ng-deep .fc-icon.fc-icon-chevron-right {
+    background-color: var(--main-blueColor);
+}
+
+:host ::ng-deep .fc-today-button{
+    display: none;
+}
+
+:host ::ng-deep .fc-view-harness.fc-view-harness-active{
+    height:auto;
+}
+
+:host ::ng-deep .fc-event {
+  cursor: pointer;
+  border-radius: 4px;
+  padding: 2px 4px;
+}
+
+:host ::ng-deep .fc-daygrid-event {
+  font-size: 12px;
+  font-weight: bold;
+}
+
+/* Mobile responsive styles */
+@media (max-width: 768px) {
+  .title {
+    font-size: 20px;
+    margin-bottom: 12px;
+  }
+
+  .calendar-container {
+    padding: 10px;
+  }
+
+  /* Toolbar adjustments */
+  :host ::ng-deep .fc-toolbar {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  :host ::ng-deep .fc-toolbar-chunk {
+    display: flex;
+    justify-content: center;
+  }
+
+  :host ::ng-deep .fc-toolbar-title {
+    font-size: 16px;
+  }
+
+  :host ::ng-deep .fc-button {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+
+  /* Day cell adjustments */
+  :host ::ng-deep .fc-daygrid-day-number {
+    font-size: 12px;
+  }
+
+  :host ::ng-deep .fc-col-header-cell-cushion {
+    font-size: 12px;
+    padding: 4px 2px;
+  }
+
+  /* Event adjustments */
+  :host ::ng-deep .fc-daygrid-event {
+    font-size: 10px;
+    padding: 1px 2px;
+  }
+
+  :host ::ng-deep .fc-event-title {
+    font-size: 10px;
+  }
+
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
+
+  .calendar-container {
+    padding: 8px;
+  }
+
+  :host ::ng-deep .fc-toolbar-title {
+    font-size: 14px;
+  }
+
+  :host ::ng-deep .fc-button {
+    padding: 5px 8px;
+    font-size: 11px;
+  }
+
+  :host ::ng-deep .fc-daygrid-day-number {
+    font-size: 11px;
+  }
+
+  :host ::ng-deep .fc-col-header-cell-cushion {
+    font-size: 11px;
+    padding: 3px 1px;
+  }
+
+  :host ::ng-deep .fc-daygrid-event {
+    font-size: 9px;
+  }
+}
