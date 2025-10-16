@@ -20,33 +20,44 @@
 :host ::ng-deep .fc-toolbar-title {
   font-size: 20px;
   font-weight: bold;
+  display: inline-block;
+  margin: 0 16px;
+}
+
+:host ::ng-deep .fc-toolbar-chunk {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 :host ::ng-deep .fc-button {
-  background-color: var(--main-blueColor);
   border: none;
   padding: 8px 16px;
   text-transform: capitalize;
 }
 
 :host ::ng-deep .fc-button:hover {
-  background-color: var(--main-blueColor);
 }
 
 :host ::ng-deep .fc-button-active {
   background-color: var(--main-blueColor) !important;
 }
 
-:host ::ng-deep .fc-icon.fc-icon-chevron-left, :host ::ng-deep .fc-icon.fc-icon-chevron-right {
-    background-color: var(--main-blueColor);
+:host ::ng-deep .fc-icon.fc-icon-chevron-left,
+:host ::ng-deep .fc-icon.fc-icon-chevron-right {
 }
 
-:host ::ng-deep .fc-today-button{
-    display: none;
+:host ::ng-deep .fc-prev-button.fc-button.fc-button-primary,
+:host ::ng-deep .fc-next-button.fc-button.fc-button-primary {
+  background-color: transparent;
 }
 
-:host ::ng-deep .fc-view-harness.fc-view-harness-active{
-    height:auto;
+:host ::ng-deep .fc-today-button {
+  display: none;
+}
+
+:host ::ng-deep .fc-view-harness.fc-view-harness-active {
+  height: auto;
 }
 
 :host ::ng-deep .fc-event {
@@ -110,7 +121,6 @@
   :host ::ng-deep .fc-event-title {
     font-size: 10px;
   }
-
 }
 
 @media (max-width: 480px) {

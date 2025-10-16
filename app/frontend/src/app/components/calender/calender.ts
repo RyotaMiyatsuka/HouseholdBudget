@@ -17,8 +17,8 @@ export class Calender {
     locale: 'ja', // Japanese locale
     height: '100%',
     headerToolbar: {
-      left: 'prev,next today',
-      center: 'title',
+      left: '',
+      center: 'prev,title,next',
       right: 'dayGridMonth,dayGridWeek'
     },
     events: this.getExpenditureEvents(),
