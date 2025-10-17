@@ -34,7 +34,7 @@ export class Calender {
   ]);
 
   // Computed signal for calendar options
-  calendarOptions = computed<CalendarOptions>(() => ({
+  calendarOptions: CalendarOptions = {
     plugins: [dayGridPlugin, interactionPlugin],
     initialView: 'dayGridMonth',
     locale: 'ja', // Japanese locale
@@ -47,7 +47,7 @@ export class Calender {
     events: this.expenditureEvents(),
     dateClick: this.handleDateClick.bind(this),
     eventClick: this.handleEventClick.bind(this)
-  }));
+  };
 
   handleDateClick(arg: any) {
     console.log('Date clicked:', arg.dateStr);

@@ -4,11 +4,11 @@
   </div>
   <button
     type="submit"
-    [disabled]="loginForm.invalid"
+    [disabled]="loginForm().invalid"
     (click)="login()"
     class="login-board__button"
   >
-    {{ buttonText }}
+    {{ buttonText() }}
   </button>
   <p class="login-board__footer">
     Don't have an account?<a routerLink="/register" class="login-board__link">Sign Up</a>

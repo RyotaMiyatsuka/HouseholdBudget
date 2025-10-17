@@ -1,4 +1,4 @@
-import { Component, signal, effect } from '@angular/core';
+import { Component, signal, effect, computed, inject } from '@angular/core';
 import { RouterModule, NavigationEnd, Router } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { filter, map } from 'rxjs/operators';
@@ -18,6 +18,7 @@ export class BottomNav {
     '/'
   ];
 
+  router = inject(Router);
   // Convert router events to signal
   private readonly currentRoute = toSignal(
     this.router.events.pipe(
@@ -28,14 +29,7 @@ export class BottomNav {
   );
 
   // Computed signal for visibility
-  public readonly isVisible = signal(false);
-
-  constructor(private router: Router) {
-    // Effect to update visibility when route changes
-    effect(() => {
-      const route = this.currentRoute();
-      console.log('Current Route:', route);
-      this.isVisible.set(!this.hiddenRoutes.includes(route));
-    });
-  }
+  public readonly isVisible = computed(() => {
+    return !this.hiddenRoutes.includes(this.currentRoute());
+  });
 }

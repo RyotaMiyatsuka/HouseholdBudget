@@ -1,4 +1,4 @@
-import { Component, signal, effect } from '@angular/core';
+import { Component, signal, effect, inject, computed } from '@angular/core';
 import { RouterModule, Router, NavigationEnd } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -19,6 +19,8 @@ export class Header {
     '/'
   ];
 
+  router = inject(Router);
+
   // Convert router events to signal
   readonly currentRoute = toSignal(
     this.router.events.pipe(
@@ -29,13 +31,8 @@ export class Header {
   );
 
   // Signal for auth buttons visibility
-  readonly authButtonsVisible = signal(false);
+  readonly authButtonsVisible = computed(() => {
+    return this.authButtonsVisibleRoutes.includes(this.currentRoute());
+  });
 
-  constructor(private router: Router) {
-    // Effect to update auth buttons visibility when route changes
-    effect(() => {
-      const route = this.currentRoute();
-      this.authButtonsVisible.set(this.authButtonsVisibleRoutes.includes(route));
-    });
-  }
 }
