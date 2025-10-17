@@ -22,8 +22,8 @@ export class BottomNav {
   // Convert router events to signal
   private readonly currentRoute = toSignal(
     this.router.events.pipe(
-      filter((event): event is NavigationEnd => event instanceof NavigationEnd),
-      map((event: NavigationEnd) => event.urlAfterRedirects)
+      filter(event => event instanceof NavigationEnd),
+      map(() => this.router.url)
     ),
     { initialValue: this.router.url }
   );

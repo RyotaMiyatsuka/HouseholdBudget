@@ -1,8 +1,14 @@
 <header class="header">
   <div class="header__logo-container">
+    @if(authButtonsVisible()) {
     <a [routerLink]="['/']">
       <img class="header__logo" src="pig-icon.png" alt="logo" aria-hidden="true" />
     </a>
+    }@else{
+    <a [routerLink]="['/input']">
+      <img class="header__logo" src="pig-icon.png" alt="logo" aria-hidden="true" />
+    </a>
+    }
     <h1 class="header__title">Budget</h1>
   </div>
   @if (authButtonsVisible()) {
