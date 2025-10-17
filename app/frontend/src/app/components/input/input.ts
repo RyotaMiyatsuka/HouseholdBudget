@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
@@ -10,13 +10,14 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 export class Input {
   inputControl = new FormControl('');
 
-  selectedGenreIndex = 0;
+  // Convert to signal
+  readonly selectedGenreIndex = signal(0);
+
+  readonly genres = signal(['分類', '分類', '分類', '分類', '分類', '分類', '分類', '分類', '分類', '分類', '+']);
 
   selectGenre(index: number) {
-    this.selectedGenreIndex = index;
+    this.selectedGenreIndex.set(index);
   }
-
-  genres = ['分類', '分類', '分類', '分類', '分類', '分類', '分類', '分類', '分類', '分類', '+'];
 
   get value() {
     return this.inputControl.value;
@@ -26,5 +27,4 @@ export class Input {
   register() {
     console.log(this.value);
   }
-
 }

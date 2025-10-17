@@ -1,8 +1,8 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, signal, effect } from '@angular/core';
 import { RouterModule, Router, NavigationEnd } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { filter, takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { filter, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-header',
@@ -10,11 +10,7 @@ import { Subject } from 'rxjs';
   templateUrl: './header.html',
   styleUrl: './header.css'
 })
-export class Header implements OnInit, OnDestroy {
-  currentRoute: string = '';
-  authButtonsVisible: boolean = false;
-
-  private readonly destroy$ = new Subject<void>();
+export class Header {
   private readonly authButtonsVisibleRoutes: string[] = [
     '/login',
     '/register',
@@ -23,22 +19,23 @@ export class Header implements OnInit, OnDestroy {
     '/'
   ];
 
-  constructor(private router: Router) {}
+  // Convert router events to signal
+  readonly currentRoute = toSignal(
+    this.router.events.pipe(
+      filter((event): event is NavigationEnd => event instanceof NavigationEnd),
+      map((event: NavigationEnd) => event.urlAfterRedirects)
+    ),
+    { initialValue: this.router.url }
+  );
 
-  ngOnInit(): void {
-    this.router.events
-      .pipe(
-        filter((event): event is NavigationEnd => event instanceof NavigationEnd),
-        takeUntil(this.destroy$)
-      )
-      .subscribe((event: NavigationEnd) => {
-        this.currentRoute = event.urlAfterRedirects;
-        this.authButtonsVisible = this.authButtonsVisibleRoutes.includes(this.currentRoute);
-      });
-  }
+  // Signal for auth buttons visibility
+  readonly authButtonsVisible = signal(false);
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
+  constructor(private router: Router) {
+    // Effect to update auth buttons visibility when route changes
+    effect(() => {
+      const route = this.currentRoute();
+      this.authButtonsVisible.set(this.authButtonsVisibleRoutes.includes(route));
+    });
   }
 }

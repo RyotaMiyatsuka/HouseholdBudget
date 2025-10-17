@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal, computed } from '@angular/core';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { CalendarOptions, EventInput } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -11,7 +11,30 @@ import interactionPlugin from '@fullcalendar/interaction';
   styleUrl: './calender.css'
 })
 export class Calender {
-  calendarOptions: CalendarOptions = {
+  // Signal for expenditure events
+  expenditureEvents = signal<EventInput[]>([
+    {
+      title: '¥1,500',
+      date: '2025-10-15',
+      backgroundColor: '#FF6B6B',
+      extendedProps: {
+        amount: 1500,
+        genre: '食費'
+      }
+    },
+    {
+      title: '¥3,200',
+      date: '2025-10-14',
+      backgroundColor: '#4ECDC4',
+      extendedProps: {
+        amount: 3200,
+        genre: '交通費'
+      }
+    }
+  ]);
+
+  // Computed signal for calendar options
+  calendarOptions = computed<CalendarOptions>(() => ({
     plugins: [dayGridPlugin, interactionPlugin],
     initialView: 'dayGridMonth',
     locale: 'ja', // Japanese locale
@@ -21,34 +44,10 @@ export class Calender {
       center: 'prev,title,next',
       right: 'dayGridMonth,dayGridWeek'
     },
-    events: this.getExpenditureEvents(),
+    events: this.expenditureEvents(),
     dateClick: this.handleDateClick.bind(this),
     eventClick: this.handleEventClick.bind(this)
-  };
-
-  // Sample expenditure data - replace with actual data from your backend
-  getExpenditureEvents(): EventInput[] {
-    return [
-      {
-        title: '¥1,500',
-        date: '2025-10-15',
-        backgroundColor: '#FF6B6B',
-        extendedProps: {
-          amount: 1500,
-          genre: '食費'
-        }
-      },
-      {
-        title: '¥3,200',
-        date: '2025-10-14',
-        backgroundColor: '#4ECDC4',
-        extendedProps: {
-          amount: 3200,
-          genre: '交通費'
-        }
-      }
-    ];
-  }
+  }));
 
   handleDateClick(arg: any) {
     console.log('Date clicked:', arg.dateStr);
@@ -58,5 +57,15 @@ export class Calender {
   handleEventClick(arg: any) {
     console.log('Event clicked:', arg.event.extendedProps);
     // Show expenditure details
+  }
+
+  // Method to update events dynamically
+  updateEvents(newEvents: EventInput[]) {
+    this.expenditureEvents.set(newEvents);
+  }
+
+  // Method to add a single event
+  addEvent(event: EventInput) {
+    this.expenditureEvents.update(events => [...events, event]);
   }
 }

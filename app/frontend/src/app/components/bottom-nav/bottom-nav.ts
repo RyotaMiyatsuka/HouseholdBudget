@@ -1,7 +1,7 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, signal, effect } from '@angular/core';
 import { RouterModule, NavigationEnd, Router } from '@angular/router';
-import { filter, takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { filter, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-bottom-nav',
@@ -10,9 +10,6 @@ import { Subject } from 'rxjs';
   styleUrl: './bottom-nav.css'
 })
 export class BottomNav {
-  private currentRoute: string = '';
-  public isVisible: boolean = false;
-  private readonly destroy$ = new Subject<void>();
   readonly hiddenRoutes: string[] = [
     '/login',
     '/register',
@@ -21,21 +18,24 @@ export class BottomNav {
     '/'
   ];
 
-  constructor(private router: Router) { }
-  ngOnInit(): void {
-    this.router.events
-      .pipe(
-        filter((event): event is NavigationEnd => event instanceof NavigationEnd),
-        takeUntil(this.destroy$)
-      )
-      .subscribe((event: NavigationEnd) => {
-        this.currentRoute = event.urlAfterRedirects;
-        console.log('Current Route:', this.currentRoute);
-        this.isVisible = !this.hiddenRoutes.includes(this.currentRoute);
-      });
-  }
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
+  // Convert router events to signal
+  private readonly currentRoute = toSignal(
+    this.router.events.pipe(
+      filter((event): event is NavigationEnd => event instanceof NavigationEnd),
+      map((event: NavigationEnd) => event.urlAfterRedirects)
+    ),
+    { initialValue: this.router.url }
+  );
+
+  // Computed signal for visibility
+  public readonly isVisible = signal(false);
+
+  constructor(private router: Router) {
+    // Effect to update visibility when route changes
+    effect(() => {
+      const route = this.currentRoute();
+      console.log('Current Route:', route);
+      this.isVisible.set(!this.hiddenRoutes.includes(route));
+    });
   }
 }

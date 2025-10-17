@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal, effect } from '@angular/core';
 import { RouterModule, Router } from '@angular/router';
 import { Auth } from '../../services/auth';
 
@@ -10,25 +10,32 @@ import { Auth } from '../../services/auth';
 })
 export class Register {
   private router = inject(Router);
-  protected registerForm: { invalid: boolean }; // Placeholder for the actual form type
-  buttonText = 'Sign up with Google';
-  constructor(private authService: Auth) {
-    this.registerForm = { invalid: false };
+  private authService = inject(Auth);
+
+  protected registerForm = signal({ invalid: false });
+  readonly buttonText = signal('Sign up with Google');
+
+  // Use effect to reactively watch loginState signal
+  constructor() {
+    effect(() => {
+      const state = this.authService.loginState();
+      if (state.success && state.value) {
+        this.buttonText.set('Sign up with Google');
+        console.log('Registration successful:', state.value);
+        this.router.navigate(['/input']);
+      } else if (state.error) {
+        console.error('Registration failed:', state.error);
+        this.buttonText.set('Sign up with Google');
+      }
+    });
   }
 
   register() {
-    this.buttonText = 'Signing up...';
+    this.buttonText.set('Signing up...');
+    // Subscribe to Observable, signals are updated via tap() in service
     this.authService.registerWithGoogle().subscribe({
-      next: (response) => {
-        if (response.value) {
-          this.buttonText = 'Sign in with Google';
-          console.log('Registration successful:', response.value);
-          console.log('User:', response.value);
-          this.router.navigate(['/input']);
-        }
-      },
       error: (error) => {
-        console.error('Registration failed:', error);
+        console.error('Registration error:', error);
       }
     });
   }
