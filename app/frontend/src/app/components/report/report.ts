@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
   selector: 'app-report',
   imports: [],
   templateUrl: './report.html',
-  styleUrl: './report.css'
+  styleUrl: './report.scss'
 })
 export class Report {
 

@@ -7,7 +7,7 @@ import { filter, map } from 'rxjs/operators';
   selector: 'app-bottom-nav',
   imports: [RouterModule],
   templateUrl: './bottom-nav.html',
-  styleUrl: './bottom-nav.css'
+  styleUrl: './bottom-nav.scss'
 })
 export class BottomNav {
   readonly hiddenRoutes: string[] = [

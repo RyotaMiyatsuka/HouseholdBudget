@@ -8,7 +8,7 @@ import interactionPlugin from '@fullcalendar/interaction';
   selector: 'app-calender',
   imports: [FullCalendarModule],
   templateUrl: './calender.html',
-  styleUrl: './calender.css'
+  styleUrl: './calender.scss'
 })
 export class Calender {
   // Signal for expenditure events

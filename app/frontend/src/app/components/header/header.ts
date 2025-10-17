@@ -8,7 +8,7 @@ import { filter, map } from 'rxjs/operators';
   selector: 'app-header',
   imports: [RouterModule, CommonModule],
   templateUrl: './header.html',
-  styleUrl: './header.css'
+  styleUrl: './header.scss'
 })
 export class Header {
   private readonly authButtonsVisibleRoutes: string[] = [

@@ -5,7 +5,7 @@ import { RouterModule } from '@angular/router';
   selector: 'app-home',
   imports: [RouterModule],
   templateUrl: './home.html',
-  styleUrl: './home.css'
+  styleUrl: './home.scss'
 })
 export class Home {
 

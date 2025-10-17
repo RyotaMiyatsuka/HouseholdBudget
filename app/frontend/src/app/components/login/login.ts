@@ -6,7 +6,7 @@ import { Auth } from '../../services/auth';
   selector: 'app-signin',
   imports: [RouterModule],
   templateUrl: './login.html',
-  styleUrl: './login.css'
+  styleUrl: './login.scss'
 })
 export class Login {
   private router = inject(Router);

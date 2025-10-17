@@ -6,7 +6,7 @@ import { Auth } from '../../services/auth';
   selector: 'app-register',
   imports: [RouterModule],
   templateUrl: './register.html',
-  styleUrl: './register.css'
+  styleUrl: './register.scss'
 })
 export class Register {
   private router = inject(Router);

@@ -8,7 +8,7 @@ import { BottomNav } from './components/bottom-nav/bottom-nav';
   standalone: true,
   imports: [RouterOutlet, RouterModule, Header, BottomNav],
   templateUrl: './app.html',
-  styleUrl: './app.css'
+  styleUrl: './app.scss'
 })
 export class App {
   protected readonly title = signal('budget-app');
