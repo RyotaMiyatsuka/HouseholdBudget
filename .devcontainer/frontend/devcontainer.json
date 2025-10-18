@@ -18,6 +18,8 @@
                 "ms-vscode.vscode-typescript-next",
                 "ms-dotnettools.csharp",
                 "ms-dotnettools.csdevkit",
+                "bradlc.vscode-tailwindcss",
+                "csstools.postcss",
                 "ms-vscode.vscode-json",
                 "ms-azuretools.vscode-docker",
                 "yzhang.markdown-all-in-one",
