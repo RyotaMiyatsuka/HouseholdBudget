@@ -13,62 +13,68 @@
 }
 
 /* FullCalendar custom styling */
-:host ::ng-deep .fc {
-  font-family: inherit;
-}
+:host ::ng-deep {
+  .fc {
+    font-family: inherit;
 
-:host ::ng-deep .fc-toolbar-title {
-  font-size: 20px;
-  font-weight: bold;
-  display: inline-block;
-  margin: 0 16px;
-}
+    &-toolbar {
+      &-title {
+        font-size: 20px;
+        font-weight: bold;
+        display: inline-block;
+        margin: 0 16px;
+      }
 
-:host ::ng-deep .fc-toolbar-chunk {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
+      &-chunk {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+    }
 
-:host ::ng-deep .fc-button {
-  border: none;
-  padding: 8px 16px;
-  text-transform: capitalize;
-}
+    &-button {
+      border: none;
+      padding: 8px 16px;
+      text-transform: capitalize;
 
-:host ::ng-deep .fc-button:hover {
-}
+      &-active {
+        background-color: var(--main-blueColor) !important;
+      }
+    }
 
-:host ::ng-deep .fc-button-active {
-  background-color: var(--main-blueColor) !important;
-}
+    &-icon {
+      &.fc-icon-chevron-left,
+      &.fc-icon-chevron-right {
+        // Icon styles
+      }
+    }
 
-:host ::ng-deep .fc-icon.fc-icon-chevron-left,
-:host ::ng-deep .fc-icon.fc-icon-chevron-right {
-}
+    &-prev-button.fc-button.fc-button-primary,
+    &-next-button.fc-button.fc-button-primary {
+      background-color: transparent;
+    }
 
-:host ::ng-deep .fc-prev-button.fc-button.fc-button-primary,
-:host ::ng-deep .fc-next-button.fc-button.fc-button-primary {
-  background-color: transparent;
-}
+    &-today-button {
+      display: none;
+    }
 
-:host ::ng-deep .fc-today-button {
-  display: none;
-}
+    &-view-harness {
+      &.fc-view-harness-active {
+        height: auto;
+      }
+    }
 
-:host ::ng-deep .fc-view-harness.fc-view-harness-active {
-  height: auto;
-}
+    &-event {
+      cursor: pointer;
+      border-radius: 4px;
+      padding: 2px 4px;
+    }
 
-:host ::ng-deep .fc-event {
-  cursor: pointer;
-  border-radius: 4px;
-  padding: 2px 4px;
-}
-
-:host ::ng-deep .fc-daygrid-event {
-  font-size: 12px;
-  font-weight: bold;
+    &-daygrid-event {
+      font-size: 12px;
+      font-weight: bold;
+    }
+  }
 }
 
 /* Mobile responsive styles */
@@ -83,43 +89,47 @@
   }
 
   /* Toolbar adjustments */
-  :host ::ng-deep .fc-toolbar {
-    flex-direction: column;
-    gap: 10px;
-  }
+  :host ::ng-deep {
+    .fc {
+      &-toolbar {
+        flex-direction: column;
+        gap: 10px;
 
-  :host ::ng-deep .fc-toolbar-chunk {
-    display: flex;
-    justify-content: center;
-  }
+        &-chunk {
+          display: flex;
+          justify-content: center;
+        }
 
-  :host ::ng-deep .fc-toolbar-title {
-    font-size: 16px;
-  }
+        &-title {
+          font-size: 16px;
+        }
+      }
 
-  :host ::ng-deep .fc-button {
-    padding: 6px 10px;
-    font-size: 12px;
-  }
+      &-button {
+        padding: 6px 10px;
+        font-size: 12px;
+      }
 
-  /* Day cell adjustments */
-  :host ::ng-deep .fc-daygrid-day-number {
-    font-size: 12px;
-  }
+      /* Day cell adjustments */
+      &-daygrid-day-number {
+        font-size: 12px;
+      }
 
-  :host ::ng-deep .fc-col-header-cell-cushion {
-    font-size: 12px;
-    padding: 4px 2px;
-  }
+      &-col-header-cell-cushion {
+        font-size: 12px;
+        padding: 4px 2px;
+      }
 
-  /* Event adjustments */
-  :host ::ng-deep .fc-daygrid-event {
-    font-size: 10px;
-    padding: 1px 2px;
-  }
+      /* Event adjustments */
+      &-daygrid-event {
+        font-size: 10px;
+        padding: 1px 2px;
+      }
 
-  :host ::ng-deep .fc-event-title {
-    font-size: 10px;
+      &-event-title {
+        font-size: 10px;
+      }
+    }
   }
 }
 
@@ -133,25 +143,29 @@
     padding: 8px;
   }
 
-  :host ::ng-deep .fc-toolbar-title {
-    font-size: 14px;
-  }
+  :host ::ng-deep {
+    .fc {
+      &-toolbar-title {
+        font-size: 14px;
+      }
 
-  :host ::ng-deep .fc-button {
-    padding: 5px 8px;
-    font-size: 11px;
-  }
+      &-button {
+        padding: 5px 8px;
+        font-size: 11px;
+      }
 
-  :host ::ng-deep .fc-daygrid-day-number {
-    font-size: 11px;
-  }
+      &-daygrid-day-number {
+        font-size: 11px;
+      }
 
-  :host ::ng-deep .fc-col-header-cell-cushion {
-    font-size: 11px;
-    padding: 3px 1px;
-  }
+      &-col-header-cell-cushion {
+        font-size: 11px;
+        padding: 3px 1px;
+      }
 
-  :host ::ng-deep .fc-daygrid-event {
-    font-size: 9px;
+      &-daygrid-event {
+        font-size: 9px;
+      }
+    }
   }
 }

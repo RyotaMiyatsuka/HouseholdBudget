@@ -1,13 +1,4 @@
 /* Place the navbar at the bottom of the page, and make it stick */
-.navbar__container {
-  height: 7dvh;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  position: fixed;
-  bottom: 10px;
-  background-color: transparent;
-}
 .navbar {
   background-color: var(--main-blueColor);
   width: 90%;
@@ -17,27 +8,37 @@
   justify-content: center;
   border-radius: 15px;
   z-index: 1000;
-}
 
-/* Style the links inside the navigation bar */
-.navbar a {
-  background-color: transparent;
-  height: 7dvh;
-  display: flex;
-  width: 25%;
-  justify-content: center;
-  align-items: center;
-}
+  &__container {
+    height: 7dvh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    bottom: 10px;
+    background-color: transparent;
+  }
 
-/* Change the color of links on hover */
-.navbar a:hover {
-  background-color: rgba(255, 255, 255, 0.2);
-  color: black;
-}
+  /* Style the links inside the navigation bar */
+  a {
+    background-color: transparent;
+    height: 7dvh;
+    display: flex;
+    width: 25%;
+    justify-content: center;
+    align-items: center;
 
-.navbar__icon {
-  height: 80%;
-  filter: invert(1);
-  z-index: 2000;
-  background-color: transparent;
+    /* Change the color of links on hover */
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+      color: black;
+    }
+  }
+
+  &__icon {
+    height: 80%;
+    filter: invert(1);
+    z-index: 2000;
+    background-color: transparent;
+  }
 }
