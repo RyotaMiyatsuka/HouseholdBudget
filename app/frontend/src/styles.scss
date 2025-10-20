@@ -1,23 +1,9 @@
 @use "tailwindcss";
-
-/* You can add global styles to this file, and also import other style files */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  background-color: black;
-  color: white;
+@theme{
+    --color-main-blue: #3399ff;
+    --color-main-blue-hover: #3399ff;
+    --color-main-green: #2E8A99;
+    --color-main-green-hover: #247080;
 }
 
-a,
-u {
-  text-decoration: none;
-}
 
-:root {
-  --main-blueColor: rgb(51, 153, 255);
-  --main-blueColor-hover: rgba(51, 153, 255, 0.8);
-  --main-greenColor: #2E8A99;
-  --main-greenColor-hover: #247080;
-  --transition-time: 0.7s;
-}

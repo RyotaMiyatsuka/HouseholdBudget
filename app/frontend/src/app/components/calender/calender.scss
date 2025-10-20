@@ -1,22 +1,15 @@
-.title {
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 20px;
-  text-align: center;
-}
-
-.calendar-container {
-  padding: 20px;
-  max-width: 1200px;
-  height: 75dvh;
-  margin: 0 auto;
-}
-
 /* FullCalendar custom styling */
 :host ::ng-deep {
   .fc {
     font-family: inherit;
-
+    &-toolbar-title{
+      font-size:1.2rem!important;
+      font-weight:bold;
+      color:white;
+    }
+    &-col-header-cell-cushion{
+      color: white;
+    }
     &-toolbar {
       &-title {
         font-size: 20px;
@@ -38,7 +31,7 @@
       text-transform: capitalize;
 
       &-active {
-        background-color: var(--main-blueColor) !important;
+        background-color: var(--color-main-blue) !important;
       }
     }
 
@@ -71,24 +64,19 @@
     }
 
     &-daygrid-event {
-      font-size: 12px;
+      font-size: 14px;
       font-weight: bold;
+    }
+
+    &-event-title{
+      color: white;
+      font-size: 0.8rem!important;
     }
   }
 }
 
 /* Mobile responsive styles */
 @media (max-width: 768px) {
-  .title {
-    font-size: 20px;
-    margin-bottom: 12px;
-  }
-
-  .calendar-container {
-    padding: 10px;
-  }
-
-  /* Toolbar adjustments */
   :host ::ng-deep {
     .fc {
       &-toolbar {
@@ -134,15 +122,6 @@
 }
 
 @media (max-width: 480px) {
-  .title {
-    font-size: 18px;
-    margin-bottom: 8px;
-  }
-
-  .calendar-container {
-    padding: 8px;
-  }
-
   :host ::ng-deep {
     .fc {
       &-toolbar-title {
