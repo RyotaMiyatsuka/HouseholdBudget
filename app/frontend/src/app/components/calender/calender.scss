@@ -24,6 +24,13 @@
         gap: 8px;
       }
     }
+    &-daygrid-day-number{
+      color: white;
+    }
+
+    &-day-today {
+      background-color: var(--color-main-blue) !important;
+    }
 
     &-button {
       border: none;
