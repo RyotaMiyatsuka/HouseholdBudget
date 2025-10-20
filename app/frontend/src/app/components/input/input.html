@@ -7,7 +7,7 @@
     placeholder="支出を入力してください"
   />
   <div class="genres">
-    @for(genre of genres(); track genre; let i = $index) { @if(genre === '+') {
+    @for(genre of genres(); track i; let i = $index) { @if(genre === '+') {
     <button class="plus-button">
       <img class="plus-icon" src="plus-icon.png" alt="plus-icon" />
     </button>
