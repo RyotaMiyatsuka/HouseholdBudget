@@ -52,5 +52,6 @@
             }
         }
     },
+    "postCreateCommand": "cd app/frontend && npm install",
     "remoteUser": "node"
 }
