@@ -25,7 +25,7 @@ describe('Input', () => {
   it('should initialize with default values', () => {
     expect(component.inputControl.value).toBe('');
     expect(component.selectedGenreIndex()).toBe(0);
-    expect(component.genres().length).toBe(11);
+    expect(component.genres().length).toBe(4);
   });
 
   it('should update selected genre index when selectGenre is called', () => {
@@ -36,5 +36,12 @@ describe('Input', () => {
   it('should return input control value through value getter', () => {
     component.inputControl.setValue('1000');
     expect(component.value).toBe('1000');
+  });
+
+  it('should open modal and reset genre name control when addNewGenre is called', () => {
+    component.addNewGenre(4);
+    expect(component.selectedGenreIndex()).toBe(4);
+    expect(component.modalOpen).toBeTruthy();
+    expect(component.genreNameControl.value).toBe('');
   });
 });

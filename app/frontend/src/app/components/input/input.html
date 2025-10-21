@@ -7,13 +7,26 @@
       [formControl]="inputControl"
       placeholder="支出を入力してください"
     />
-    <div class="grid grid-cols-4 gap-2.5 w-[90%] py-4">
+    <textarea
+      class="w-[90%] bg-blue-50 text-lg p-2.5 border-2 border-main-blue rounded-lg box-border placeholder:text-main-blue placeholder:opacity-70"
+      type="number"
+      [formControl]="inputControl"
+      placeholder="メモ"
+      row="2"
+    >
+    </textarea>
+    <div class="grid grid-cols-4 gap-2.5 w-[90%] py-2">
       @for(genre of genres(); track i; let i = $index) { @if(genre === '+') {
       <button
-        class="border-0 rounded-lg bg-teal-500 cursor-pointer transition-colors duration-300 aspect-square flex items-center justify-center p-0 hover:bg-main-blue-hover"
+        [class]="
+          i === selectedGenreIndex()
+            ? 'bg-main-blue border-solid border-3 border-white rounded-lg cursor-pointer aspect-square flex items-center justify-center p-0'
+            : 'border-solid border-1 border-white rounded-lg cursor-pointer aspect-square flex items-center justify-center p-0 hover:bg-main-blue-hover'
+        "
+        (click)="addNewGenre(i)"
       >
         <img
-          class="invert bg-transparent w-3/5 h-3/5 object-contain"
+          class="invert bg-transparent w-2/5 h-2/5 object-contain"
           src="plus-icon.png"
           alt="plus-icon"
         />
@@ -22,8 +35,8 @@
       <button
         [class]="
           i === selectedGenreIndex()
-            ? 'bg-main-blue border-solid border-3 border-white rounded-lg text-white text-lg cursor-pointer transition-colors duration-300 aspect-square'
-            : 'bg-main-green border-0 rounded-lg text-white text-lg cursor-pointer transition-colors duration-300 aspect-square hover:bg-main-green-hover'
+            ? 'bg-main-blue border-solid border-3 border-white rounded-lg text-white text-lg cursor-pointer aspect-square'
+            : 'bg-main-green border-0 rounded-lg text-white text-lg cursor-pointer aspect-square hover:bg-main-green-hover'
         "
         (click)="selectGenre(i)"
       >
@@ -38,4 +51,24 @@
       登録
     </button>
   </div>
+
+  <!-- Genre Modal -->
+  <app-modal
+    [isOpen]="modalOpen"
+    title="新しいジャンルを追加"
+    confirmText="追加"
+    cancelText="キャンセル"
+    (confirm)="onConfirmGenre()"
+    (cancel)="onCancelGenre()"
+  >
+    <div class="flex flex-col gap-3">
+      <label class="text-gray-700 font-medium">ジャンル名</label>
+      <input
+        type="text"
+        [formControl]="genreNameControl"
+        placeholder="例: 食費、交通費"
+        class="w-full bg-blue-50 text-lg p-2.5 border-2 border-main-blue rounded-lg box-border placeholder:text-gray-400"
+      />
+    </div>
+  </app-modal>
 </div>
