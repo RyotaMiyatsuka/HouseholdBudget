@@ -1,6 +1,6 @@
 import { inject, Component, signal, effect } from '@angular/core';
 import { RouterModule, Router } from '@angular/router';
-import { Auth } from '../../services/auth';
+import { Auth } from '../../services/auth/auth';
 
 @Component({
   selector: 'app-signin',

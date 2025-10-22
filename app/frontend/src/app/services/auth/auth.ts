@@ -1,19 +1,6 @@
 import { Injectable, signal, computed } from '@angular/core';
-import { HttpErrorResponse } from '@angular/common/http';
 import { Observable, of, delay, tap, catchError, throwError } from 'rxjs';
-
-export interface HttpRequestState<T> {
-  isLoading: boolean;
-  success?: boolean;
-  value?: T;
-  error?: HttpErrorResponse | Error;
-}
-
-export interface User {
-  id: string;
-  email: string;
-  name: string;
-}
+import { User, HttpRequestState } from '../../models';
 
 @Injectable({
   providedIn: 'root'
