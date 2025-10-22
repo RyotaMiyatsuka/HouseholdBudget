@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { Auth } from '../../services/auth/auth';
+import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
   selector: 'app-settings',
@@ -10,7 +10,7 @@ import { Auth } from '../../services/auth/auth';
 })
 export class Settings {
   private router = inject(Router);
-  private authService = inject(Auth); // AuthServiceを注入
+  private authService = inject(AuthService); // AuthServiceを注入
 
   logout() {
     // ログアウト処理をここに実装

@@ -5,7 +5,7 @@ import { User, HttpRequestState } from '../../models';
 @Injectable({
   providedIn: 'root'
 })
-export class Auth {
+export class AuthService {
   // Signals for reactive state management
   private readonly currentUser = signal<User | null>(null);
   readonly isAuthenticated = computed(() => this.currentUser() !== null);

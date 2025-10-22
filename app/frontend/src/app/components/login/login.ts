@@ -1,6 +1,6 @@
 import { inject, Component, signal, effect } from '@angular/core';
 import { RouterModule, Router } from '@angular/router';
-import { Auth } from '../../services/auth/auth';
+import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
   selector: 'app-signin',
@@ -10,7 +10,7 @@ import { Auth } from '../../services/auth/auth';
 })
 export class Login {
   private router = inject(Router);
-  private authService = inject(Auth);
+  private authService = inject(AuthService);
 
   protected loginForm = signal({ invalid: false });
   readonly buttonText = signal('Sign in with Google');

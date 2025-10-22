@@ -1,6 +1,6 @@
 import { Component, inject, signal, effect } from '@angular/core';
 import { RouterModule, Router } from '@angular/router';
-import { Auth } from '../../services/auth/auth';
+import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -10,7 +10,7 @@ import { Auth } from '../../services/auth/auth';
 })
 export class Register {
   private router = inject(Router);
-  private authService = inject(Auth);
+  private authService = inject(AuthService);
 
   protected registerForm = signal({ invalid: false });
   readonly buttonText = signal('Sign up with Google');
