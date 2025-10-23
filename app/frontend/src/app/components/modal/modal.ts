@@ -10,9 +10,10 @@ import { CommonModule } from '@angular/common';
 export class Modal {
   @Input() isOpen = false;
   @Input() title = '';
-  @Input() showActions = true;
+  @Input() type: 'form' | 'notification' = 'form';
   @Input() confirmText = '確認';
-  @Input() cancelText = 'キャンセル';
+  @Input() message: string | undefined = '';
+  @Input() cancelText: string | undefined = 'キャンセル';
   @Input() confirmButtonClass = 'bg-main-blue hover:bg-main-blue-hover';
   @Input() cancelButtonClass = 'bg-gray-500 hover:bg-gray-600';
 

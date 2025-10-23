@@ -54,12 +54,14 @@
 
   <!-- Genre Modal -->
   <app-modal
-    [isOpen]="modalOpen"
-    title="新しいジャンルを追加"
-    confirmText="追加"
-    cancelText="キャンセル"
+    [isOpen]="modalState().isOpen"
+    [title]="modalState().title"
+    [type]="modalState().type"
+    [message]="modalState().message"
+    [confirmText]="modalState().confirmText"
+    [cancelText]="modalState().cancelText"
     (confirm)="onConfirmGenre()"
-    (cancel)="onCancelGenre()"
+    (cancel)="closeModal()"
   >
     <div class="flex flex-col gap-3">
       <label class="text-gray-700 font-medium">ジャンル名</label>

@@ -9,6 +9,7 @@ import { filter, map } from 'rxjs/operators';
   templateUrl: './bottom-nav.html',
   styleUrl: './bottom-nav.scss'
 })
+
 export class BottomNav {
   readonly hiddenRoutes: string[] = [
     '/login',
