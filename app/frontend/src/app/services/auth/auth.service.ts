@@ -1,6 +1,7 @@
 import { Injectable, signal, computed } from '@angular/core';
 import { Observable, of, delay, tap, catchError, throwError } from 'rxjs';
-import { User, HttpRequestState } from '../../models';
+import { User } from '../../models/user.model';
+import { HttpRequestState } from '../../models/http-request-state.model';
 
 @Injectable({
   providedIn: 'root'

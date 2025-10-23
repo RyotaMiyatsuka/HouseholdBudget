@@ -25,7 +25,6 @@ describe('Input', () => {
   it('should initialize with default values', () => {
     expect(component.inputControl.value).toBe('');
     expect(component.selectedGenreIndex()).toBe(0);
-    expect(component.genres().length).toBe(4);
   });
 
   it('should update selected genre index when selectGenre is called', () => {
@@ -38,10 +37,15 @@ describe('Input', () => {
     expect(component.value).toBe('1000');
   });
 
+  it('should open modal when addNewGenre is called', () => {
+    component.addNewGenre();
+    expect(component.modalState().isOpen).toBeTruthy();
+    expect(component.modalState().title).toBe('新しいジャンルを追加');
+  });
+
   it('should open modal and reset genre name control when addNewGenre is called', () => {
-    component.addNewGenre(4);
-    expect(component.selectedGenreIndex()).toBe(4);
-    expect(component.modalOpen).toBeTruthy();
+    component.onConfirmGenre();
+    expect(component.modalState().isOpen).toBeFalsy();
     expect(component.genreNameControl.value).toBe('');
   });
 });

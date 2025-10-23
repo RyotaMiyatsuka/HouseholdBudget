@@ -31,6 +31,26 @@ export class Calender {
         genre: '交通費'
       }
     }
+    ,
+    {
+      title: '¥3,200',
+      date: '2025-10-14',
+      backgroundColor: '#4ECDC4',
+      extendedProps: {
+        amount: 3200,
+        genre: '交通費'
+      }
+    }
+    ,
+    {
+      title: '¥3,200',
+      date: '2025-10-14',
+      backgroundColor: '#4ECDC4',
+      extendedProps: {
+        amount: 3200,
+        genre: '交通費'
+      }
+    }
   ]);
 
   // Computed signal for calendar options
