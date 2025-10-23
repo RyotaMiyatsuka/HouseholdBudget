@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Modal } from '../modal/modal';
 import { ModalState } from '../../models/modal-state.model';
@@ -12,7 +12,8 @@ type InputModalType = 'genre-form' | 'genre-upper-limit';
   selector: 'app-input',
   imports: [ReactiveFormsModule, Modal, CommonModule],
   templateUrl: './input.html',
-  styleUrl: './input.scss'
+  styleUrl: './input.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Input {
   inputControl = new FormControl('');

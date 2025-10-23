@@ -1,11 +1,12 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-modal',
   imports: [CommonModule],
   templateUrl: './modal.html',
-  styleUrl: './modal.scss'
+  styleUrl: './modal.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Modal {
   @Input() isOpen = false;
