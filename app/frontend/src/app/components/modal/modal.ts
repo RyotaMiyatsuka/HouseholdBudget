@@ -24,7 +24,11 @@ export class Modal {
   close = output<void>();
 
   onConfirm() {
-    this.confirm.emit();
+    if (this.type() === 'form') {
+      this.confirm.emit();
+    } else if (this.type() === 'notification') {
+      this.close.emit();
+    }
   }
 
   onCancel() {

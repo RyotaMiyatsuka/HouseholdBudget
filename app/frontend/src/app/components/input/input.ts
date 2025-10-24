@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Modal } from '../modal/modal';
 import { ModalState } from '../../models/modal-state.model';
 import { ExpenseGenre } from '../../models/expense-genre.model';
@@ -7,20 +7,22 @@ import { GenreColor, GENRE_COLOR_OPTIONS, getGenreButtonClasses } from '../../mo
 import { CommonModule } from '@angular/common';
 import { GenreService } from '../../services/genre/genre.service';
 
-type InputModalType = 'genre-form' | 'genre-upper-limit';
+type InputModalType = 'form' | 'notification';
 
 @Component({
   selector: 'app-input',
+  standalone: true,
   imports: [ReactiveFormsModule, Modal, CommonModule],
   templateUrl: './input.html',
-  styleUrl: './input.scss',
+  styleUrls: ['./input.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Input implements OnInit {
   private readonly genreService = inject(GenreService);
-
   inputControl = new FormControl('');
-  genreNameControl = new FormControl('');
+  genreNameControl = new FormControl('',
+    [Validators.required, Validators.maxLength(7)]
+  );
   selectedColorControl = new FormControl<GenreColor>(GenreColor.Green);
 
   modalState = signal<ModalState<InputModalType>>({
@@ -118,7 +120,18 @@ export class Input implements OnInit {
     const newGenreName = this.genreNameControl.value?.trim();
     const selectedColor = this.selectedColorControl.value;
 
-    if (newGenreName && selectedColor) {
+    if (!newGenreName || newGenreName.length === 0) {
+      this.genreNameControl.markAsTouched();
+      this.genreNameControl.setErrors({ required: true });
+      this.genreNameControl.setValue('');
+      return;
+    }
+
+    if (this.genreNameControl.invalid) {
+      return;
+    }
+
+    if (selectedColor && newGenreName) {
       const newGenreData = {
         name: newGenreName,
         color: selectedColor
@@ -160,11 +173,32 @@ export class Input implements OnInit {
     this.modalState.update(state => ({ ...state, isOpen: false }));
     this.selectedGenreIndex.set(0);
     this.genreNameControl.setValue('');
+    this.genreNameControl.markAsUntouched();
     this.selectedColorControl.setValue(GenreColor.Green);
   }
 
   selectColor(color: GenreColor) {
     this.selectedColorControl.setValue(color);
+  }
+
+  /**
+   * Get the error message for genre name input
+   * @returns Error message string or null if no error
+   */
+  getGenreNameError(): string | null {
+    if (!this.genreNameControl.touched || this.genreNameControl.valid) {
+      return null;
+    }
+
+    if (this.genreNameControl.hasError('required')) {
+      return 'ジャンル名は必須です';
+    }
+
+    if (this.genreNameControl.hasError('maxlength')) {
+      return '最大7文字です';
+    }
+
+    return null;
   }
 
 }

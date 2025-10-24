@@ -13,7 +13,9 @@
       "Bash(npm install -D nx --legacy-peer-deps)",
       "Bash(npm test)",
       "Bash(npx msw init public/ --save)",
-      "Bash(npm test -- --run)"
+      "Bash(npm test -- --run)",
+      "Bash(ldd --version)",
+      "Read(//usr/lib/x86_64-linux-gnu/**)"
     ],
     "deny": [],
     "ask": []

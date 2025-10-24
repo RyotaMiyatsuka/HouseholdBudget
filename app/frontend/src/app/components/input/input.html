@@ -59,6 +59,7 @@
     [cancelText]="modalState().cancelText"
     (confirm)="onConfirmGenre()"
     (cancel)="onModalCancel()"
+    (close)="closeModal()"
   >
     <div class="flex flex-col gap-4">
       <div class="flex flex-col gap-2">
@@ -70,7 +71,11 @@
           class="w-full bg-blue-50 text-lg p-2.5 border-2 border-main-blue rounded-lg box-border placeholder:text-gray-400"
         />
       </div>
-
+      <div class="min-h-6 text-red-600 text-1.5rem">
+        @if( getGenreNameError();as errorMessage ) {
+        <p>{{ errorMessage }}</p>
+        }
+      </div>
       <div class="flex flex-col gap-2">
         <label class="text-gray-700 font-medium">カラー</label>
         <div class="grid grid-cols-4 gap-2">
