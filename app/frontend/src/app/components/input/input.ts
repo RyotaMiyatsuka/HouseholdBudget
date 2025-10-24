@@ -1,10 +1,11 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Modal } from '../modal/modal';
 import { ModalState } from '../../models/modal-state.model';
 import { ExpenseGenre } from '../../models/expense-genre.model';
 import { GenreColor, GENRE_COLOR_OPTIONS, getGenreButtonClasses } from '../../models/genre-color.model';
 import { CommonModule } from '@angular/common';
+import { GenreService } from '../../services/genre/genre.service';
 
 type InputModalType = 'genre-form' | 'genre-upper-limit';
 
@@ -15,7 +16,9 @@ type InputModalType = 'genre-form' | 'genre-upper-limit';
   styleUrl: './input.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class Input {
+export class Input implements OnInit {
+  private readonly genreService = inject(GenreService);
+
   inputControl = new FormControl('');
   genreNameControl = new FormControl('');
   selectedColorControl = new FormControl<GenreColor>(GenreColor.Green);
@@ -30,19 +33,30 @@ export class Input {
 
   readonly selectedGenreIndex = signal(0);
   readonly genres = signal<(ExpenseGenre | 'add-button')[]>([
-    { id: 1, name: '分類', color: GenreColor.Green },
-    { id: 2, name: '分類', color: GenreColor.Blue },
-    { id: 3, name: '分類', color: GenreColor.Red },
-    { id: 4, name: '衣服', color: GenreColor.Purple },
-    { id: 5, name: '食料品', color: GenreColor.Yellow },
-    { id: 6, name: '娯楽費', color: GenreColor.Pink },
-    { id: 7, name: 'その他', color: GenreColor.Orange },
     'add-button'
   ]);
 
   // Expose color options and utility function to template
   readonly colorOptions = GENRE_COLOR_OPTIONS;
   readonly getGenreButtonClasses = getGenreButtonClasses;
+
+  ngOnInit() {
+    this.loadGenres();
+  }
+
+  /**
+   * Load genres from the API via GenreService
+   */
+  loadGenres() {
+    this.genreService.getGenres().subscribe({
+      next: (genres) => {
+        this.genres.set([...genres, 'add-button']);
+      },
+      error: (error) => {
+        console.error('Failed to load genres:', error);
+      }
+    });
+  }
 
   selectGenre(index: number) {
     this.selectedGenreIndex.set(index);
@@ -105,30 +119,41 @@ export class Input {
     const selectedColor = this.selectedColorControl.value;
 
     if (newGenreName && selectedColor) {
-      const currentGenres = this.genres();
-      const genreObjects = currentGenres.filter(g => g !== 'add-button') as ExpenseGenre[];
-
-      // Generate new ID
-      const maxId = genreObjects.length > 0
-        ? Math.max(...genreObjects.map(g => g.id))
-        : 0;
-
-      const newGenre: ExpenseGenre = {
-        id: maxId + 1,
+      const newGenreData = {
         name: newGenreName,
         color: selectedColor
       };
 
-      // Insert the new genre before the 'add-button'
-      const updatedGenres: (ExpenseGenre | 'add-button')[] = [...genreObjects, newGenre, 'add-button'];
-      this.genres.set(updatedGenres);
+      this.genreService.createGenre(newGenreData).subscribe({
+        next: (createdGenre) => {
+          const currentGenres = this.genres();
+          const genreObjects = currentGenres.filter(g => g !== 'add-button') as ExpenseGenre[];
 
-      // Select the newly added genre
-      this.selectedGenreIndex.set(genreObjects.length);
+          // Insert the new genre before the 'add-button'
+          const updatedGenres: (ExpenseGenre | 'add-button')[] = [...genreObjects, createdGenre, 'add-button'];
+          this.genres.set(updatedGenres);
+
+          // Select the newly added genre
+          this.selectedGenreIndex.set(genreObjects.length);
+
+          this.closeModal();
+          this.genreNameControl.setValue('');
+          this.selectedColorControl.setValue(GenreColor.Green);
+        },
+        error: (error) => {
+          console.error('Failed to create genre:', error);
+          if (error.status === 400) {
+            // Show upper limit modal if max genres reached
+            this.showGenreUpperLimitModal();
+          }
+          this.closeModal();
+        }
+      });
+    } else {
+      this.closeModal();
+      this.genreNameControl.setValue('');
+      this.selectedColorControl.setValue(GenreColor.Green);
     }
-    this.closeModal();
-    this.genreNameControl.setValue('');
-    this.selectedColorControl.setValue(GenreColor.Green);
   }
 
   closeModal() {

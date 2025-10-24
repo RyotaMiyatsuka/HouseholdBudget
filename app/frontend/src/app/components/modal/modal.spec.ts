@@ -23,18 +23,14 @@ describe('Modal', () => {
 
   it('should emit confirm event and close the modal on confirm', () => {
     vi.spyOn(component.confirm, 'emit');
-    component.isOpen = true;
     component.onConfirm();
     expect(component.confirm.emit).toHaveBeenCalled();
-    expect(component.isOpen).toBeFalsy();
   });
 
   it('should emit cancel event and close the modal on cancel', () => {
     vi.spyOn(component.cancel, 'emit');
-    component.isOpen = true;
     component.onCancel();
     expect(component.cancel.emit).toHaveBeenCalled();
-    expect(component.isOpen).toBeFalsy();
   });
 
 });

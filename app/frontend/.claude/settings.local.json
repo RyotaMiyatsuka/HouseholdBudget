@@ -11,7 +11,9 @@
       "Bash(ng g @analogjs/platform:setup-vitest --project frontend)",
       "Bash(npm install -D @nx/devkit --legacy-peer-deps)",
       "Bash(npm install -D nx --legacy-peer-deps)",
-      "Bash(npm test)"
+      "Bash(npm test)",
+      "Bash(npx msw init public/ --save)",
+      "Bash(npm test -- --run)"
     ],
     "deny": [],
     "ask": []
