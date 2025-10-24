@@ -58,7 +58,7 @@
     [confirmText]="modalState().confirmText"
     [cancelText]="modalState().cancelText"
     (confirm)="onConfirmGenre()"
-    (cancel)="closeModal()"
+    (cancel)="onModalCancel()"
   >
     <div class="flex flex-col gap-4">
       <div class="flex flex-col gap-2">

@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ModalState } from '../../models/modal-state.model';
 
 @Component({
   selector: 'app-modal',
@@ -9,33 +10,30 @@ import { CommonModule } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Modal {
-  @Input() isOpen = false;
-  @Input() title = '';
-  @Input() type: 'form' | 'notification' = 'form';
-  @Input() confirmText = '確認';
-  @Input() message: string | undefined = '';
-  @Input() cancelText: string | undefined = 'キャンセル';
-  @Input() confirmButtonClass = 'bg-main-blue hover:bg-main-blue-hover';
-  @Input() cancelButtonClass = 'bg-gray-500 hover:bg-gray-600';
+  isOpen = input<ModalState['isOpen']>(false);
+  title = input<ModalState['title']>('');
+  type = input<ModalState['type']>('form');
+  confirmText = input<ModalState['confirmText']>('確認');
+  message = input<ModalState['message']>('');
+  cancelText = input<ModalState['cancelText']>('キャンセル');
+  confirmButtonClass = input('bg-main-blue hover:bg-main-blue-hover');
+  cancelButtonClass = input('bg-gray-500 hover:bg-gray-600');
 
-  @Output() confirm = new EventEmitter<void>();
-  @Output() cancel = new EventEmitter<void>();
-  @Output() close = new EventEmitter<void>();
+  confirm = output<void>();
+  cancel = output<void>();
+  close = output<void>();
 
   onConfirm() {
     this.confirm.emit();
-    this.isOpen = false;
   }
 
   onCancel() {
     this.cancel.emit();
-    this.isOpen = false;
   }
 
   onBackdropClick(event: MouseEvent) {
     if (event.target === event.currentTarget) {
       this.close.emit();
-      this.isOpen = false;
     }
   }
 }

@@ -91,10 +91,13 @@ export class Input {
 
   onModalConfirm() {
     const currentType = this.modalState().type;
-
     if (currentType === 'form') {
       this.onConfirmGenre();
     }
+  }
+
+  onModalCancel() {
+    this.closeModal();
   }
 
   onConfirmGenre() {
