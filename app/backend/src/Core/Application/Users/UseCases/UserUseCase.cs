@@ -9,8 +9,8 @@ namespace HouseholdBudget.Core.Application.Users.UseCases;
 
 public class UserUseCase : IUserUseCase
 {
-    private readonly IUserRepository userRepository;
-    private readonly IUserService userService;
+    private readonly IUserRepository _userRepository;
+    private readonly IUserService _userService;
 
     /// <summary>
     /// コンストラクタ
@@ -19,8 +19,8 @@ public class UserUseCase : IUserUseCase
     /// <param name="userService"></param>
     public UserUseCase(IUserRepository userRepository, IUserService userService)
     {
-        this.userRepository = userRepository;
-        this.userService = userService;
+        this._userRepository = userRepository;
+        this._userService = userService;
     }
 
     /// <summary>
@@ -39,7 +39,7 @@ public class UserUseCase : IUserUseCase
         );
 
         // 存在確認
-        if (this.userService.Exists(user))
+        if (this._userService.Exists(user))
         {
             // TODO: エラーメッセージ共通化
             string mes = "ユーザーは既に存在しています。";
@@ -47,7 +47,7 @@ public class UserUseCase : IUserUseCase
         }
 
         // 登録
-        this.userRepository.Add(user);
+        this._userRepository.Add(user);
     }
 
     /// <summary>
@@ -57,7 +57,7 @@ public class UserUseCase : IUserUseCase
     public User Get(string loginId)
     {
         // 取得
-        User? user = this.userRepository.FindByLoginId(new LoginId(loginId));
+        User? user = this._userRepository.FindByLoginId(new LoginId(loginId));
 
         // nullチェック
         if (user == null)
@@ -96,7 +96,7 @@ public class UserUseCase : IUserUseCase
         }
 
         // 更新
-        this.userRepository.Update(user);
+        this._userRepository.Update(user);
     }
 
     /// <summary>
@@ -107,6 +107,6 @@ public class UserUseCase : IUserUseCase
         // 取得
         User user = this.Get(loginId);
         // 削除処理
-        this.userRepository.Delete(user);
+        this._userRepository.Delete(user);
     }
 }

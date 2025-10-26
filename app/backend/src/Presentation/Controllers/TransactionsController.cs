@@ -1,6 +1,7 @@
+using HouseholdBudget.Core.Application.Transactions.Dto;
+using HouseholdBudget.Core.Application.Transactions.Interfaces;
+using HouseholdBudget.Core.Presentation.ApiModels.Transactions;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
 
 namespace Presentation.Controllers;
 
@@ -8,6 +9,17 @@ namespace Presentation.Controllers;
 [Route("api/[controller]")]
 public class TransactionsController : ControllerBase
 {
+    private readonly ITransactionUseCase _transactionUseCase;
+
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
+    /// <param name="transactionUseCase"></param>
+    public TransactionsController(ITransactionUseCase transactionUseCase)
+    {
+        _transactionUseCase = transactionUseCase;
+    }
+
     // GET /api/transactions
     [HttpGet]
     public IActionResult GetTransactions([FromQuery] int? month, [FromQuery] int? year)
@@ -23,10 +35,21 @@ public class TransactionsController : ControllerBase
 
     // POST /api/transactions
     [HttpPost]
-    public IActionResult CreateTransaction([FromBody] NewTransaction newTransaction)
+    public async Task<IActionResult> RegisterTransaction([FromBody] RegisterTransactionRequest request)
     {
+        RegisterTransactionDto dto = new RegisterTransactionDto
+        {
+            UserId = request.UserId,
+            Price = request.Price,
+            Type = request.Type,
+            Category = request.Category,
+            Memo = request.Memo,
+            Place = request.Place
+        };
+        await this._transactionUseCase.RegisterTransactionAsync(dto);
+
         // Mock implementation
-        return StatusCode(201); // Created
+        return StatusCode(201);
     }
 
     // PUT /api/transactions/{transactionId}
@@ -68,25 +91,25 @@ public class TransactionsController : ControllerBase
 
 public class Transaction
 {
-    public string Id { get; set; }
-    public string Date { get; set; }
-    public decimal Amount { get; set; }
-    public string Description { get; set; }
-    public string CategoryId { get; set; }
+    public string? Id { get; set; }
+    public string? Date { get; set; }
+    public decimal? Amount { get; set; }
+    public string? Description { get; set; }
+    public string? CategoryId { get; set; }
 }
 
 public class NewTransaction
 {
-    public string Date { get; set; }
+    public string? Date { get; set; }
     public decimal Amount { get; set; }
-    public string Description { get; set; }
-    public string CategoryId { get; set; }
+    public string? Description { get; set; }
+    public string? CategoryId { get; set; }
 }
 
 public class UpdateTransaction
 {
-    public string Date { get; set; }
+    public string? Date { get; set; }
     public decimal Amount { get; set; }
-    public string Description { get; set; }
-    public string CategoryId { get; set; }
+    public string? Description { get; set; }
+    public string? CategoryId { get; set; }
 }

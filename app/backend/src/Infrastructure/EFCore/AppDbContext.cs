@@ -1,3 +1,4 @@
+using HouseholdBudget.Core.Domain.Transactions.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
@@ -8,6 +9,8 @@ namespace HouseholdBudget.Infrastructure.EFCore;
 /// </summary>
 public class AppDbContext : DbContext
 {
+    public DbSet<Transaction> Transactions { get; set; }
+
     /// <summary>
     /// コンストラクタ
     /// </summary>

@@ -1,9 +1,11 @@
+using HouseholdBudget.Core.Application;
+using HouseholdBudget.Infrastructure;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// DIコンテナにサービスを登録
 builder.Services.AddControllers();
-
-// Add infrastructure services
+builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 
 // Swagger を有効化
