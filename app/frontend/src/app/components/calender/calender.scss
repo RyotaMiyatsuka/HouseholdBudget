@@ -1,0 +1,157 @@
+/* FullCalendar custom styling */
+:host ::ng-deep {
+  .fc {
+    font-family: inherit;
+    &-toolbar-title{
+      font-size:1.2rem!important;
+      font-weight:bold;
+      color:white;
+    }
+    &-col-header-cell-cushion{
+      color: white;
+    }
+    &-toolbar {
+      &-title {
+        font-size: 20px;
+        font-weight: bold;
+        display: inline-block;
+        margin: 0 16px;
+      }
+
+      &-chunk {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+    }
+    &-daygrid-day-number{
+      color: white;
+    }
+
+    &-day-today {
+      background-color: var(--color-main-blue) !important;
+    }
+
+    &-button {
+      border: none;
+      padding: 8px 16px;
+      text-transform: capitalize;
+
+      &-active {
+        background-color: var(--color-main-blue) !important;
+      }
+    }
+
+    &-icon {
+      &.fc-icon-chevron-left,
+      &.fc-icon-chevron-right {
+        // Icon styles
+      }
+    }
+
+    &-prev-button.fc-button.fc-button-primary,
+    &-next-button.fc-button.fc-button-primary {
+      background-color: transparent;
+    }
+
+    &-today-button {
+      display: none;
+    }
+
+    &-view-harness {
+      &.fc-view-harness-active {
+        height: auto;
+      }
+    }
+
+    &-event {
+      cursor: pointer;
+      border-radius: 4px;
+      padding: 2px 4px;
+    }
+
+    &-daygrid-event {
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    &-event-title{
+      color: white;
+      font-size: 0.8rem!important;
+    }
+  }
+}
+
+/* Mobile responsive styles */
+@media (max-width: 768px) {
+  :host ::ng-deep {
+    .fc {
+      &-toolbar {
+        flex-direction: column;
+        gap: 10px;
+
+        &-chunk {
+          display: flex;
+          justify-content: center;
+        }
+
+        &-title {
+          font-size: 16px;
+        }
+      }
+
+      &-button {
+        padding: 6px 10px;
+        font-size: 12px;
+      }
+
+      /* Day cell adjustments */
+      &-daygrid-day-number {
+        font-size: 12px;
+      }
+
+      &-col-header-cell-cushion {
+        font-size: 12px;
+        padding: 4px 2px;
+      }
+
+      /* Event adjustments */
+      &-daygrid-event {
+        font-size: 10px;
+        padding: 1px 2px;
+      }
+
+      &-event-title {
+        font-size: 10px;
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  :host ::ng-deep {
+    .fc {
+      &-toolbar-title {
+        font-size: 14px;
+      }
+
+      &-button {
+        padding: 5px 8px;
+        font-size: 11px;
+      }
+
+      &-daygrid-day-number {
+        font-size: 11px;
+      }
+
+      &-col-header-cell-cushion {
+        font-size: 11px;
+        padding: 3px 1px;
+      }
+
+      &-daygrid-event {
+        font-size: 9px;
+      }
+    }
+  }
+}

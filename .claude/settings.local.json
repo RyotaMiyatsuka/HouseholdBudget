@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "Bash(npm test)",
+      "Bash(npm run build)",
+      "Bash(tree /workspace/app/frontend/src/app/models)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

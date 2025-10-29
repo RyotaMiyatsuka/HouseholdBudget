@@ -1,0 +1,103 @@
+<div class="md:hidden">
+  <p class="text-2xl font-bold text-center mt-5 text-main-blue">入力</p>
+  <div class="flex flex-col items-center gap-2.5 mt-5">
+    <input
+      class="w-[90%] bg-blue-50 text-lg p-2.5 border-2 border-main-blue rounded-lg box-border placeholder:text-main-blue placeholder:opacity-70"
+      type="number"
+      [formControl]="inputControl"
+      placeholder="支出を入力してください"
+      autofocus
+    />
+    <textarea
+      class="w-[90%] bg-blue-50 text-lg p-2.5 border-2 border-main-blue rounded-lg box-border placeholder:text-main-blue placeholder:opacity-70"
+      type="number"
+      [formControl]="inputControl"
+      placeholder="メモ"
+      row="2"
+    >
+    </textarea>
+    <div class="grid grid-cols-4 gap-2.5 w-[90%] py-2">
+      @for(genre of genres(); track i; let i = $index) { @if(genre === 'add-button') {
+      <button
+        [class]="
+          i === selectedGenreIndex()
+            ? 'bg-main-blue border-solid border-3 border-white rounded-lg cursor-pointer aspect-square flex items-center justify-center p-0'
+            : 'border-solid border-1 border-white rounded-lg cursor-pointer aspect-square flex items-center justify-center p-0 hover:bg-main-blue-hover'
+        "
+        (click)="addNewGenre()"
+      >
+        <img
+          class="invert bg-transparent w-2/5 h-2/5 object-contain"
+          src="plus-icon.png"
+          alt="plus-icon"
+        />
+      </button>
+      } @else {
+      <button
+        [class]="getGenreButtonClasses(genre.color, i === selectedGenreIndex())"
+        (click)="selectGenre(i)"
+      >
+        {{ genre.name }}
+      </button>
+      } }
+    </div>
+    <button
+      class="bg-main-blue border-0 rounded-lg text-white px-5 py-2.5 text-lg w-[90%] h-12 cursor-pointer transition-colors duration-300 hover:bg-main-blue-hover"
+      (click)="register()"
+    >
+      登録
+    </button>
+  </div>
+
+  <!-- Genre Modal -->
+  <app-modal
+    [isOpen]="modalState().isOpen"
+    [title]="modalState().title"
+    [type]="modalState().type"
+    [message]="modalState().message"
+    [confirmText]="modalState().confirmText"
+    [cancelText]="modalState().cancelText"
+    (confirm)="onConfirmGenre()"
+    (cancel)="onModalCancel()"
+    (close)="closeModal()"
+  >
+    <div class="flex flex-col gap-4">
+      <div class="flex flex-col gap-2">
+        <label class="text-gray-700 font-medium">ジャンル名</label>
+        <input
+          type="text"
+          [formControl]="genreNameControl"
+          placeholder="例: 食費、交通費"
+          class="w-full bg-blue-50 text-lg p-2.5 border-2 border-main-blue rounded-lg box-border placeholder:text-gray-400"
+        />
+      </div>
+      <div class="min-h-6 text-red-600 text-1.5rem">
+        @if( getGenreNameError();as errorMessage ) {
+        <p>{{ errorMessage }}</p>
+        }
+      </div>
+      <div class="flex flex-col gap-2">
+        <label class="text-gray-700 font-medium">カラー</label>
+        <div class="grid grid-cols-4 gap-2">
+          @for(colorOption of colorOptions; track colorOption.value) {
+          <button
+            type="button"
+            [class]="
+              selectedColorControl.value === colorOption.value
+                ? colorOption.bgClass +
+                  ' border-3 border-gray-800 rounded-lg text-white text-sm py-3 cursor-pointer transition-all box-border'
+                : colorOption.bgClass +
+                  ' ' +
+                  colorOption.hoverClass +
+                  ' border-3 border-transparent rounded-lg text-white text-sm py-3 cursor-pointer transition-all box-border'
+            "
+            (click)="selectColor(colorOption.value)"
+          >
+            {{ colorOption.label }}
+          </button>
+          }
+        </div>
+      </div>
+    </div>
+  </app-modal>
+</div>

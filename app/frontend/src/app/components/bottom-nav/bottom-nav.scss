@@ -1,0 +1,44 @@
+/* Place the navbar at the bottom of the page, and make it stick */
+.navbar {
+  background-color: var(--main-blueColor);
+  width: 90%;
+  height: 7dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 15px;
+  z-index: 1000;
+
+  &__container {
+    height: 7dvh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    bottom: 10px;
+    background-color: transparent;
+  }
+
+  /* Style the links inside the navigation bar */
+  a {
+    background-color: transparent;
+    height: 7dvh;
+    display: flex;
+    width: 25%;
+    justify-content: center;
+    align-items: center;
+
+    /* Change the color of links on hover */
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+      color: black;
+    }
+  }
+
+  &__icon {
+    height: 80%;
+    filter: invert(1);
+    z-index: 2000;
+    background-color: transparent;
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir:*)",
+      "mcp__ide__getDiagnostics",
+      "Read(//workspace/**)",
+      "Bash(ng g @analogjs/platform:setup-vitest --project frontend --help)",
+      "Read(//tmp/ng-y2afEV/**)",
+      "Bash(npm install -D @analogjs/platform @analogjs/vite-plugin-angular)",
+      "Bash(npm install -D @analogjs/platform @analogjs/vite-plugin-angular --legacy-peer-deps)",
+      "Bash(ng g @analogjs/platform:setup-vitest --project frontend)",
+      "Bash(npm install -D @nx/devkit --legacy-peer-deps)",
+      "Bash(npm install -D nx --legacy-peer-deps)",
+      "Bash(npm test)",
+      "Bash(npx msw init public/ --save)",
+      "Bash(npm test -- --run)",
+      "Bash(ldd --version)",
+      "Read(//usr/lib/x86_64-linux-gnu/**)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

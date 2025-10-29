@@ -1,0 +1,20 @@
+<header class="flex justify-between w-full bg-black border-b border-neutral-500">
+  <div class="flex h-[7dvh] p-1.5 w-1/2">
+    @if(authButtonsVisible()) {
+    <a [routerLink]="['/']">
+      <img class="h-full self-center" src="pig-icon.png" alt="logo" aria-hidden="true" />
+    </a>
+    }@else{
+    <a [routerLink]="['/input']">
+      <img class="h-full self-center" src="pig-icon.png" alt="logo" aria-hidden="true" />
+    </a>
+    }
+    <h1 class="text-white text-[3dvh] self-center ml-2.5">Budget</h1>
+  </div>
+  @if (authButtonsVisible()) {
+  <div class="flex justify-end items-center text-white w-1/2">
+    <button class="h-3/5 rounded-xl px-2.5 py-1 w-25 text-[2dvh] bg-black text-white border-0 mr-2.5 hover:bg-main-blue hover:cursor-pointer transition-colors duration-700" routerLink="/register">Register</button>
+    <button class="h-3/5 rounded-xl px-2.5 py-1 w-25 text-[2dvh] bg-black text-white border-0 hover:bg-main-blue hover:cursor-pointer transition-colors duration-700" routerLink="/login">Login</button>
+  </div>
+  }
+</header>

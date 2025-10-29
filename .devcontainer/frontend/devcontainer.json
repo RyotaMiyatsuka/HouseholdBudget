@@ -6,7 +6,8 @@
     "service": "frontend",
     "workspaceFolder": "/workspace",
     "features": {
-        "ghcr.io/dhoeric/features/hadolint:1": {}
+        "ghcr.io/dhoeric/features/hadolint:1": {},
+        "ghcr.io/anthropics/devcontainer-features/claude-code:1.0": {}
     },
     "customizations": {
         "vscode": {
@@ -17,6 +18,8 @@
                 "ms-vscode.vscode-typescript-next",
                 "ms-dotnettools.csharp",
                 "ms-dotnettools.csdevkit",
+                "bradlc.vscode-tailwindcss",
+                "csstools.postcss",
                 "ms-vscode.vscode-json",
                 "ms-azuretools.vscode-docker",
                 "yzhang.markdown-all-in-one",
@@ -49,5 +52,6 @@
             }
         }
     },
+    "postCreateCommand": "cd app/frontend && npm install",
     "remoteUser": "node"
 }
