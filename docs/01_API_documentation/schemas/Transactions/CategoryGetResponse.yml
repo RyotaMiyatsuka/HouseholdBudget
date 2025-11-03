@@ -1,0 +1,12 @@
+title: カテゴリ登録情報
+type: object
+properties:
+  categoryId:
+    description: カテゴリId
+    type: string
+    format: uuid
+    example: d290f1ee-6c54-4b01-90e
+  categoryName:
+    description: カテゴリ名
+    type: string
+    example: 食費

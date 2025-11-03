@@ -1,0 +1,7 @@
+title: カテゴリ登録情報
+type: object
+properties:
+  categoryName:
+    description: カテゴリ名
+    type: string
+    example: 食費
