@@ -17,6 +17,7 @@ public abstract class BaseEntityConfiguration<T> : IEntityTypeConfiguration<T> w
     public virtual void Configure(EntityTypeBuilder<T> builder)
     {
         builder.Property<DateTime>("CreatedAt")
+            .HasColumnType("datetime")
             .IsRequired()
             .ValueGeneratedOnAdd()
             .HasDefaultValueSql("CURRENT_TIMESTAMP");
@@ -26,6 +27,7 @@ public abstract class BaseEntityConfiguration<T> : IEntityTypeConfiguration<T> w
             .HasMaxLength(100);
 
         builder.Property<DateTime>("UpdatedAt")
+            .HasColumnType("datetime")
             .IsRequired()
             .ValueGeneratedOnAddOrUpdate()
             .HasDefaultValueSql("CURRENT_TIMESTAMP");
