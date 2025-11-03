@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace HouseholdBudget.Core.Application;
 
-public static class DependencyInjection
+public static class ApplicationDI
 {
     /// <summary>
     /// Application 層のDI

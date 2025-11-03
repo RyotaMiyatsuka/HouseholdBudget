@@ -18,6 +18,7 @@ public abstract class BaseEntityConfiguration<T> : IEntityTypeConfiguration<T> w
     {
         builder.Property<DateTime>("CreatedAt")
             .IsRequired()
+            .ValueGeneratedOnAdd()
             .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
         builder.Property<string>("CreatedBy")
@@ -26,6 +27,7 @@ public abstract class BaseEntityConfiguration<T> : IEntityTypeConfiguration<T> w
 
         builder.Property<DateTime>("UpdatedAt")
             .IsRequired()
+            .ValueGeneratedOnAddOrUpdate()
             .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
         builder.Property<string>("UpdatedBy")

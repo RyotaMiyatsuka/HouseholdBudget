@@ -10,7 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace HouseholdBudget.Infrastructure;
 
-public static class DependencyInjection
+public static class InfrastructureDI
 {
     /// <summary>
     /// Infrastructure 層のDI
