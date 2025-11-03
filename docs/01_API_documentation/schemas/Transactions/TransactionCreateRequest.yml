@@ -22,10 +22,11 @@ properties:
       - income
       - expense
     example: expense
-  category:
-    description: カテゴリ名
+  categoryId:
+    description: カテゴリId
     type: string
-    example: 食費
+    format: uuid
+    example: d290f1ee-6c54-4b01-90e
   memo:
     description: メモ
     type: string

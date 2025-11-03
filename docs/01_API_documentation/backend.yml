@@ -192,6 +192,90 @@ paths:
       summary: 定期取引更新 API
       description: 指定された定期取引情報を更新する。※ 後々実装予定
       operationId: updateRecurringTransaction
+  /category:
+    get:
+      tags:
+        - 取引
+      summary: カテゴリ一覧取得 API
+      description: カテゴリ情報の一覧を取得する。
+      operationId: listCategories
+      responses:
+        "200":
+          description: カテゴリ情報一覧
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "schemas/Transactions/CategoryGetResponse.yml"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    post:
+      tags:
+        - 取引
+      summary: カテゴリ登録 API
+      description: 新しいカテゴリを登録する。
+      operationId: createCategory
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "schemas/Transactions/CategoryCreateRequest.yml"
+      responses:
+        "201":
+          description: カテゴリ登録成功
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    delete:
+      tags:
+        - 取引
+      summary: カテゴリ削除 API
+      description: 指定されたカテゴリを削除する。
+      operationId: deleteCategory
+      parameters:
+        - name: id
+          in: query
+          description: カテゴリID
+          required: true
+          schema:
+            type: string
+            format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+      responses:
+        "204":
+          description: 削除成功
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    patch:
+      tags:
+        - 取引
+      summary: カテゴリ更新 API
+      description: 指定されたカテゴリ情報を更新する。
+      operationId: updateCategory
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "schemas/Transactions/CategoryUpdateRequest.yml"
+      responses:
+        "200":
+          description: カテゴリ情報
+          content:
+            application/json:
+              schema:
+                $ref: "schemas/Transactions/CategoryGetResponse.yml"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
   /auth/google-login:
     post:
       tags:
