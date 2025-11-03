@@ -1,0 +1,237 @@
+# ./openapi.yaml
+
+openapi: 3.1.1
+info:
+  title: Budget BackEnd API
+  description: 家計簿アプリバックエンド API
+  version: 1.0.0
+
+security: []
+
+servers:
+  - url: http://localhost:8080/api
+    description: ローカルバックエンドサーバー
+paths:
+  /transactions:
+    get:
+      tags:
+        - 取引
+      summary: 取引一覧取得 API
+      description: 取引情報の一覧を取得する。
+      operationId: listTransactions
+      responses:
+        "200":
+          description: 取引情報一覧
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "schemas/Transactions/TransactionGetResponse.yml"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    post:
+      tags:
+        - 取引
+      summary: 取引登録 API
+      description: 取引情報を登録する。
+      operationId: createTransaction
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "schemas/Transactions/TransactionCreateRequest.yml"
+      responses:
+        "201":
+          description: 取引情報
+          content:
+            application/json:
+              schema:
+                $ref: "schemas/Transactions/TransactionGetResponse.yml"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    delete:
+      tags:
+        - 取引
+      summary: 取引削除 API
+      description: 指定された取引情報を削除する。
+      operationId: deleteTransaction
+      parameters:
+        - name: id
+          in: query
+          description: 取引ID
+          required: true
+          schema:
+            type: string
+            format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+      responses:
+        "204":
+          description: 削除成功
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    patch:
+      tags:
+        - 取引
+      summary: 取引更新 API
+      description: 指定された取引情報を更新する。
+      operationId: updateTransaction
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "schemas/Transactions/TransactionUpdateRequest.yml"
+      responses:
+        "200":
+          description: 取引情報
+          content:
+            application/json:
+              schema:
+                $ref: "schemas/Transactions/TransactionGetResponse.yml"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /transactions/by-month:
+    get:
+      tags:
+        - 取引
+      summary: 月別取引情報取得 API
+      description: 指定された年月の取引情報を取得する。
+      operationId: getTransactionsByMonth
+      parameters:
+        - name: year
+          in: query
+          description: 取得する取引情報の年
+          required: true
+          schema:
+            type: integer
+            example: 2025
+        - name: month
+          in: query
+          description: 取得する取引情報の月
+          required: true
+          schema:
+            type: integer
+            example: 11
+      responses:
+        "200":
+          description: 取引情報一覧
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "schemas/Transactions/TransactionGetResponse.yml"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /transactions/report:
+    get:
+      tags:
+        - 取引
+      summary: 取引レポート取得 API
+      description: 指定された期間の取引レポートを取得する。※ 後々実装予定
+      operationId: getTransactionReport
+  /transactions/import:
+    post:
+      tags:
+        - 取引
+      summary: 取引一括登録 API
+      description: 複数の取引情報を一括で登録する。※ 後々実装予定
+      operationId: bulkCreateTransactions
+  /transactions/export:
+    get:
+      tags:
+        - 取引
+      summary: 取引情報エクスポート API
+      description: 取引情報をCSV形式でエクスポートする。※ 後々実装予定
+      operationId: exportTransactions
+      parameters:
+        - name: from
+          in: query
+          description: エクスポート開始日 (YYYY-MM-DD)
+          required: true
+          schema:
+            type: string
+            format: date
+          example: "2023-01-01"
+        - name: to
+          in: query
+          description: エクスポート終了日 (YYYY-MM-DD)
+          required: true
+          schema:
+            type: string
+            format: date
+          example: "2023-12-31"
+  /transactions/recurring:
+    post:
+      tags:
+        - 取引
+      summary: 定期取引登録 API
+      description: 定期的に発生する取引情報を登録する。※ 後々実装予定
+      operationId: createRecurringTransaction
+    delete:
+      tags:
+        - 取引
+      summary: 定期取引削除 API
+      description: 指定された定期取引情報を削除する。※ 後々実装予定
+      operationId: deleteRecurringTransaction
+    patch:
+      tags:
+        - 取引
+      summary: 定期取引更新 API
+      description: 指定された定期取引情報を更新する。※ 後々実装予定
+      operationId: updateRecurringTransaction
+  /auth/google-login:
+    post:
+      tags:
+        - ユーザー
+      summary: Google ログイン API
+      description: Google アカウントを使用してログインする。※ 後々実装予定
+      operationId: googleLogin
+  /users:
+    post:
+      tags:
+        - ユーザー
+      summary: ユーザー登録 API
+      description: 新しいユーザーを登録する。※ 後々実装予定
+      operationId: createUser
+    delete:
+      tags:
+        - ユーザー
+      summary: ユーザー削除 API
+      description: 指定されたユーザーを削除する。※ 後々実装予定
+      operationId: deleteUser
+    patch:
+      tags:
+        - ユーザー
+      summary: ユーザー情報更新 API
+      description: 指定されたユーザー情報を更新する。※ 後々実装予定
+      operationId: updateUser
+  /users/me:
+    get:
+      tags:
+        - ユーザー
+      summary: ユーザー情報取得 API
+      description: ユーザー情報を取得する。※ 後々実装予定
+      operationId: getUser
+components:
+  responses:
+    OK:
+      description: 成功
+    Unauthorized:
+      description: 認証失敗
+    NotFound:
+      description: 見つからない
+    UnprocessableEntity:
+      description: バリデーションエラー

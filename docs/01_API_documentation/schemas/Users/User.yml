@@ -1,0 +1,21 @@
+title: ユーザー情報
+type: object
+properties:
+  id:
+    description: ユーザーID
+    type: string
+    format: uuid
+    readOnly: true
+    example: ec00689e-3998-4df0-ae3e-416b052fafbd
+  loginId:
+    description: ログインID
+    type: string
+    example: TestUser
+  userName:
+    description: ユーザー名
+    type: string
+    example: テストユーザー
+  email:
+    description: メールアドレス
+    type: string
+    example: test@mail.address.com
