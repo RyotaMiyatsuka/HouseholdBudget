@@ -5,11 +5,6 @@ namespace HouseholdBudget.Core.Domain.Users.Entities;
 /// <summary>
 /// ユーザーエンティティ
 /// </summary>
-/// <param name="id"></param>
-/// <param name="loginId"></param>
-/// <param name="userName"></param>
-/// <param name="mailAddress"></param>
-/// <param name="isVerified"></param>
 public class User
 {
     /// <summary>
@@ -33,11 +28,33 @@ public class User
     /// </summary>
     public bool IsVerified { get; private set; }
 
-    public User(string loginId, string userName, string mailAddress)
+    /// <summary>
+    /// コンストラクタ (ユニークキー自動生成)
+    /// </summary>
+    /// <param name="loginId"></param>
+    /// <param name="userName"></param>
+    /// <param name="mailAddress"></param>
+    public User(LoginId loginId, UserName userName, string mailAddress)
     {
         this.Id = Guid.NewGuid().ToString();
-        this.LoginId = new LoginId(loginId);
-        this.UserName = new UserName(userName);
+        this.LoginId = loginId;
+        this.UserName = userName;
+        this.MailAddress = mailAddress;
+        this.IsVerified = false;
+    }
+
+    /// <summary>
+    /// コンストラクタ (ユニークキー指定時)
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="loginId"></param>
+    /// <param name="userName"></param>
+    /// <param name="mailAddress"></param>
+    public User(string id, LoginId loginId, UserName userName, string mailAddress)
+    {
+        this.Id = id;
+        this.LoginId = loginId;
+        this.UserName = userName;
         this.MailAddress = mailAddress;
         this.IsVerified = false;
     }

@@ -1,0 +1,42 @@
+title: 取引取得情報
+type: object
+properties:
+  id:
+    description: 取引ID
+    type: string
+    format: uuid
+    readOnly: true
+    example: d290f1ee-6c54-4b01-90e6-d701748f0851
+  amount:
+    description: 金額
+    type: number
+    format: float
+    example: 1500
+  currency:
+    description: 通貨
+    type: string
+    example: JPY
+  date:
+    description: 取引日 (YYYY-MM-DD)
+    type: string
+    format: date
+    example: "2023-03-15"
+  transactionType:
+    description: 取引種別
+    type: string
+    enum:
+      - income
+      - expense
+    example: expense
+  category:
+    description: カテゴリ名
+    type: string
+    example: 食費
+  memo:
+    description: メモ
+    type: string
+    example: スーパーでの買い物
+  place:
+    description: 取引場所
+    type: string
+    example: スーパーA

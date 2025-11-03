@@ -12,6 +12,9 @@ RUN wget https://packages.microsoft.com/config/debian/12/packages-microsoft-prod
 
 USER node
 
+# dotnet-ef インストール
+RUN dotnet tool install --global dotnet-ef
+
 RUN npm install -g @angular/cli
 
 # Gemini CLI インストール
