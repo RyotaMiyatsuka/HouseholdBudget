@@ -2,8 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth/auth.service';
 import { GenreService } from '../../services/genre/genre.service';
-import { ExpenseGenre } from '../../models/expense-genre.model';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { Category } from '../../models/category.model';
 
 @Component({
   selector: 'app-settings',
@@ -13,41 +12,39 @@ import { toSignal } from '@angular/core/rxjs-interop';
 })
 export class Settings {
   private router = inject(Router);
-  private authService = inject(AuthService); // AuthServiceを注入
+  private authService = inject(AuthService);
   private genreService = inject(GenreService);
-  readonly genres = signal<(ExpenseGenre)[]>([]);
+  readonly categories = signal<Category[]>([]);
 
   logout() {
-    // ログアウト処理をここに実装
-    // 例: 認証サービスのlogoutメソッドを呼び出すなど
     console.log('ログアウトしました');
-    this.authService.logout(); // Authサービスのlogoutメソッドを呼び出す
-    this.router.navigate(['/']); // ログインページへリダイレクト
+    this.authService.logout();
+    this.router.navigate(['/']);
   }
 
   ngOnInit() {
-    this.loadGenres();
+    this.loadCategories();
   }
 
-  loadGenres() {
-    this.genreService.getGenres().subscribe({
-      next: (genres) => {
-        this.genres.set(genres);
+  loadCategories() {
+    this.genreService.listCategories().subscribe({
+      next: (categories) => {
+        this.categories.set(categories);
       },
       error: (error) => {
-        console.error('Failed to load genres:', error);
+        console.error('Failed to load categories:', error);
       }
     });
   }
 
-  deleteGenre(genreId: number) {
-    this.genreService.deleteGenre(genreId).subscribe({
+  deleteCategory(categoryId: string) {
+    this.genreService.deleteCategory(categoryId).subscribe({
       next: () => {
-        console.log(`Genre with ID ${genreId} deleted successfully.`);
-        this.loadGenres(); // ジャンルリストを再読み込み
+        console.log(`Category with ID ${categoryId} deleted successfully.`);
+        this.loadCategories();
       },
       error: (error) => {
-        console.error('Failed to delete genre:', error);
+        console.error('Failed to delete category:', error);
       }
     });
   }

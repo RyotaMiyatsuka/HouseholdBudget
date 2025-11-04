@@ -17,7 +17,7 @@ import {
 export class TransactionsService {
   private readonly endpoint = '/transactions';
 
-  constructor(private apiClient: ApiClientService) {}
+  constructor(private apiClient: ApiClientService) { }
 
   /**
    * Get all transactions
@@ -34,7 +34,7 @@ export class TransactionsService {
    * @returns Observable of transaction array
    */
   getTransactionsByMonth(year: number, month: number): Observable<Transaction[]> {
-    return this.apiClient.get<Transaction[]>(`${this.endpoint}/by-month`, {
+    return this.apiClient.get<Transaction[]>(`${this.endpoint}`, {
       year,
       month
     });

@@ -4,7 +4,14 @@
       "Bash(npm install:*)",
       "Bash(npm test)",
       "Bash(npm run build)",
-      "Bash(tree /workspace/app/frontend/src/app/models)"
+      "Bash(tree /workspace/app/frontend/src/app/models)",
+      "mcp__playwright__browser_navigate",
+      "mcp__playwright__browser_install",
+      "Bash(npx playwright install chrome)",
+      "mcp__playwright__browser_close",
+      "Bash(pkill -f chrome)",
+      "WebFetch(domain:flowzeal.jp)",
+      "Bash(curl -s http://localhost:8080/api/transactions)"
     ],
     "deny": [],
     "ask": []

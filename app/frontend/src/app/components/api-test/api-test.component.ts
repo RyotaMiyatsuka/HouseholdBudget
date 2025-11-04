@@ -36,6 +36,11 @@ import { Category } from '../../models/category.model';
             class="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600">
             Create Transaction
           </button>
+          <button
+            (click)="createSampleData()"
+            class="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600">
+            Create Sample Data (10 transactions)
+          </button>
         </div>
 
         @if (transactions().length > 0) {
@@ -209,6 +214,101 @@ export class ApiTestComponent {
         console.error('❌ Create category error:', err);
         this.error.set(err.message || 'Failed to create category');
       }
+    });
+  }
+
+  /**
+   * Create sample transactions for testing
+   * First creates a category, then creates multiple transactions
+   */
+  createSampleData() {
+    this.clearMessages();
+    console.log('Creating sample data...');
+
+    // First, get existing categories or create one
+    this.genreService.listCategories().subscribe({
+      next: (categories) => {
+        if (categories.length === 0) {
+          // Create a default category first
+          this.genreService.createCategory({ categoryName: '食費' }).subscribe({
+            next: () => {
+              this.genreService.listCategories().subscribe({
+                next: (newCategories) => {
+                  if (newCategories.length > 0) {
+                    this.createMultipleTransactions(newCategories[0].categoryId);
+                  }
+                }
+              });
+            },
+            error: (err) => {
+              this.error.set('Failed to create category: ' + err.message);
+            }
+          });
+        } else {
+          // Use the first existing category
+          this.createMultipleTransactions(categories[0].categoryId);
+        }
+      },
+      error: (err) => {
+        this.error.set('Failed to load categories: ' + err.message);
+      }
+    });
+  }
+
+  /**
+   * Create multiple sample transactions for November 2025
+   */
+  private createMultipleTransactions(categoryId: string) {
+    const sampleTransactions = [
+      { amount: 1500, date: '2025-11-01', transactionType: 'expense' as const, memo: 'ランチ', place: 'レストランA' },
+      { amount: 3200, date: '2025-11-02', transactionType: 'expense' as const, memo: '交通費', place: '駅' },
+      { amount: 5000, date: '2025-11-03', transactionType: 'expense' as const, memo: '食料品', place: 'スーパー' },
+      { amount: 50000, date: '2025-11-04', transactionType: 'income' as const, memo: '給料', place: '会社' },
+      { amount: 2500, date: '2025-11-05', transactionType: 'expense' as const, memo: 'コーヒー', place: 'カフェ' },
+      { amount: 8900, date: '2025-11-08', transactionType: 'expense' as const, memo: 'ディナー', place: '居酒屋' },
+      { amount: 1200, date: '2025-11-10', transactionType: 'expense' as const, memo: '本', place: '書店' },
+      { amount: 3500, date: '2025-11-12', transactionType: 'expense' as const, memo: 'ガソリン', place: 'ガソリンスタンド' },
+      { amount: 15000, date: '2025-11-15', transactionType: 'income' as const, memo: 'ボーナス', place: '会社' },
+      { amount: 6700, date: '2025-11-18', transactionType: 'expense' as const, memo: '衣服', place: 'デパート' }
+    ];
+
+    let completed = 0;
+    let failed = 0;
+
+    sampleTransactions.forEach((trans, index) => {
+      const transaction = {
+        ...trans,
+        currency: 'JPY',
+        categoryId
+      };
+
+      // Delay each request slightly to avoid overwhelming the server
+      setTimeout(() => {
+        this.transactionsService.createTransaction(transaction).subscribe({
+          next: (data) => {
+            completed++;
+            console.log(`✅ Created transaction ${completed}/${sampleTransactions.length}:`, data);
+
+            if (completed + failed === sampleTransactions.length) {
+              this.success.set(`Created ${completed} transactions successfully!`);
+              if (failed > 0) {
+                this.error.set(`${failed} transactions failed`);
+              }
+              // Refresh the list
+              this.testListTransactions();
+            }
+          },
+          error: (err) => {
+            failed++;
+            console.error(`❌ Failed to create transaction ${index + 1}:`, err);
+
+            if (completed + failed === sampleTransactions.length) {
+              this.success.set(`Created ${completed} transactions`);
+              this.error.set(`${failed} transactions failed: ` + err.message);
+            }
+          }
+        });
+      }, index * 200); // 200ms delay between each request
     });
   }
 
