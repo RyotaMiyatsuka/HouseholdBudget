@@ -6,6 +6,7 @@ import { Report } from './components/report/report';
 import { Settings } from './components/settings/settings';
 import { Login } from './components/login/login';
 import { Register } from './components/register/register';
+import { ApiTestComponent } from './components/api-test/api-test.component';
 
 export const routes: Routes = [
   {
@@ -42,5 +43,10 @@ export const routes: Routes = [
     path: 'register',
     component: Register,
     title: 'Register',
+  },
+  {
+    path: 'api-test',
+    component: ApiTestComponent,
+    title: 'API Test',
   }
 ];
