@@ -45,7 +45,8 @@
                 "bradlc.vscode-tailwindcss",
                 "cyrilletuzi.angular-schematics",
                 "mikestead.dotenv",
-                "editorconfig.editorconfig"
+                "editorconfig.editorconfig",
+                "eamodio.gitlens"
             ],
             "settings": {
                 "terminal.integrated.defaultProfile.linux": "bash",
