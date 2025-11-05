@@ -9,7 +9,7 @@ info:
 security: []
 
 servers:
-  - url: http://localhost:8080/api
+  - url: http://localhost:8080
     description: ローカルバックエンドサーバー
 paths:
   /transactions:
@@ -142,6 +142,9 @@ paths:
       summary: 取引レポート取得 API
       description: 指定された期間の取引レポートを取得する。※ 後々実装予定
       operationId: getTransactionReport
+      responses:
+        default:
+          description: 未定義のレスポンス
   /transactions/import:
     post:
       tags:
@@ -149,6 +152,9 @@ paths:
       summary: 取引一括登録 API
       description: 複数の取引情報を一括で登録する。※ 後々実装予定
       operationId: bulkCreateTransactions
+      responses:
+        default:
+          description: 未定義のレスポンス
   /transactions/export:
     get:
       tags:
@@ -173,6 +179,9 @@ paths:
             type: string
             format: date
           example: "2023-12-31"
+      responses:
+        default:
+          description: 未定義のレスポンス
   /transactions/recurring:
     post:
       tags:
@@ -180,18 +189,27 @@ paths:
       summary: 定期取引登録 API
       description: 定期的に発生する取引情報を登録する。※ 後々実装予定
       operationId: createRecurringTransaction
+      responses:
+        default:
+          description: 未定義のレスポンス
     delete:
       tags:
         - 取引
       summary: 定期取引削除 API
       description: 指定された定期取引情報を削除する。※ 後々実装予定
       operationId: deleteRecurringTransaction
+      responses:
+        default:
+          description: 未定義のレスポンス
     patch:
       tags:
         - 取引
       summary: 定期取引更新 API
       description: 指定された定期取引情報を更新する。※ 後々実装予定
       operationId: updateRecurringTransaction
+      responses:
+        default:
+          description: 未定義のレスポンス
   /category:
     get:
       tags:
@@ -283,6 +301,9 @@ paths:
       summary: Google ログイン API
       description: Google アカウントを使用してログインする。※ 後々実装予定
       operationId: googleLogin
+      responses:
+        default:
+          description: 未定義のレスポンス
   /users:
     post:
       tags:
@@ -290,18 +311,27 @@ paths:
       summary: ユーザー登録 API
       description: 新しいユーザーを登録する。※ 後々実装予定
       operationId: createUser
+      responses:
+        default:
+          description: 未定義のレスポンス
     delete:
       tags:
         - ユーザー
       summary: ユーザー削除 API
       description: 指定されたユーザーを削除する。※ 後々実装予定
       operationId: deleteUser
+      responses:
+        default:
+          description: 未定義のレスポンス
     patch:
       tags:
         - ユーザー
       summary: ユーザー情報更新 API
       description: 指定されたユーザー情報を更新する。※ 後々実装予定
       operationId: updateUser
+      responses:
+        default:
+          description: 未定義のレスポンス
   /users/me:
     get:
       tags:
@@ -309,6 +339,9 @@ paths:
       summary: ユーザー情報取得 API
       description: ユーザー情報を取得する。※ 後々実装予定
       operationId: getUser
+      responses:
+        default:
+          description: 未定義のレスポンス
 components:
   responses:
     OK:
