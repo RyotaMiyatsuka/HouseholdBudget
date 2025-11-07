@@ -50,10 +50,10 @@ public class TransactionsConfiguration : BaseEntityConfiguration<Transaction>
             .HasMaxLength(36);
         builder.Property(t => t.Price)
             .IsRequired();
-        builder.Property(t => t.Type)
+        builder.Property(t => t.TransactionType)
             .HasMaxLength(100)
             .IsRequired();
-        builder.Property(t => t.Category)
+        builder.Property(t => t.CategoryId)
             .HasMaxLength(100);
         builder.Property(t => t.Memo)
             .HasMaxLength(255);

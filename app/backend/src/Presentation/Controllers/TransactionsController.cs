@@ -33,18 +33,24 @@ public class TransactionsController : ControllerBase
         return Ok(transactions);
     }
 
-    // POST /api/transactions
     [HttpPost]
     public async Task<IActionResult> RegisterTransaction([FromBody] RegisterTransactionRequest request)
     {
+        // TODO: 実装
+        string userId = Guid.NewGuid().ToString();
+        string loginId = "SampleLoginId";
+
         RegisterTransactionDto dto = new RegisterTransactionDto
         {
-            UserId = request.UserId,
-            Price = request.Price,
-            Type = request.Type,
-            Category = request.Category,
+            UserId = userId,
+            LoginId = loginId,
+            Amount = request.Amount,
+            Currency = request.Currency,
+            Date = request.Date,
+            TransactionType = request.TransactionType,
+            CategoryId = request.CategoryId,
             Memo = request.Memo,
-            Place = request.Place
+            Place = request.Place,
         };
         await this._transactionUseCase.RegisterTransactionAsync(dto);
 
