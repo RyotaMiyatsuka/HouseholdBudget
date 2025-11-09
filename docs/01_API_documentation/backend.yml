@@ -299,21 +299,59 @@ paths:
       tags:
         - ユーザー
       summary: Google ログイン API
-      description: Google アカウントを使用してログインする。※ 後々実装予定
+      description: Google アカウントを使用してログインまたは登録する。
       operationId: googleLogin
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          schema:
+            type: string
+          description: "Bearer <Google OAuth 2.0 Token>"
       responses:
-        default:
-          description: 未定義のレスポンス
+        "200":
+          description: ログイン成功
+          headers:
+            Set-Cookie:
+              description: セッションIDを格納したCookie
+              schema:
+                type: string
+                example: "sessionId=abcde12345; Path=/; HttpOnly; Secure; SameSite=Strict"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
   /users:
     post:
       tags:
         - ユーザー
       summary: ユーザー登録 API
-      description: 新しいユーザーを登録する。※ 後々実装予定
+      description: 新しいユーザーを登録する。
       operationId: createUser
+      parameters:
+        - in: header
+          name: Authorization
+          required: false
+          schema:
+            type: string
+          description: "Bearer <Google OAuth 2.0 Token>"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "schemas/Users/UserCreateRequest.yml"
       responses:
-        default:
-          description: 未定義のレスポンス
+        "201":
+          description: ユーザー登録成功
+          headers:
+            Set-Cookie:
+              description: セッションIDを格納したCookie
+              schema:
+                type: string
+                example: "sessionId=abcde12345; Path=/; HttpOnly; Secure; SameSite=Strict"
+        "409":
+          description: Googleアカウントが既に存在します
+        "422":
+          $ref: "#/components/responses/UnprocessableEntity"
     delete:
       tags:
         - ユーザー
