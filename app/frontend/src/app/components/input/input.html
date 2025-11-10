@@ -1,6 +1,6 @@
-<div class="md:hidden">
+<div class="flex flex-col items-center">
   <p class="text-2xl font-bold text-center mt-5 text-main-blue">入力</p>
-  <div class="flex flex-col items-center gap-2.5 mt-5">
+  <div class="flex flex-col items-center gap-2.5 mt-5 lg:w-1/3">
     <input
       class="w-[90%] bg-blue-50 text-lg p-2.5 border-2 border-main-blue rounded-lg box-border placeholder:text-main-blue placeholder:opacity-70"
       type="number"
@@ -16,7 +16,7 @@
       row="2"
     >
     </textarea>
-    <div class="grid grid-cols-4 gap-2.5 w-[90%] py-2">
+    <div class="grid grid-cols-4 lg:grid-cols-8 gap-2.5 w-[90%] py-2">
       @for(category of categories(); track i; let i = $index) { @if(category === 'add-button') {
       <button
         [class]="
@@ -52,7 +52,6 @@
       登録
     </button>
   </div>
-
   <!-- Category Modal -->
   <app-modal
     [isOpen]="modalState().isOpen"
