@@ -2,8 +2,7 @@ import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@ang
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Modal } from '../modal/modal';
 import { ModalState } from '../../models/modal-state.model';
-import { ExpenseGenre } from '../../models/expense-genre.model';
-import { GenreColor, GENRE_COLOR_OPTIONS, getGenreButtonClasses } from '../../models/genre-color.model';
+import { Category } from '../../models/category.model';
 import { CommonModule } from '@angular/common';
 import { GenreService } from '../../services/genre/genre.service';
 
@@ -20,10 +19,9 @@ type InputModalType = 'form' | 'notification';
 export class Input implements OnInit {
   private readonly genreService = inject(GenreService);
   inputControl = new FormControl('');
-  genreNameControl = new FormControl('',
-    [Validators.required, Validators.maxLength(7)]
+  categoryNameControl = new FormControl('',
+    [Validators.required, Validators.maxLength(20)]
   );
-  selectedColorControl = new FormControl<GenreColor>(GenreColor.Green);
 
   modalState = signal<ModalState<InputModalType>>({
     isOpen: false,
@@ -33,35 +31,31 @@ export class Input implements OnInit {
     message: '',
   });
 
-  readonly selectedGenreIndex = signal(0);
-  readonly genres = signal<(ExpenseGenre | 'add-button')[]>([
+  readonly selectedCategoryIndex = signal(0);
+  readonly categories = signal<(Category | 'add-button')[]>([
     'add-button'
   ]);
 
-  // Expose color options and utility function to template
-  readonly colorOptions = GENRE_COLOR_OPTIONS;
-  readonly getGenreButtonClasses = getGenreButtonClasses;
-
   ngOnInit() {
-    this.loadGenres();
+    this.loadCategories();
   }
 
   /**
-   * Load genres from the API via GenreService
+   * Load categories from the API via GenreService
    */
-  loadGenres() {
-    this.genreService.getGenres().subscribe({
-      next: (genres) => {
-        this.genres.set([...genres, 'add-button']);
+  loadCategories() {
+    this.genreService.listCategories().subscribe({
+      next: (categories) => {
+        this.categories.set([...categories, 'add-button']);
       },
       error: (error) => {
-        console.error('Failed to load genres:', error);
+        console.error('Failed to load categories:', error);
       }
     });
   }
 
-  selectGenre(index: number) {
-    this.selectedGenreIndex.set(index);
+  selectCategory(index: number) {
+    this.selectedCategoryIndex.set(index);
   }
 
   get value() {
@@ -73,21 +67,20 @@ export class Input implements OnInit {
     console.log(this.value);
   }
 
-  addNewGenre() {
-    const currentGenres = this.genres().filter(g => g !== 'add-button');
-    if (currentGenres.length >= 8) {
-      this.showGenreUpperLimitModal();
+  addNewCategory() {
+    const currentCategories = this.categories().filter(c => c !== 'add-button');
+    if (currentCategories.length >= 8) {
+      this.showCategoryUpperLimitModal();
       return;
     }
-    this.showGenreFormModal();
-    this.genreNameControl.setValue('');
-    this.selectedColorControl.setValue(GenreColor.Green);
+    this.showCategoryFormModal();
+    this.categoryNameControl.setValue('');
   }
 
-  showGenreFormModal() {
+  showCategoryFormModal() {
     this.modalState.set({
       isOpen: true,
-      title: '新しいジャンルを追加',
+      title: '新しいカテゴリを追加',
       type: 'form',
       message: '',
       confirmText: '追加',
@@ -95,12 +88,12 @@ export class Input implements OnInit {
     });
   }
 
-  showGenreUpperLimitModal() {
+  showCategoryUpperLimitModal() {
     this.modalState.set({
       isOpen: true,
-      title: 'ジャンル上限',
+      title: 'カテゴリ上限',
       type: 'notification',
-      message: 'ジャンルは最大8つまで登録できます。',
+      message: 'カテゴリは最大8つまで登録できます。',
       confirmText: 'OK',
     });
   }
@@ -108,7 +101,7 @@ export class Input implements OnInit {
   onModalConfirm() {
     const currentType = this.modalState().type;
     if (currentType === 'form') {
-      this.onConfirmGenre();
+      this.onConfirmCategory();
     }
   }
 
@@ -116,86 +109,64 @@ export class Input implements OnInit {
     this.closeModal();
   }
 
-  onConfirmGenre() {
-    const newGenreName = this.genreNameControl.value?.trim();
-    const selectedColor = this.selectedColorControl.value;
+  onConfirmCategory() {
+    const newCategoryName = this.categoryNameControl.value?.trim();
 
-    if (!newGenreName || newGenreName.length === 0) {
-      this.genreNameControl.markAsTouched();
-      this.genreNameControl.setErrors({ required: true });
-      this.genreNameControl.setValue('');
+    if (!newCategoryName || newCategoryName.length === 0) {
+      this.categoryNameControl.markAsTouched();
+      this.categoryNameControl.setErrors({ required: true });
+      this.categoryNameControl.setValue('');
       return;
     }
 
-    if (this.genreNameControl.invalid) {
+    if (this.categoryNameControl.invalid) {
       return;
     }
 
-    if (selectedColor && newGenreName) {
-      const newGenreData = {
-        name: newGenreName,
-        color: selectedColor
-      };
+    const newCategoryData = {
+      categoryName: newCategoryName
+    };
 
-      this.genreService.createGenre(newGenreData).subscribe({
-        next: (createdGenre) => {
-          const currentGenres = this.genres();
-          const genreObjects = currentGenres.filter(g => g !== 'add-button') as ExpenseGenre[];
-
-          // Insert the new genre before the 'add-button'
-          const updatedGenres: (ExpenseGenre | 'add-button')[] = [...genreObjects, createdGenre, 'add-button'];
-          this.genres.set(updatedGenres);
-
-          // Select the newly added genre
-          this.selectedGenreIndex.set(genreObjects.length);
-
-          this.closeModal();
-          this.genreNameControl.setValue('');
-          this.selectedColorControl.setValue(GenreColor.Green);
-        },
-        error: (error) => {
-          console.error('Failed to create genre:', error);
-          if (error.status === 400) {
-            // Show upper limit modal if max genres reached
-            this.showGenreUpperLimitModal();
-          }
-          this.closeModal();
+    this.genreService.createCategory(newCategoryData).subscribe({
+      next: () => {
+        // Reload categories from server to get the new category with its ID
+        this.loadCategories();
+        this.closeModal();
+        this.categoryNameControl.setValue('');
+      },
+      error: (error) => {
+        console.error('Failed to create category:', error);
+        if (error.status === 400) {
+          // Show upper limit modal if max categories reached
+          this.showCategoryUpperLimitModal();
         }
-      });
-    } else {
-      this.closeModal();
-      this.genreNameControl.setValue('');
-      this.selectedColorControl.setValue(GenreColor.Green);
-    }
+        this.closeModal();
+      }
+    });
   }
 
   closeModal() {
     this.modalState.update(state => ({ ...state, isOpen: false }));
-    this.selectedGenreIndex.set(0);
-    this.genreNameControl.setValue('');
-    this.genreNameControl.markAsUntouched();
-    this.selectedColorControl.setValue(GenreColor.Green);
-  }
-
-  selectColor(color: GenreColor) {
-    this.selectedColorControl.setValue(color);
+    this.selectedCategoryIndex.set(0);
+    this.categoryNameControl.setValue('');
+    this.categoryNameControl.markAsUntouched();
   }
 
   /**
-   * Get the error message for genre name input
+   * Get the error message for category name input
    * @returns Error message string or null if no error
    */
-  getGenreNameError(): string | null {
-    if (!this.genreNameControl.touched || this.genreNameControl.valid) {
+  getCategoryNameError(): string | null {
+    if (!this.categoryNameControl.touched || this.categoryNameControl.valid) {
       return null;
     }
 
-    if (this.genreNameControl.hasError('required')) {
-      return 'ジャンル名は必須です';
+    if (this.categoryNameControl.hasError('required')) {
+      return 'カテゴリ名は必須です';
     }
 
-    if (this.genreNameControl.hasError('maxlength')) {
-      return '最大7文字です';
+    if (this.categoryNameControl.hasError('maxlength')) {
+      return '最大20文字です';
     }
 
     return null;

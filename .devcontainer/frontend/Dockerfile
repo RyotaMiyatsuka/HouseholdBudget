@@ -12,13 +12,17 @@ RUN wget https://packages.microsoft.com/config/debian/12/packages-microsoft-prod
 
 USER node
 
-RUN npm install -g @angular/cli
+# dotnet-ef インストール
+RUN dotnet tool install --global dotnet-ef
 
-# Gemini CLI インストール
-RUN npm install -g npm@11.4.2 @google/gemini-cli
-
-# Tailwind CSS インストール
-RUN npm install -g tailwindcss @tailwindcss/postcss postcss
+# Angular CLI / Gemini CLI / prism インストール
+# hadolint ignore=DL3016
+RUN npm install -g \
+        @angular/cli \
+        npm@11.4.2 \
+        @google/gemini-cli \
+        @stoplight/prism-cli \
+        @tailwindcss/postcss postcss
 
 # uv インストール
 RUN curl -LsSf https://astral.sh/uv/install.sh | sh

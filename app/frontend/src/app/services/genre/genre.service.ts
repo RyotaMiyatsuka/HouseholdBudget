@@ -1,47 +1,61 @@
-import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ExpenseGenre } from '../../models/expense-genre.model';
+import { ApiClientService } from '../api/api-client.service';
+import {
+  Category,
+  CategoryCreateRequest,
+  CategoryUpdateRequest
+} from '../../models/category.model';
 
+/**
+ * Category API Service
+ * Provides methods to interact with category endpoints based on OpenAPI specification
+ * Endpoint: /api/category
+ */
 @Injectable({
   providedIn: 'root'
 })
 export class GenreService {
-  private readonly http = inject(HttpClient);
-  private readonly apiUrl = '/api/genres';
+  private readonly endpoint = '/category';
+
+  constructor(private apiClient: ApiClientService) { }
 
   /**
-   * Get all expense genres
+   * Get all categories
+   * GET /api/category
+   * @returns Observable of category array
    */
-  getGenres(): Observable<ExpenseGenre[]> {
-    return this.http.get<ExpenseGenre[]>(this.apiUrl);
+  listCategories(): Observable<Category[]> {
+    return this.apiClient.get<Category[]>(this.endpoint);
   }
 
   /**
-   * Get a single genre by ID
+   * Create a new category
+   * POST /api/category
+   * @param category - Category data to create (only categoryName required)
+   * @returns Observable of void (API returns 201 with no body)
    */
-  getGenreById(id: number): Observable<ExpenseGenre> {
-    return this.http.get<ExpenseGenre>(`${this.apiUrl}/${id}`);
+  createCategory(category: CategoryCreateRequest): Observable<void> {
+    return this.apiClient.post<void>(this.endpoint, category);
   }
 
   /**
-   * Create a new genre
+   * Update an existing category
+   * PATCH /api/category
+   * @param category - Category data to update (categoryId and categoryName required)
+   * @returns Observable of updated category
    */
-  createGenre(genre: Omit<ExpenseGenre, 'id'>): Observable<ExpenseGenre> {
-    return this.http.post<ExpenseGenre>(this.apiUrl, genre);
+  updateCategory(category: CategoryUpdateRequest): Observable<Category> {
+    return this.apiClient.patch<Category>(this.endpoint, category);
   }
 
   /**
-   * Update an existing genre
+   * Delete a category by ID
+   * DELETE /api/category?id={categoryId}
+   * @param id - Category ID to delete (UUID format)
+   * @returns Observable of void (API returns 204 with no body)
    */
-  updateGenre(id: number, genre: Partial<ExpenseGenre>): Observable<ExpenseGenre> {
-    return this.http.put<ExpenseGenre>(`${this.apiUrl}/${id}`, genre);
-  }
-
-  /**
-   * Delete a genre
-   */
-  deleteGenre(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  deleteCategory(id: string): Observable<void> {
+    return this.apiClient.delete<void>(this.endpoint, { id });
   }
 }
