@@ -1,0 +1,7 @@
+name: AspNetCore.Session
+in: cookie
+description: セッションID
+required: true
+schema:
+  type: string
+example: "4c9b2513f1c40370f72985832e583c4f"
