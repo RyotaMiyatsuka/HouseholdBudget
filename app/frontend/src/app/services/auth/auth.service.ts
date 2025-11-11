@@ -56,42 +56,6 @@ export class AuthService {
     );
   }
 
-  // RxJS Observable-based register method
-  registerWithGoogle(): Observable<User> {
-    this.loginState.set({ isLoading: true });
-
-    const mockUser: User = {
-      id: 'mock-google-register-id',
-      email: 'newuser@gmail.com',
-      name: 'New Google User'
-    };
-
-    // Simulate HTTP request with Observable
-    return of(mockUser).pipe(
-      delay(Math.random() * 1000),
-      tap(user => {
-        // Update signals with success state
-        this.currentUser.set(user);
-        this.loginState.set({
-          isLoading: false,
-          success: true,
-          value: user,
-          error: undefined
-        });
-      }),
-      catchError(error => {
-        // Update signals with error state
-        this.loginState.set({
-          isLoading: false,
-          success: false,
-          value: undefined,
-          error
-        });
-        return throwError(() => error);
-      })
-    );
-  }
-
   getCurrentUser(): User | null {
     return this.currentUser();
   }
