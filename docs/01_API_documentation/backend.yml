@@ -11,6 +11,8 @@ security: []
 servers:
   - url: http://localhost:8080
     description: ローカルバックエンドサーバー
+  - url: http://localhost:4010
+    description: モックバックエンドサーバー
 paths:
   /transactions:
     get:
@@ -304,6 +306,22 @@ paths:
       responses:
         default:
           description: 未定義のレスポンス
+  /auth/logout:
+    post:
+      tags:
+        - ユーザー
+      summary: ログアウト API
+      description: 現在のユーザーをログアウトする。
+      operationId: logout
+      parameters:
+        - $ref: "parameters/SessionId.yml"
+      responses:
+        "204":
+          description: ログアウト成功
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
   /users:
     post:
       tags:
