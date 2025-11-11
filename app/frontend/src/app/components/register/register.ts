@@ -33,7 +33,7 @@ export class Register {
   register() {
     this.buttonText.set('Signing up...');
     // Subscribe to Observable, signals are updated via tap() in service
-    this.authService.registerWithGoogle().subscribe({
+    this.authService.loginWithGoogle().subscribe({
       error: (error) => {
         console.error('Registration error:', error);
       }
