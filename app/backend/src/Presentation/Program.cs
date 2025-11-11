@@ -1,3 +1,4 @@
+using Google.Apis.Auth;
 using HouseholdBudget.Core.Application;
 using HouseholdBudget.Infrastructure;
 
@@ -7,6 +8,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddAuthentication().AddGoogle(googleOptions =>
+{
+    googleOptions.ClientId = configuration["Authentication:Google:ClientId"];
+    googleOptions.ClientSecret = configuration["Authentication:Google:ClientSecret"];
+});
 
 // Swagger を有効化
 builder.Services.AddEndpointsApiExplorer();

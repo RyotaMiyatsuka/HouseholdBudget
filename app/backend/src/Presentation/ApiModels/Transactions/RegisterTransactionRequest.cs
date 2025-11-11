@@ -14,9 +14,3 @@ public record RegisterTransactionRequest
     public string Place { get; set; } = "";
 }
 
-/// <summary>
-/// レスポンスボディ
-/// </summary>
-public record RegisterTransactionResponse
-{
-}
