@@ -7,6 +7,7 @@ import { HttpRequestState } from '../../models/http-request-state.model';
   providedIn: 'root'
 })
 export class AuthService {
+  private readonly endpointRoot = "auth";
   // Signals for reactive state management
   private readonly currentUser = signal<User | null>(null);
   readonly isAuthenticated = computed(() => this.currentUser() !== null);
@@ -61,6 +62,7 @@ export class AuthService {
   }
 
   logout(): void {
+    let endpoint = `${this.endpointRoot}/logout`;
     this.currentUser.set(null);
     this.loginState.set({
       isLoading: false,
