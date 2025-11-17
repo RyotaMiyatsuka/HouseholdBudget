@@ -1,4 +1,4 @@
-using HouseholdBudget.Core.Domain.Transactions.Entities;
+﻿using HouseholdBudget.Core.Domain.Transactions.Entities;
 using HouseholdBudget.Core.Domain.Transactions.Interfaces;
 
 namespace HouseholdBudget.Infrastructure.EFCore.Repositories.Transactions;

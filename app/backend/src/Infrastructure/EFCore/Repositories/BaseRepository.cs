@@ -1,4 +1,4 @@
-namespace HouseholdBudget.Infrastructure.EFCore.Repositories;
+﻿namespace HouseholdBudget.Infrastructure.EFCore.Repositories;
 
 /// <summary>
 /// リポジトリの基底クラス

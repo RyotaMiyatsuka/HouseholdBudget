@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using HouseholdBudget.Core.Domain.Users.Entities;
 using HouseholdBudget.Core.Domain.Users.ValueObjects;
