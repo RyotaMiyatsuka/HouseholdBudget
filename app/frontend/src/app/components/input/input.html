@@ -1,6 +1,6 @@
-<div class="md:hidden">
+<div class="flex flex-col items-center">
   <p class="text-2xl font-bold text-center mt-5 text-main-blue">入力</p>
-  <div class="flex flex-col items-center gap-2.5 mt-5">
+  <div class="flex flex-col items-center gap-2.5 mt-5 lg:w-1/3">
     <input
       class="w-[90%] bg-blue-50 text-lg p-2.5 border-2 border-main-blue rounded-lg box-border placeholder:text-main-blue placeholder:opacity-70"
       type="number"
@@ -16,15 +16,15 @@
       row="2"
     >
     </textarea>
-    <div class="grid grid-cols-4 gap-2.5 w-[90%] py-2">
-      @for(genre of genres(); track i; let i = $index) { @if(genre === 'add-button') {
+    <div class="grid grid-cols-4 lg:grid-cols-8 gap-2.5 w-[90%] py-2">
+      @for(category of categories(); track i; let i = $index) { @if(category === 'add-button') {
       <button
         [class]="
-          i === selectedGenreIndex()
+          i === selectedCategoryIndex()
             ? 'bg-main-blue border-solid border-3 border-white rounded-lg cursor-pointer aspect-square flex items-center justify-center p-0'
             : 'border-solid border-1 border-white rounded-lg cursor-pointer aspect-square flex items-center justify-center p-0 hover:bg-main-blue-hover'
         "
-        (click)="addNewGenre()"
+        (click)="addNewCategory()"
       >
         <img
           class="invert bg-transparent w-2/5 h-2/5 object-contain"
@@ -34,10 +34,14 @@
       </button>
       } @else {
       <button
-        [class]="getGenreButtonClasses(genre.color, i === selectedGenreIndex())"
-        (click)="selectGenre(i)"
+        [class]="
+          i === selectedCategoryIndex()
+            ? 'bg-main-blue border-solid border-3 border-white rounded-lg text-white text-lg cursor-pointer aspect-square'
+            : 'bg-main-blue hover:bg-main-blue-hover border-0 rounded-lg text-white text-lg cursor-pointer aspect-square'
+        "
+        (click)="selectCategory(i)"
       >
-        {{ genre.name }}
+        {{ category.categoryName }}
       </button>
       } }
     </div>
@@ -48,8 +52,7 @@
       登録
     </button>
   </div>
-
-  <!-- Genre Modal -->
+  <!-- Category Modal -->
   <app-modal
     [isOpen]="modalState().isOpen"
     [title]="modalState().title"
@@ -57,46 +60,24 @@
     [message]="modalState().message"
     [confirmText]="modalState().confirmText"
     [cancelText]="modalState().cancelText"
-    (confirm)="onConfirmGenre()"
+    (confirm)="onConfirmCategory()"
     (cancel)="onModalCancel()"
     (close)="closeModal()"
   >
     <div class="flex flex-col gap-4">
       <div class="flex flex-col gap-2">
-        <label class="text-gray-700 font-medium">ジャンル名</label>
+        <label class="text-gray-700 font-medium">カテゴリ名</label>
         <input
           type="text"
-          [formControl]="genreNameControl"
+          [formControl]="categoryNameControl"
           placeholder="例: 食費、交通費"
           class="w-full bg-blue-50 text-lg p-2.5 border-2 border-main-blue rounded-lg box-border placeholder:text-gray-400"
         />
       </div>
       <div class="min-h-6 text-red-600 text-1.5rem">
-        @if( getGenreNameError();as errorMessage ) {
+        @if( getCategoryNameError();as errorMessage ) {
         <p>{{ errorMessage }}</p>
         }
-      </div>
-      <div class="flex flex-col gap-2">
-        <label class="text-gray-700 font-medium">カラー</label>
-        <div class="grid grid-cols-4 gap-2">
-          @for(colorOption of colorOptions; track colorOption.value) {
-          <button
-            type="button"
-            [class]="
-              selectedColorControl.value === colorOption.value
-                ? colorOption.bgClass +
-                  ' border-3 border-gray-800 rounded-lg text-white text-sm py-3 cursor-pointer transition-all box-border'
-                : colorOption.bgClass +
-                  ' ' +
-                  colorOption.hoverClass +
-                  ' border-3 border-transparent rounded-lg text-white text-sm py-3 cursor-pointer transition-all box-border'
-            "
-            (click)="selectColor(colorOption.value)"
-          >
-            {{ colorOption.label }}
-          </button>
-          }
-        </div>
       </div>
     </div>
   </app-modal>

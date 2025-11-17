@@ -1,87 +1,173 @@
 import { http, HttpResponse } from 'msw';
-import { ExpenseGenre } from '../app/models/expense-genre.model';
-import { GenreColor } from '../app/models/genre-color.model';
+import { Transaction, TransactionCreateRequest } from '../app/models/transaction.model';
+import { Category, CategoryCreateRequest } from '../app/models/category.model';
 
-// Mock data for expense genres with colors
-let mockGenres: ExpenseGenre[] = [
-  { id: 1, name: '食費', color: GenreColor.Green },
-  { id: 2, name: '交通費', color: GenreColor.Blue },
-  { id: 3, name: '医療費', color: GenreColor.Red },
-  { id: 4, name: '衣服', color: GenreColor.Purple },
-  { id: 5, name: '食料品', color: GenreColor.Yellow },
-  { id: 6, name: '娯楽費', color: GenreColor.Pink },
-  { id: 7, name: 'その他', color: GenreColor.Orange },
+// Mock data for categories
+let mockCategories: Category[] = [
+  { categoryId: 'cat-1', categoryName: '食費' },
+  { categoryId: 'cat-2', categoryName: '交通費' },
+  { categoryId: 'cat-3', categoryName: '医療費' },
+  { categoryId: 'cat-4', categoryName: '娯楽費' },
 ];
 
-// Define your mock API handlers here
+// Mock data for transactions
+let mockTransactions: Transaction[] = [
+  {
+    id: 'trans-1',
+    amount: 1500,
+    currency: 'JPY',
+    date: '2025-11-01',
+    transactionType: 'expense',
+    categoryId: 'cat-1',
+    memo: 'ランチ',
+    place: 'レストランA'
+  },
+  {
+    id: 'trans-2',
+    amount: 50000,
+    currency: 'JPY',
+    date: '2025-11-02',
+    transactionType: 'income',
+    categoryId: 'cat-1',
+    memo: '給料',
+    place: '会社'
+  },
+];
+
+// Define your mock API handlers here - matching OpenAPI spec
 export const handlers = [
-  // GET all genres
-  http.get('/api/genres', () => {
-    return HttpResponse.json(mockGenres);
-  }),
+  // ========== TRANSACTIONS ==========
 
-  // GET a single genre by ID
-  http.get('/api/genres/:id', ({ params }) => {
-    const { id } = params;
-    const genre = mockGenres.find(g => g.id === Number(id));
+  // GET /api/transactions - List all transactions
+  http.get('http://localhost:8080/api/transactions', ({ request }) => {
+    const url = new URL(request.url);
+    const year = url.searchParams.get('year');
+    const month = url.searchParams.get('month');
 
-    if (!genre) {
-      return new HttpResponse(null, { status: 404 });
+    // If filtering by month
+    if (year && month) {
+      const filtered = mockTransactions.filter(t => {
+        const date = new Date(t.date);
+        return date.getFullYear() === Number(year) && date.getMonth() + 1 === Number(month);
+      });
+      return HttpResponse.json(filtered);
     }
 
-    return HttpResponse.json(genre);
+    return HttpResponse.json(mockTransactions);
   }),
 
-  // POST a new genre
-  http.post('/api/genres', async ({ request }) => {
-    const newGenre = await request.json() as Omit<ExpenseGenre, 'id'>;
+  // GET /api/transactions/by-month - Get transactions by month
+  http.get('http://localhost:8080/api/transactions/by-month', ({ request }) => {
+    const url = new URL(request.url);
+    const year = Number(url.searchParams.get('year'));
+    const month = Number(url.searchParams.get('month'));
 
-    // Generate new ID
-    const maxId = mockGenres.length > 0
-      ? Math.max(...mockGenres.map(g => g.id))
-      : 0;
+    const filtered = mockTransactions.filter(t => {
+      const date = new Date(t.date);
+      return date.getFullYear() === year && date.getMonth() + 1 === month;
+    });
 
-    const genre: ExpenseGenre = {
-      id: maxId + 1,
-      ...newGenre
+    return HttpResponse.json(filtered);
+  }),
+
+  // POST /api/transactions - Create transaction
+  http.post('http://localhost:8080/api/transactions', async ({ request }) => {
+    const body = await request.json() as TransactionCreateRequest;
+
+    const newTransaction: Transaction = {
+      id: `trans-${Date.now()}`,
+      ...body
     };
 
-    // Check genre limit (max 8)
-    if (mockGenres.length >= 8) {
+    mockTransactions.push(newTransaction);
+    return HttpResponse.json(newTransaction, { status: 201 });
+  }),
+
+  // PATCH /api/transactions - Update transaction
+  http.patch('http://localhost:8080/api/transactions', async ({ request }) => {
+    const body = await request.json() as any;
+    const index = mockTransactions.findIndex(t => t.id === body.id);
+
+    if (index === -1) {
       return HttpResponse.json(
-        { error: 'ジャンルは最大8つまで登録できます。' },
-        { status: 400 }
+        { message: 'Transaction not found' },
+        { status: 404 }
       );
     }
 
-    mockGenres.push(genre);
-    return HttpResponse.json(genre, { status: 201 });
+    mockTransactions[index] = { ...mockTransactions[index], ...body };
+    return HttpResponse.json(mockTransactions[index]);
   }),
 
-  // PUT update an existing genre
-  http.put('/api/genres/:id', async ({ params, request }) => {
-    const { id } = params;
-    const updatedData = await request.json() as Partial<ExpenseGenre>;
-    const index = mockGenres.findIndex(g => g.id === Number(id));
+  // DELETE /api/transactions - Delete transaction
+  http.delete('http://localhost:8080/api/transactions', ({ request }) => {
+    const url = new URL(request.url);
+    const id = url.searchParams.get('id');
+
+    const index = mockTransactions.findIndex(t => t.id === id);
 
     if (index === -1) {
-      return new HttpResponse(null, { status: 404 });
+      return HttpResponse.json(
+        { message: 'Transaction not found' },
+        { status: 404 }
+      );
     }
 
-    mockGenres[index] = { ...mockGenres[index], ...updatedData };
-    return HttpResponse.json(mockGenres[index]);
+    mockTransactions.splice(index, 1);
+    return new HttpResponse(null, { status: 204 });
   }),
 
-  // DELETE a genre
-  http.delete('/api/genres/:id', ({ params }) => {
-    const { id } = params;
-    const index = mockGenres.findIndex(g => g.id === Number(id));
+  // ========== CATEGORIES ==========
+
+  // GET /api/category - List all categories
+  http.get('http://localhost:8080/api/category', () => {
+    return HttpResponse.json(mockCategories);
+  }),
+
+  // POST /api/category - Create category
+  http.post('http://localhost:8080/api/category', async ({ request }) => {
+    const body = await request.json() as CategoryCreateRequest;
+
+    const newCategory: Category = {
+      categoryId: `cat-${Date.now()}`,
+      categoryName: body.categoryName
+    };
+
+    mockCategories.push(newCategory);
+    return new HttpResponse(null, { status: 201 });
+  }),
+
+  // PATCH /api/category - Update category
+  http.patch('http://localhost:8080/api/category', async ({ request }) => {
+    const body = await request.json() as any;
+    const index = mockCategories.findIndex(c => c.categoryId === body.categoryId);
 
     if (index === -1) {
-      return new HttpResponse(null, { status: 404 });
+      return HttpResponse.json(
+        { message: 'Category not found' },
+        { status: 404 }
+      );
     }
 
-    mockGenres.splice(index, 1);
+    mockCategories[index] = { ...mockCategories[index], ...body };
+    return HttpResponse.json(mockCategories[index]);
+  }),
+
+  // DELETE /api/category - Delete category
+  http.delete('http://localhost:8080/api/category', ({ request }) => {
+    const url = new URL(request.url);
+    const id = url.searchParams.get('id');
+
+    const index = mockCategories.findIndex(c => c.categoryId === id);
+
+    if (index === -1) {
+      return HttpResponse.json(
+        { message: 'Category not found' },
+        { status: 404 }
+      );
+    }
+
+    mockCategories.splice(index, 1);
     return new HttpResponse(null, { status: 204 });
   }),
 ];

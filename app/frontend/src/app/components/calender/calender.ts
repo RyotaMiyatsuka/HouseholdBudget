@@ -1,8 +1,10 @@
-import { Component, signal, computed } from '@angular/core';
+import { Component, signal, inject, OnInit, effect } from '@angular/core';
 import { FullCalendarModule } from '@fullcalendar/angular';
-import { CalendarOptions, EventInput } from '@fullcalendar/core';
+import { CalendarOptions, EventInput, DatesSetArg } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
+import { TransactionsService } from '../../services/transaction/transactions.service';
+import { Transaction } from '../../models/transaction.model';
 
 @Component({
   selector: 'app-calender',
@@ -10,82 +12,122 @@ import interactionPlugin from '@fullcalendar/interaction';
   templateUrl: './calender.html',
   styleUrl: './calender.scss'
 })
-export class Calender {
-  // Signal for expenditure events
-  expenditureEvents = signal<EventInput[]>([
-    {
-      title: '¥1,500',
-      date: '2025-10-15',
-      backgroundColor: '#FF6B6B',
-      extendedProps: {
-        amount: 1500,
-        genre: '食費'
-      }
-    },
-    {
-      title: '¥3,200',
-      date: '2025-10-14',
-      backgroundColor: '#4ECDC4',
-      extendedProps: {
-        amount: 3200,
-        genre: '交通費'
-      }
-    }
-    ,
-    {
-      title: '¥3,200',
-      date: '2025-10-14',
-      backgroundColor: '#4ECDC4',
-      extendedProps: {
-        amount: 3200,
-        genre: '交通費'
-      }
-    }
-    ,
-    {
-      title: '¥3,200',
-      date: '2025-10-14',
-      backgroundColor: '#4ECDC4',
-      extendedProps: {
-        amount: 3200,
-        genre: '交通費'
-      }
-    }
-  ]);
+export class Calender implements OnInit {
+  private transactionsService = inject(TransactionsService);
 
-  // Computed signal for calendar options
+  // Signal for current year and month
+  currentYear = signal<number>(new Date().getFullYear());
+  currentMonth = signal<number>(new Date().getMonth() + 1);
+
+  // Signal for transactions
+  transactions = signal<Transaction[]>([]);
+
+  // Signal for calendar events
+  calendarEvents = signal<EventInput[]>([]);
+
+  // Calendar options
   calendarOptions: CalendarOptions = {
     plugins: [dayGridPlugin, interactionPlugin],
     initialView: 'dayGridMonth',
-    locale: 'ja', // Japanese locale
+    locale: 'ja',
     height: '100%',
     headerToolbar: {
       left: '',
       center: 'prev,title,next',
       right: 'dayGridMonth,dayGridWeek'
     },
-    events: this.expenditureEvents(),
+    events: [],
     dateClick: this.handleDateClick.bind(this),
-    eventClick: this.handleEventClick.bind(this)
+    eventClick: this.handleEventClick.bind(this),
+    datesSet: this.handleDatesSet.bind(this)
   };
+
+  constructor() {
+    // Update calendar events when transactions change
+    effect(() => {
+      const events = this.transformTransactionsToEvents(this.transactions());
+      this.calendarEvents.set(events);
+      this.calendarOptions = {
+        ...this.calendarOptions,
+        events: events
+      };
+    });
+  }
+
+  ngOnInit() {
+    this.loadTransactions();
+  }
+
+  /**
+   * Load transactions for the current month
+   */
+  loadTransactions() {
+    const year = this.currentYear();
+    const month = this.currentMonth();
+
+    this.transactionsService.getTransactionsByMonth(year, month).subscribe({
+      next: (transactions) => {
+        this.transactions.set(transactions);
+      },
+      error: (error) => {
+        console.error('Failed to load transactions:', error);
+        this.transactions.set([]);
+      }
+    });
+  }
+
+  /**
+   * Handle calendar date range changes (month navigation)
+   */
+  handleDatesSet(arg: DatesSetArg) {
+    const startDate = new Date(arg.start);
+    // Get the middle of the visible range to determine the current month
+    const middleDate = new Date(arg.start.getTime() + (arg.end.getTime() - arg.start.getTime()) / 2);
+
+    const newYear = middleDate.getFullYear();
+    const newMonth = middleDate.getMonth() + 1;
+
+    // Only reload if year or month changed
+    if (newYear !== this.currentYear() || newMonth !== this.currentMonth()) {
+      this.currentYear.set(newYear);
+      this.currentMonth.set(newMonth);
+      this.loadTransactions();
+    }
+  }
+
+  /**
+   * Transform transactions to FullCalendar events
+   */
+  transformTransactionsToEvents(transactions: Transaction[]): EventInput[] {
+    return transactions.map(transaction => {
+      const isIncome = transaction.transactionType === 'income';
+      const backgroundColor = isIncome ? '#4CAF50' : '#2196F3'; // Green for income, Blue for expense
+      const prefix = isIncome ? '+' : '-';
+
+      return {
+        id: transaction.id,
+        title: `${prefix}¥${transaction.amount.toLocaleString()}`,
+        date: transaction.date,
+        backgroundColor,
+        borderColor: backgroundColor,
+        extendedProps: {
+          amount: transaction.amount,
+          transactionType: transaction.transactionType,
+          categoryId: transaction.categoryId,
+          memo: transaction.memo,
+          place: transaction.place
+        }
+      };
+    });
+  }
 
   handleDateClick(arg: any) {
     console.log('Date clicked:', arg.dateStr);
-    // Navigate to input screen or show details
+    // TODO: Navigate to input screen with pre-filled date
   }
 
   handleEventClick(arg: any) {
-    console.log('Event clicked:', arg.event.extendedProps);
-    // Show expenditure details
-  }
-
-  // Method to update events dynamically
-  updateEvents(newEvents: EventInput[]) {
-    this.expenditureEvents.set(newEvents);
-  }
-
-  // Method to add a single event
-  addEvent(event: EventInput) {
-    this.expenditureEvents.update(events => [...events, event]);
+    console.log('Transaction clicked:', arg.event.extendedProps);
+    // TODO: Show transaction details modal or navigate to edit screen
   }
 }
