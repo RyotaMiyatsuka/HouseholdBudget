@@ -1,6 +1,6 @@
 namespace HouseholdBudget.Core.Application.Users.Commands;
 
-public class UserEditCommand
+public class UserEditDto
 {
     public required string LoginId { get; set; }
     public string? NewLoginId { get; set; }

@@ -73,7 +73,7 @@ public class UserUseCase : IUserUseCase
     /// <summary>
     /// ユーザー編集処理
     /// </summary>
-    public void Edit(UserEditCommand command)
+    public void Edit(UserEditDto command)
     {
         // ユーザー取得
         User user = this.Get(command.LoginId);

@@ -19,7 +19,7 @@ public interface IUserUseCase
     /// <summary>
     /// ユーザー編集処理
     /// </summary>
-    void Edit(UserEditCommand command);
+    void Edit(UserEditDto command);
 
     /// <summary>
     /// ユーザー削除処理
