@@ -3,6 +3,13 @@ using HouseholdBudget.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// ルーティング設定
+builder.Services.AddRouting(options =>
+{
+    options.LowercaseUrls = true;
+    options.AppendTrailingSlash = false;
+});
+
 // DIコンテナにサービスを登録
 builder.Services.AddControllers();
 builder.Services.AddApplication();
