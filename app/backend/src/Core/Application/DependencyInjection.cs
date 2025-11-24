@@ -1,5 +1,8 @@
+using HouseholdBudget.Core.Application.Auth.Interfaces;
+using HouseholdBudget.Core.Application.Auth.UseCases;
 using HouseholdBudget.Core.Application.Transactions.Interfaces;
 using HouseholdBudget.Core.Application.Transactions.UseCases;
+
 using Microsoft.Extensions.DependencyInjection;
 
 namespace HouseholdBudget.Core.Application;
@@ -16,6 +19,7 @@ public static class ApplicationDI
     {
         // ユースケースの登録
         services.AddScoped<ITransactionUseCase, TransactionUseCase>();
+        services.AddScoped<IAuthUseCase, AuthUseCase>();
 
         return services;
     }

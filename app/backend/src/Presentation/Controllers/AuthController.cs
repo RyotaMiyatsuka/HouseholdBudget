@@ -35,15 +35,15 @@ public class AuthController : ControllerBase
             };
             var result = await _authUseCase.LoginWithGoogleAsync(command);
 
-            // if (!result.IsSuccess || result.User == null)
-            // {
-            //     return BadRequest(new { message = result.ErrorMessage });
-            // }
+            if (!result.IsSuccess)
+            {
+                return BadRequest(new { message = result.ErrorMessage });
+            }
 
             // 認証用 Claims の作成
             var claims = new List<Claim>
             {
-                // new Claim(ClaimTypes.NameIdentifier, result.User.UserId),
+                new Claim(ClaimTypes.NameIdentifier, result.Data.LoginId),
                 // new Claim(ClaimTypes.Email, result.User.Email),
                 // new Claim(ClaimTypes.Name, result.User.Name),
             };
@@ -52,7 +52,7 @@ public class AuthController : ControllerBase
             var authProperties = new AuthenticationProperties
             {
                 IsPersistent = true,
-                ExpiresUtc = DateTime.UtcNow.AddDays(7)
+                ExpiresUtc = DateTime.UtcNow.AddDays(7) // TODO: 設定から取得
             };
 
             // Cookie の発行
@@ -61,7 +61,7 @@ public class AuthController : ControllerBase
                 new ClaimsPrincipal(claimsIdentity),
                 authProperties);
 
-            return Ok();
+            return Ok(new { message = "Mock Login" });
         }
         catch (InvalidJwtException ex)
         {

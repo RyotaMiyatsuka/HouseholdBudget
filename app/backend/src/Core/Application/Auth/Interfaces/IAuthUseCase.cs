@@ -1,5 +1,6 @@
 using HouseholdBudget.Core.Application.Auth.Commands;
 using HouseholdBudget.Core.Application.Auth.Results;
+using HouseholdBudget.Core.Application.Common.Models;
 
 namespace HouseholdBudget.Core.Application.Auth.Interfaces;
 
@@ -13,5 +14,5 @@ public interface IAuthUseCase
     /// </summary>
     /// <param name="command"></param>
     /// <returns></returns>
-    Task<GoogleAuthResultData> LoginWithGoogleAsync(GoogleAuthCommand command);
+    Task<UseCaseResult<GoogleAuthResultData>> LoginWithGoogleAsync(GoogleAuthCommand command);
 }

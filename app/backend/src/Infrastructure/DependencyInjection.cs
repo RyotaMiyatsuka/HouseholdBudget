@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace HouseholdBudget.Infrastructure;
 
@@ -72,7 +73,12 @@ public static class InfrastructureDI
                 ?? throw new InvalidOperationException("Google ClientId is not configured");
             googleOptions.ClientSecret = configuration["Authentication:Google:ClientSecret"]
                 ?? throw new InvalidOperationException("Google ClientSecret is not configured");
-        });
+        })
+        .AddCookie(options =>
+        {
+            // TODO: Cookie設定のカスタマイズ
+        })
+        ;
 
         return services;
     }
