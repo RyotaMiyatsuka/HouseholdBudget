@@ -1,13 +1,6 @@
-using System.Security.Claims;
-
-using Google.Apis.Auth;
-
 using HouseholdBudget.Core.Application.Auth.Commands;
 using HouseholdBudget.Core.Application.Auth.Interfaces;
 using HouseholdBudget.Core.Presentation.ApiModels.Users;
-
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation.Controllers;
@@ -17,11 +10,12 @@ namespace Presentation.Controllers;
 public class AuthController : ControllerBase
 {
     private readonly IAuthUseCase _authUseCase;
-    private readonly IConfiguration _configuration;
-    public AuthController(IAuthUseCase authUseCase, IConfiguration configuration)
+    private readonly ISessionService _sessionService;
+
+    public AuthController(IAuthUseCase authUseCase, ISessionService sessionService)
     {
         _authUseCase = authUseCase;
-        _configuration = configuration;
+        _sessionService = sessionService;
     }
 
     [HttpPost("google-login")]
@@ -40,37 +34,14 @@ public class AuthController : ControllerBase
                 return BadRequest(new { message = result.ErrorMessage });
             }
 
-            // 認証用 Claims の作成
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.NameIdentifier, result.Data.LoginId),
-                // new Claim(ClaimTypes.Email, result.User.Email),
-                // new Claim(ClaimTypes.Name, result.User.Name),
-            };
+            // セッションにLoginIdを保存
+            await _sessionService.SetLoginIdAsync(result.Data.LoginId);
 
-            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-            var authProperties = new AuthenticationProperties
-            {
-                IsPersistent = true,
-                ExpiresUtc = DateTime.UtcNow.AddDays(7) // TODO: 設定から取得
-            };
-
-            // Cookie の発行
-            await HttpContext.SignInAsync(
-                CookieAuthenticationDefaults.AuthenticationScheme,
-                new ClaimsPrincipal(claimsIdentity),
-                authProperties);
-
-            return Ok(new { message = "Mock Login" });
-        }
-        catch (InvalidJwtException ex)
-        {
-            // _logger.LogWarning(ex, "Invalid JWT token in login attempt");
-            return Unauthorized(new { error = "Invalid credentials" });
+            return Ok(new { message = "Login successful" });
         }
         catch (Exception ex)
         {
-            // _logger.LogError(ex, "Error during Google login");
+            // Proper logging should be implemented here
             return StatusCode(500, new { error = "Authentication failed" });
         }
     }

@@ -15,6 +15,16 @@ builder.Services.AddControllers();
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 
+// セッションを有効化
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(60);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
+
 // Swagger を有効化
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -30,7 +40,12 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseRouting();
+
+app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseSession();
 
 app.MapControllers();
 

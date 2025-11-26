@@ -33,13 +33,30 @@ public static class InfrastructureDI
                    .UseSnakeCaseNamingConvention()
         );
 
+        
+
         // リポジトリの登録
+
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+
+
+        // セッションサービスの登録
+
+        services.AddHttpContextAccessor();
+
+        services.AddScoped<ISessionService, SessionService>();
+
+
+
         // Identity
+
         // TODO: Identity 用のユーザークラスの実装
+
         services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
+
         .AddEntityFrameworkStores<AppDbContext>()
+
         .AddDefaultTokenProviders();
 
         // 認証
