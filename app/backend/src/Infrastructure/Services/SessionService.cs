@@ -1,21 +1,35 @@
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 using HouseholdBudget.Core.Application.Auth.Interfaces;
+
 using Microsoft.AspNetCore.Http;
 
-namespace HouseholdBudget.Infrastructure.Session;
+namespace HouseholdBudget.Infrastructure.Services;
 
 public class SessionService : ISessionService
 {
+    /// <summary>
+    /// HttpContextAccessor のインスタンス
+    /// </summary>
     private readonly IHttpContextAccessor _httpContextAccessor;
+    /// <summary>
+    /// セッションキー: LoginId
+    /// </summary>
     private const string LoginIdKey = "LoginId";
 
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
+    /// <param name="httpContextAccessor"></param>
+    /// <exception cref="ArgumentNullException"></exception>
     public SessionService(IHttpContextAccessor httpContextAccessor)
     {
         _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
     }
 
+    /// <summary>
+    /// HttpContext からセッションを取得
+    /// </summary>
+    /// <returns></returns>
+    /// <exception cref="InvalidOperationException"></exception>
     private ISession GetSession()
     {
         var httpContext = _httpContextAccessor.HttpContext;

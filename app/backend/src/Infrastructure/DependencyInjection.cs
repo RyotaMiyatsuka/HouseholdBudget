@@ -1,9 +1,6 @@
-﻿// using HouseholdBudget.Core.Domain.Users.Interfaces;
-using HouseholdBudget.Core.Domain.Transactions.Interfaces;
+﻿using HouseholdBudget.Core.Domain.Transactions.Interfaces;
 using HouseholdBudget.Infrastructure.EFCore;
 using HouseholdBudget.Infrastructure.EFCore.Repositories;
-
-// using HouseholdBudget.Infrastructure.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,7 +9,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using Microsoft.AspNetCore.Authentication.Cookies;
+using HouseholdBudget.Core.Application.Auth.Interfaces;
+using HouseholdBudget.Infrastructure.Services;
 
 namespace HouseholdBudget.Infrastructure;
 
@@ -33,32 +31,17 @@ public static class InfrastructureDI
                    .UseSnakeCaseNamingConvention()
         );
 
-        
-
         // リポジトリの登録
-
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-
-
         // セッションサービスの登録
-
         services.AddHttpContextAccessor();
-
         services.AddScoped<ISessionService, SessionService>();
 
-
-
-        // Identity
-
         // TODO: Identity 用のユーザークラスの実装
-
         services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
-
         .AddEntityFrameworkStores<AppDbContext>()
-
         .AddDefaultTokenProviders();
-
         // 認証
         services.AddAuthentication(options =>
         {

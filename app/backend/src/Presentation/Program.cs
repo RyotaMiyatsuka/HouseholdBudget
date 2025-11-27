@@ -10,11 +10,6 @@ builder.Services.AddRouting(options =>
     options.AppendTrailingSlash = false;
 });
 
-// DIコンテナにサービスを登録
-builder.Services.AddControllers();
-builder.Services.AddApplication();
-builder.Services.AddInfrastructure(builder.Configuration);
-
 // セッションを有効化
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
@@ -24,6 +19,10 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
+// DIコンテナにサービスを登録
+builder.Services.AddControllers();
+builder.Services.AddApplication();
+builder.Services.AddInfrastructure(builder.Configuration);
 
 // Swagger を有効化
 builder.Services.AddEndpointsApiExplorer();
@@ -41,11 +40,10 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseRouting();
+app.UseSession();
 
 app.UseAuthentication();
 app.UseAuthorization();
-
-app.UseSession();
 
 app.MapControllers();
 

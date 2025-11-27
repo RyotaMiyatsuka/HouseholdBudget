@@ -1,6 +1,7 @@
 using HouseholdBudget.Core.Application.Auth.Commands;
 using HouseholdBudget.Core.Application.Auth.Interfaces;
 using HouseholdBudget.Core.Presentation.ApiModels.Users;
+
 using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation.Controllers;
@@ -26,6 +27,7 @@ public class AuthController : ControllerBase
             // UseCase 実行
             GoogleAuthCommand command = new GoogleAuthCommand
             {
+                // TODO: マッピング処理の実装
             };
             var result = await _authUseCase.LoginWithGoogleAsync(command);
 
