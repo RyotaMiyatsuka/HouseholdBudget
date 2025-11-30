@@ -24,10 +24,28 @@ public class AuthController : ControllerBase
     {
         try
         {
+            // Authorizationヘッダーから取得
+            if (!Request.Headers.TryGetValue("Authorization", out var authHeader))
+            {
+                // TODO: メッセージ共通化
+                return Unauthorized(new { message = "Authorization header is missing" });
+            }
+
+            var authHeaderValue = authHeader.ToString();
+
+            // "Bearer " プレフィックスを除去
+            if (!authHeaderValue.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase))
+            {
+                // TODO: メッセージ共通化
+                return Unauthorized(new { message = "Invalid authorization header format" });
+            }
+
+            var idToken = authHeaderValue["Bearer ".Length..].Trim();
+
             // UseCase 実行
             GoogleAuthCommand command = new GoogleAuthCommand
             {
-                // TODO: マッピング処理の実装
+                IdToken = idToken
             };
             var result = await _authUseCase.LoginWithGoogleAsync(command);
 

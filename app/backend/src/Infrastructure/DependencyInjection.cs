@@ -38,6 +38,9 @@ public static class InfrastructureDI
         services.AddHttpContextAccessor();
         services.AddScoped<ISessionService, SessionService>();
 
+        // Google トークン検証サービスの登録
+        services.AddScoped<IGoogleTokenValidator, GoogleTokenValidator>();
+
         // TODO: Identity 用のユーザークラスの実装
         services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
         .AddEntityFrameworkStores<AppDbContext>()
