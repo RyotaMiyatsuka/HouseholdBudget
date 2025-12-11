@@ -28,8 +28,9 @@ public class AuthController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GoogleLogin([FromHeader(Name = "Authorization")] string authorization, CancellationToken cancellationToken)
+    public async Task<IActionResult> GoogleLogin(CancellationToken cancellationToken)
     {
+        var authorization = Request.Headers.Authorization.ToString();
         if (string.IsNullOrWhiteSpace(authorization))
         {
             return Unauthorized();

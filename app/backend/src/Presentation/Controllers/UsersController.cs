@@ -2,6 +2,7 @@ using HouseholdBudget.Core.Application.Common.Models;
 using HouseholdBudget.Core.Application.Users.Commands;
 using HouseholdBudget.Core.Application.Users.Interfaces;
 using HouseholdBudget.Presentation.DTOs.Users;
+
 using Microsoft.AspNetCore.Mvc;
 
 namespace HouseholdBudget.Presentation.Controllers;
@@ -30,9 +31,9 @@ public class UsersController : ControllerBase
     [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
     public async Task<IActionResult> CreateUser(
         [FromBody] CreateUserRequest request,
-        [FromHeader(Name = "Authorization")] string? authorization,
         CancellationToken cancellationToken)
     {
+        var authorization = Request.Headers.Authorization.ToString();
         string? idToken = null;
         if (!string.IsNullOrWhiteSpace(authorization))
         {
