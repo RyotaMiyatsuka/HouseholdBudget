@@ -1,8 +1,9 @@
 using HouseholdBudget.Core.Domain.Auth.Entities;
 using HouseholdBudget.Core.Domain.Transactions.Entities;
 using HouseholdBudget.Core.Domain.Users.Entities;
-using HouseholdBudget.Infrastructure.Repositories.EFCore.EntityConfigurations;
+
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
 
 namespace HouseholdBudget.Infrastructure.Repositories.EFCore;
 
@@ -24,9 +25,7 @@ public class AppDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.ApplyConfiguration(new UserConfiguration());
-        modelBuilder.ApplyConfiguration(new SessionConfiguration());
-        modelBuilder.ApplyConfiguration(new TransactionConfiguration());
-        modelBuilder.ApplyConfiguration(new CategoryConfiguration());
+        // EntityTypeConfigurationから各テーブルの設定を読み込む
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
     }
 }

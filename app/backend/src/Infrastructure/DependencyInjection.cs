@@ -6,6 +6,7 @@ using HouseholdBudget.Core.Domain.Users.Interfaces;
 using HouseholdBudget.Infrastructure.Repositories.EFCore;
 using HouseholdBudget.Infrastructure.Repositories.EFCore.Repositories;
 using HouseholdBudget.Infrastructure.Services;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,7 +21,7 @@ public static class DependencyInjection
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         // DbContext
-        var connectionString = configuration.GetConnectionString("DefaultConnection");
+        var connectionString = configuration.GetConnectionString("DbConnection");
         services.AddDbContext<AppDbContext>(options =>
         {
             if (string.IsNullOrEmpty(connectionString))

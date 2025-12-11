@@ -8,8 +8,8 @@
 ## マイグレーション手順
 ```sh
 cd /workspace/app/backend/src/Infrastructure/
-dotnet ef migrations add {マイグレーション名}
-dotnet ef database update
+dotnet ef migrations add {マイグレーション名} --startup-project ../Presentation
+dotnet ef database update --startup-project ../Presentation
 ```
 
 ## モックサーバーの起動
