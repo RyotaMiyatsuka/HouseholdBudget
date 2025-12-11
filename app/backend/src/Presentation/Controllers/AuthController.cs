@@ -2,6 +2,7 @@ using HouseholdBudget.Core.Application.Auth.Commands;
 using HouseholdBudget.Core.Application.Auth.Interfaces;
 using HouseholdBudget.Core.Presentation.ApiModels.Users;
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation.Controllers;
@@ -19,6 +20,7 @@ public class AuthController : ControllerBase
         _sessionService = sessionService;
     }
 
+    [Authorize]
     [HttpPost("google-login")]
     public async Task<IActionResult> GoogleLogin([FromBody] GoogleLoginRequest request)
     {

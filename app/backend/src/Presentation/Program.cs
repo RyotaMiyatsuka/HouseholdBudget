@@ -26,7 +26,18 @@ builder.Services.AddInfrastructure(builder.Configuration);
 
 // Swagger を有効化
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = Microsoft.OpenApi.Models.SecuritySchemeType.Http,
+        Scheme = "bearer",
+        BearerFormat = "JWT",
+        In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+        Description = "Google ID Token を入力してください (Bearer プレフィックスは不要)"
+    });
+});
 
 var app = builder.Build();
 
