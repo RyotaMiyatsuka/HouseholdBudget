@@ -1,5 +1,6 @@
 using HouseholdBudget.Core.Application;
 using HouseholdBudget.Infrastructure;
+using HouseholdBudget.Presentation.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -70,6 +71,7 @@ app.UseHttpsRedirection();
 
 app.UseRouting();
 app.UseSession();
+app.UseSessionAuthentication();
 
 app.UseAuthentication();
 app.UseAuthorization();

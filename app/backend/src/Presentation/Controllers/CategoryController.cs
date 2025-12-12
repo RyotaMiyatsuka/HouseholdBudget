@@ -2,6 +2,7 @@ using HouseholdBudget.Core.Application.Common.Models;
 using HouseholdBudget.Core.Application.Transactions.Commands;
 using HouseholdBudget.Core.Application.Transactions.Interfaces;
 using HouseholdBudget.Presentation.DTOs.Transactions;
+using HouseholdBudget.Presentation.Filters;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HouseholdBudget.Presentation.Controllers;
@@ -11,6 +12,7 @@ namespace HouseholdBudget.Presentation.Controllers;
 /// </summary>
 [ApiController]
 [Route("category")]
+[SessionAuthorize]
 public class CategoryController : ControllerBase
 {
     private readonly IListCategoriesUseCase _listCategoriesUseCase;

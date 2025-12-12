@@ -3,6 +3,7 @@ using HouseholdBudget.Core.Application.Transactions.Commands;
 using HouseholdBudget.Core.Application.Transactions.Interfaces;
 using HouseholdBudget.Defines.Enums;
 using HouseholdBudget.Presentation.DTOs.Transactions;
+using HouseholdBudget.Presentation.Filters;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HouseholdBudget.Presentation.Controllers;
@@ -12,6 +13,7 @@ namespace HouseholdBudget.Presentation.Controllers;
 /// </summary>
 [ApiController]
 [Route("transactions")]
+[SessionAuthorize]
 public class TransactionsController : ControllerBase
 {
     private readonly IListTransactionsUseCase _listTransactionsUseCase;
