@@ -8,9 +8,10 @@ namespace HouseholdBudget.Presentation.DTOs.Transactions;
 public record UpdateCategoryRequest
 {
     [Required]
-    public Guid CategoryId { get; init; }
+    [StringLength(50)]
+    public string OldCategoryName { get; init; } = null!;
 
     [Required]
     [StringLength(50)]
-    public string CategoryName { get; init; } = null!;
+    public string NewCategoryName { get; init; } = null!;
 }

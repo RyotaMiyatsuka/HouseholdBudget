@@ -30,16 +30,16 @@ public class UpdateCategoryUseCase : IUpdateCategoryUseCase
 
         var userId = _currentUserService.UserId.Value;
 
-        // カテゴリの取得
-        var category = await _unitOfWork.Categories.GetByIdAndUserIdAsync(command.CategoryId, userId, cancellationToken);
+        // カテゴリの取得（旧名前で検索）
+        var category = await _unitOfWork.Categories.GetByNameAndUserIdAsync(command.OldCategoryName, userId, cancellationToken);
         if (category == null)
         {
             return UseCaseResult<CategoryResultData>.NotFound("Category not found.");
         }
 
-        // 同名カテゴリの存在確認（自分自身は除く）
-        if (category.Name != command.CategoryName &&
-            await _unitOfWork.Categories.ExistsByNameAndUserIdAsync(command.CategoryName, userId, cancellationToken))
+        // 同名カテゴリの存在確認（新名前が既に存在するか、自分自身は除く）
+        if (command.OldCategoryName != command.NewCategoryName &&
+            await _unitOfWork.Categories.ExistsByNameAndUserIdAsync(command.NewCategoryName, userId, cancellationToken))
         {
             return UseCaseResult<CategoryResultData>.Conflict("Category with this name already exists.");
         }
@@ -47,7 +47,7 @@ public class UpdateCategoryUseCase : IUpdateCategoryUseCase
         // カテゴリの更新
         try
         {
-            category.UpdateName(command.CategoryName);
+            category.UpdateName(command.NewCategoryName);
         }
         catch (Exception ex)
         {

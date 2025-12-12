@@ -97,7 +97,7 @@ public class TransactionsController : ControllerBase
             request.Currency,
             date,
             request.TransactionType,
-            request.CategoryId,
+            request.CategoryName,
             request.Memo,
             request.Place);
 
@@ -132,7 +132,7 @@ public class TransactionsController : ControllerBase
             request.Currency,
             date,
             request.TransactionType,
-            request.CategoryId,
+            request.CategoryName,
             request.Memo,
             request.Place);
 
@@ -251,7 +251,7 @@ public class TransactionsController : ControllerBase
             data.Currency,
             data.Date.ToString("yyyy-MM-dd"),
             data.TransactionType,
-            data.CategoryId,
+            data.CategoryName,
             data.Memo,
             data.Place);
     }

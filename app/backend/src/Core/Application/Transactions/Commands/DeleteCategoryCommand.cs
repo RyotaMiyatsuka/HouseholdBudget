@@ -3,4 +3,4 @@ namespace HouseholdBudget.Core.Application.Transactions.Commands;
 /// <summary>
 /// カテゴリ削除コマンド
 /// </summary>
-public record DeleteCategoryCommand(Guid Id);
+public record DeleteCategoryCommand(string CategoryName);

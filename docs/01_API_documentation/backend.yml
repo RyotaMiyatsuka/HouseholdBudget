@@ -258,14 +258,13 @@ paths:
       description: 指定されたカテゴリを削除する。
       operationId: deleteCategory
       parameters:
-        - name: id
+        - name: categoryName
           in: query
-          description: カテゴリID
+          description: カテゴリ名
           required: true
           schema:
             type: string
-            format: uuid
-          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+          example: 食費
       responses:
         "204":
           description: 削除成功

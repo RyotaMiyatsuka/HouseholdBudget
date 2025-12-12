@@ -28,7 +28,8 @@ public record UpdateTransactionRequest
     public TransactionType TransactionType { get; init; }
 
     [Required]
-    public Guid CategoryId { get; init; }
+    [StringLength(100)]
+    public string CategoryName { get; init; } = null!;
 
     [StringLength(500)]
     public string? Memo { get; init; }

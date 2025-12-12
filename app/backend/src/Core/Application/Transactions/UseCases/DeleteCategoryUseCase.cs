@@ -29,8 +29,8 @@ public class DeleteCategoryUseCase : IDeleteCategoryUseCase
 
         var userId = _currentUserService.UserId.Value;
 
-        // カテゴリの取得
-        var category = await _unitOfWork.Categories.GetByIdAndUserIdAsync(command.Id, userId, cancellationToken);
+        // カテゴリの取得（名前で検索）
+        var category = await _unitOfWork.Categories.GetByNameAndUserIdAsync(command.CategoryName, userId, cancellationToken);
         if (category == null)
         {
             return UseCaseResult.NotFound("Category not found.");

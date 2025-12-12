@@ -81,7 +81,7 @@ public class CategoryController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> UpdateCategory([FromBody] UpdateCategoryRequest request, CancellationToken cancellationToken)
     {
-        var command = new UpdateCategoryCommand(request.CategoryId, request.CategoryName);
+        var command = new UpdateCategoryCommand(request.OldCategoryName, request.NewCategoryName);
         var result = await _updateCategoryUseCase.ExecuteAsync(command, cancellationToken);
 
         if (!result.IsSuccess)
@@ -100,9 +100,9 @@ public class CategoryController : ControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> DeleteCategory([FromQuery] Guid id, CancellationToken cancellationToken)
+    public async Task<IActionResult> DeleteCategory([FromQuery] string categoryName, CancellationToken cancellationToken)
     {
-        var command = new DeleteCategoryCommand(id);
+        var command = new DeleteCategoryCommand(categoryName);
         var result = await _deleteCategoryUseCase.ExecuteAsync(command, cancellationToken);
 
         if (!result.IsSuccess)

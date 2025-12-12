@@ -27,8 +27,11 @@ public class ListTransactionsUseCase : IListTransactionsUseCase
             return UseCaseResult<IEnumerable<TransactionResultData>>.Unauthorized();
         }
 
-        var transactions = await _unitOfWork.Transactions.GetAllByUserIdAsync(
-            _currentUserService.UserId.Value, cancellationToken);
+        var userId = _currentUserService.UserId.Value;
+
+        var transactions = await _unitOfWork.Transactions.GetAllByUserIdAsync(userId, cancellationToken);
+        var categories = await _unitOfWork.Categories.GetAllByUserIdAsync(userId, cancellationToken);
+        var categoryDict = categories.ToDictionary(c => c.Id, c => c.Name);
 
         var results = transactions.Select(t => new TransactionResultData(
             t.Id,
@@ -36,7 +39,7 @@ public class ListTransactionsUseCase : IListTransactionsUseCase
             t.Money.Currency,
             t.Date.Value,
             t.TransactionType,
-            t.CategoryId,
+            categoryDict.GetValueOrDefault(t.CategoryId, "Unknown"),
             t.Memo,
             t.Place));
 

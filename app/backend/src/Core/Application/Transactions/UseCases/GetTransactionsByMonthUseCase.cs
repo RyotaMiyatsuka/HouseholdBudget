@@ -38,8 +38,12 @@ public class GetTransactionsByMonthUseCase : IGetTransactionsByMonthUseCase
             return UseCaseResult<IEnumerable<TransactionResultData>>.ValidationError("Invalid year.");
         }
 
+        var userId = _currentUserService.UserId.Value;
+
         var transactions = await _unitOfWork.Transactions.GetByUserIdAndMonthAsync(
-            _currentUserService.UserId.Value, command.Year, command.Month, cancellationToken);
+            userId, command.Year, command.Month, cancellationToken);
+        var categories = await _unitOfWork.Categories.GetAllByUserIdAsync(userId, cancellationToken);
+        var categoryDict = categories.ToDictionary(c => c.Id, c => c.Name);
 
         var results = transactions.Select(t => new TransactionResultData(
             t.Id,
@@ -47,7 +51,7 @@ public class GetTransactionsByMonthUseCase : IGetTransactionsByMonthUseCase
             t.Money.Currency,
             t.Date.Value,
             t.TransactionType,
-            t.CategoryId,
+            categoryDict.GetValueOrDefault(t.CategoryId, "Unknown"),
             t.Memo,
             t.Place));
 

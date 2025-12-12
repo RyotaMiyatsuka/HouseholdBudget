@@ -32,11 +32,11 @@ public class CreateTransactionUseCase : ICreateTransactionUseCase
 
         var userId = _currentUserService.UserId.Value;
 
-        // カテゴリの存在確認
-        var category = await _unitOfWork.Categories.GetByIdAndUserIdAsync(command.CategoryId, userId, cancellationToken);
+        // カテゴリの存在確認（名前で検索）
+        var category = await _unitOfWork.Categories.GetByNameAndUserIdAsync(command.CategoryName, userId, cancellationToken);
         if (category == null)
         {
-            return UseCaseResult<TransactionResultData>.NotFound("Category not found.");
+            return UseCaseResult<TransactionResultData>.NotFound($"Category '{command.CategoryName}' not found.");
         }
 
         // ValueObjectの作成
@@ -57,7 +57,7 @@ public class CreateTransactionUseCase : ICreateTransactionUseCase
             money,
             date,
             command.TransactionType,
-            command.CategoryId,
+            category.Id,
             userId,
             command.Memo,
             command.Place);
@@ -71,7 +71,7 @@ public class CreateTransactionUseCase : ICreateTransactionUseCase
             transaction.Money.Currency,
             transaction.Date.Value,
             transaction.TransactionType,
-            transaction.CategoryId,
+            category.Name,
             transaction.Memo,
             transaction.Place));
     }

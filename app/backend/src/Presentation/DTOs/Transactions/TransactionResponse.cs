@@ -15,6 +15,6 @@ public record TransactionResponse(
     string Date,
     [property: JsonConverter(typeof(JsonStringEnumConverter))]
     TransactionType TransactionType,
-    Guid CategoryId,
+    string CategoryName,
     string? Memo,
     string? Place);

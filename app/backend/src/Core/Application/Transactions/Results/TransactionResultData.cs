@@ -11,6 +11,6 @@ public record TransactionResultData(
     Currency Currency,
     DateOnly Date,
     TransactionType TransactionType,
-    Guid CategoryId,
+    string CategoryName,
     string? Memo,
     string? Place);

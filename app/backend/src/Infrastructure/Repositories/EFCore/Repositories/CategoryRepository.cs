@@ -27,6 +27,12 @@ public class CategoryRepository : ICategoryRepository
             .FirstOrDefaultAsync(c => c.Id == id && c.UserId == userId, cancellationToken);
     }
 
+    public async Task<Category?> GetByNameAndUserIdAsync(string name, Guid userId, CancellationToken cancellationToken = default)
+    {
+        return await _context.Categories
+            .FirstOrDefaultAsync(c => c.Name == name && c.UserId == userId, cancellationToken);
+    }
+
     public async Task<IEnumerable<Category>> GetAllByUserIdAsync(Guid userId, CancellationToken cancellationToken = default)
     {
         return await _context.Categories
