@@ -38,4 +38,16 @@ public class TransactionDate : ValueObject
     }
 
     public override string ToString() => Value.ToString("yyyy-MM-dd");
+
+    public static bool operator >=(TransactionDate left, TransactionDate right)
+        => left.Value >= right.Value;
+
+    public static bool operator <=(TransactionDate left, TransactionDate right)
+        => left.Value <= right.Value;
+
+    public static bool operator >(TransactionDate left, TransactionDate right)
+        => left.Value > right.Value;
+
+    public static bool operator <(TransactionDate left, TransactionDate right)
+        => left.Value < right.Value;
 }

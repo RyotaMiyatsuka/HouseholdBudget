@@ -58,21 +58,21 @@ erDiagram
 
 ## リレーション
 
-| 親テーブル | 子テーブル | 関係 | 説明 |
-|-----------|-----------|------|------|
-| users | sessions | 1:N | 1ユーザーが複数のセッションを持つ |
-| users | categories | 1:N | 1ユーザーが複数のカテゴリを持つ |
-| users | transactions | 1:N | 1ユーザーが複数の取引を持つ |
-| categories | transactions | 1:N | 1カテゴリに複数の取引が紐づく |
+| 親テーブル | 子テーブル | 関係 |
+|-----------|-----------|------|
+| users | sessions | 1:N |
+| users | categories | 1:N |
+| users | transactions | 1:N |
+| categories | transactions | 1:N |
 
 ## インデックス
 
-| テーブル | インデックス | カラム | 種類 |
-|---------|-------------|--------|------|
-| users | IX_users_email | email | UNIQUE |
-| sessions | IX_sessions_user_id | user_id | INDEX |
-| sessions | IX_sessions_user_id_is_active | user_id, is_active | INDEX |
-| categories | IX_categories_user_id | user_id | INDEX |
-| categories | IX_categories_user_id_name | user_id, name | UNIQUE |
-| transactions | IX_transactions_user_id | user_id | INDEX |
-| transactions | IX_transactions_user_id_date | user_id, date | INDEX |
+| テーブル | インデックス | カラム |
+|---------|-------------|--------|
+| users | ix_users_email | email |
+| sessions | ix_sessions_user_id | user_id |
+| sessions | ix_sessions_user_id_is_active | user_id, is_active |
+| categories | ix_categories_user_id | user_id |
+| categories | ix_categories_user_id_name | user_id, name |
+| transactions | ix_transactions_user_id | user_id |
+| transactions | ix_transactions_user_id_date | user_id, date |

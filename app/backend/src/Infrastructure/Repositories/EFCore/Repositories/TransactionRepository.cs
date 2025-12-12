@@ -1,5 +1,7 @@
 using HouseholdBudget.Core.Domain.Transactions.Entities;
 using HouseholdBudget.Core.Domain.Transactions.Interfaces;
+using HouseholdBudget.Core.Domain.Transactions.ValueObjects;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace HouseholdBudget.Infrastructure.Repositories.EFCore.Repositories;
@@ -37,13 +39,14 @@ public class TransactionRepository : ITransactionRepository
 
     public async Task<IEnumerable<Transaction>> GetByUserIdAndMonthAsync(Guid userId, int year, int month, CancellationToken cancellationToken = default)
     {
-        var startDate = new DateOnly(year, month, 1);
-        var endDate = startDate.AddMonths(1).AddDays(-1);
+        // ValueObject で絞り込み日付を作成
+        var startDate = TransactionDate.Create(new DateOnly(year, month, 1));
+        var endDate = TransactionDate.Create(new DateOnly(year, month, 1).AddMonths(1).AddDays(-1));
 
         return await _context.Transactions
             .Where(t => t.UserId == userId &&
-                        t.Date.Value >= startDate &&
-                        t.Date.Value <= endDate)
+                        t.Date >= startDate &&
+                        t.Date <= endDate)
             .OrderByDescending(t => t.Date)
             .ToListAsync(cancellationToken);
     }
