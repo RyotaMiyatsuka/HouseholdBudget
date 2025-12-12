@@ -1,5 +1,7 @@
 using System.Text.Json.Serialization;
 
+using HouseholdBudget.Defines.Enums;
+
 namespace HouseholdBudget.Presentation.DTOs.Transactions;
 
 /// <summary>
@@ -8,22 +10,11 @@ namespace HouseholdBudget.Presentation.DTOs.Transactions;
 public record TransactionResponse(
     Guid Id,
     decimal Amount,
-    string Currency,
+    [property: JsonConverter(typeof(JsonStringEnumConverter))]
+    Currency Currency,
     string Date,
     [property: JsonConverter(typeof(JsonStringEnumConverter))]
-    TransactionTypeDto TransactionType,
+    TransactionType TransactionType,
     Guid CategoryId,
     string? Memo,
     string? Place);
-
-/// <summary>
-/// 取引種別DTO
-/// </summary>
-[JsonConverter(typeof(JsonStringEnumConverter))]
-public enum TransactionTypeDto
-{
-    [JsonPropertyName("income")]
-    Income,
-    [JsonPropertyName("expense")]
-    Expense
-}

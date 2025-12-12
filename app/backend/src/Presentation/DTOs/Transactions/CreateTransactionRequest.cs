@@ -1,6 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
+using HouseholdBudget.Defines.Enums;
+
 namespace HouseholdBudget.Presentation.DTOs.Transactions;
 
 /// <summary>
@@ -12,15 +14,15 @@ public record CreateTransactionRequest
     public decimal Amount { get; init; }
 
     [Required]
-    [StringLength(3, MinimumLength = 3)]
-    public string Currency { get; init; } = "JPY";
+    [JsonConverter(typeof(JsonStringEnumConverter))]
+    public Currency Currency { get; init; } = Currency.JPY;
 
     [Required]
     public string Date { get; init; } = null!;
 
     [Required]
     [JsonConverter(typeof(JsonStringEnumConverter))]
-    public TransactionTypeDto TransactionType { get; init; }
+    public TransactionType TransactionType { get; init; }
 
     [Required]
     public Guid CategoryId { get; init; }

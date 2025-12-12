@@ -8,7 +8,7 @@ namespace HouseholdBudget.Core.Application.Transactions.Commands;
 public record UpdateTransactionCommand(
     Guid Id,
     decimal Amount,
-    string Currency,
+    Currency Currency,
     DateOnly Date,
     TransactionType TransactionType,
     Guid CategoryId,

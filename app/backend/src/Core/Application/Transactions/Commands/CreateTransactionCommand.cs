@@ -7,7 +7,7 @@ namespace HouseholdBudget.Core.Application.Transactions.Commands;
 /// </summary>
 public record CreateTransactionCommand(
     decimal Amount,
-    string Currency,
+    Currency Currency,
     DateOnly Date,
     TransactionType TransactionType,
     Guid CategoryId,

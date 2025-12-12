@@ -1,9 +1,10 @@
 using HouseholdBudget.Core.Application.Common.Models;
 using HouseholdBudget.Core.Application.Transactions.Commands;
 using HouseholdBudget.Core.Application.Transactions.Interfaces;
-using HouseholdBudget.Defines.Enums;
+using HouseholdBudget.Core.Application.Transactions.Results;
 using HouseholdBudget.Presentation.DTOs.Transactions;
 using HouseholdBudget.Presentation.Filters;
+
 using Microsoft.AspNetCore.Mvc;
 
 namespace HouseholdBudget.Presentation.Controllers;
@@ -95,7 +96,7 @@ public class TransactionsController : ControllerBase
             request.Amount,
             request.Currency,
             date,
-            MapToTransactionType(request.TransactionType),
+            request.TransactionType,
             request.CategoryId,
             request.Memo,
             request.Place);
@@ -130,7 +131,7 @@ public class TransactionsController : ControllerBase
             request.Amount,
             request.Currency,
             date,
-            MapToTransactionType(request.TransactionType),
+            request.TransactionType,
             request.CategoryId,
             request.Memo,
             request.Place);
@@ -242,26 +243,16 @@ public class TransactionsController : ControllerBase
         };
     }
 
-    private static TransactionResponse MapToResponse(Core.Application.Transactions.Results.TransactionResultData data)
+    private static TransactionResponse MapToResponse(TransactionResultData data)
     {
         return new TransactionResponse(
             data.Id,
             data.Amount,
             data.Currency,
             data.Date.ToString("yyyy-MM-dd"),
-            data.TransactionType == TransactionType.Income ? TransactionTypeDto.Income : TransactionTypeDto.Expense,
+            data.TransactionType,
             data.CategoryId,
             data.Memo,
             data.Place);
-    }
-
-    private static TransactionType MapToTransactionType(TransactionTypeDto dto)
-    {
-        return dto switch
-        {
-            TransactionTypeDto.Income => TransactionType.Income,
-            TransactionTypeDto.Expense => TransactionType.Expense,
-            _ => TransactionType.Expense
-        };
     }
 }

@@ -2,6 +2,7 @@ using HouseholdBudget.Core.Application.Common.Models;
 using HouseholdBudget.Core.Application.Users.Commands;
 using HouseholdBudget.Core.Application.Users.Interfaces;
 using HouseholdBudget.Presentation.DTOs.Users;
+using HouseholdBudget.Presentation.Filters;
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -78,6 +79,7 @@ public class UsersController : ControllerBase
     /// ユーザー情報取得 (未実装)
     /// </summary>
     [HttpGet("me")]
+    [SessionAuthorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public IActionResult GetUser()
@@ -90,6 +92,7 @@ public class UsersController : ControllerBase
     /// ユーザー削除 (未実装)
     /// </summary>
     [HttpDelete]
+    [SessionAuthorize]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public IActionResult DeleteUser()
@@ -102,6 +105,7 @@ public class UsersController : ControllerBase
     /// ユーザー情報更新 (未実装)
     /// </summary>
     [HttpPatch]
+    [SessionAuthorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public IActionResult UpdateUser()

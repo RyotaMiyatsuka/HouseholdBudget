@@ -30,6 +30,7 @@ public class TransactionConfiguration : IEntityTypeConfiguration<Transaction>
             money.Property(m => m.Currency)
                 .HasColumnName("currency")
                 .HasMaxLength(3)
+                .HasConversion<string>()
                 .IsRequired();
         });
 
