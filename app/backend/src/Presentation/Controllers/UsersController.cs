@@ -11,9 +11,8 @@ namespace HouseholdBudget.Presentation.Controllers;
 /// <summary>
 /// ユーザーコントローラー
 /// </summary>
-[ApiController]
 [Route("users")]
-public class UsersController : ControllerBase
+public class UsersController : AppControllerBase
 {
     private readonly ICreateUserUseCase _createUserUseCase;
 
@@ -46,13 +45,7 @@ public class UsersController : ControllerBase
 
         if (!result.IsSuccess)
         {
-            return result.ErrorType switch
-            {
-                UseCaseErrorType.Unauthorized => Unauthorized(result.ErrorMessage),
-                UseCaseErrorType.Conflict => Conflict(result.ErrorMessage),
-                UseCaseErrorType.Validation => UnprocessableEntity(result.ErrorMessage),
-                _ => BadRequest(result.ErrorMessage)
-            };
+            return HandleError(result);
         }
 
         // セッションにユーザー情報を保存

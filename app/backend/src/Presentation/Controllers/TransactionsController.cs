@@ -1,4 +1,3 @@
-using HouseholdBudget.Core.Application.Common.Models;
 using HouseholdBudget.Core.Application.Transactions.Commands;
 using HouseholdBudget.Core.Application.Transactions.Interfaces;
 using HouseholdBudget.Core.Application.Transactions.Results;
@@ -12,10 +11,9 @@ namespace HouseholdBudget.Presentation.Controllers;
 /// <summary>
 /// 取引コントローラー
 /// </summary>
-[ApiController]
 [Route("transactions")]
 [SessionAuthorize]
-public class TransactionsController : ControllerBase
+public class TransactionsController : AppControllerBase
 {
     private readonly IListTransactionsUseCase _listTransactionsUseCase;
     private readonly IGetTransactionsByMonthUseCase _getTransactionsByMonthUseCase;
@@ -219,28 +217,6 @@ public class TransactionsController : ControllerBase
     public IActionResult UpdateRecurringTransaction()
     {
         return StatusCode(StatusCodes.Status501NotImplemented);
-    }
-
-    private IActionResult HandleError<T>(UseCaseResult<T> result)
-    {
-        return result.ErrorType switch
-        {
-            UseCaseErrorType.Unauthorized => Unauthorized(result.ErrorMessage),
-            UseCaseErrorType.NotFound => NotFound(result.ErrorMessage),
-            UseCaseErrorType.Validation => BadRequest(result.ErrorMessage),
-            _ => BadRequest(result.ErrorMessage)
-        };
-    }
-
-    private IActionResult HandleError(UseCaseResult result)
-    {
-        return result.ErrorType switch
-        {
-            UseCaseErrorType.Unauthorized => Unauthorized(result.ErrorMessage),
-            UseCaseErrorType.NotFound => NotFound(result.ErrorMessage),
-            UseCaseErrorType.Validation => BadRequest(result.ErrorMessage),
-            _ => BadRequest(result.ErrorMessage)
-        };
     }
 
     private static TransactionResponse MapToResponse(TransactionResultData data)

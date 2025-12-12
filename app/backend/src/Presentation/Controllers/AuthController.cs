@@ -1,6 +1,8 @@
 using HouseholdBudget.Core.Application.Auth.Commands;
 using HouseholdBudget.Core.Application.Auth.Interfaces;
 using HouseholdBudget.Core.Application.Common.Models;
+using HouseholdBudget.Presentation.Filters;
+
 using Microsoft.AspNetCore.Mvc;
 
 namespace HouseholdBudget.Presentation.Controllers;
@@ -8,9 +10,8 @@ namespace HouseholdBudget.Presentation.Controllers;
 /// <summary>
 /// 認証コントローラー
 /// </summary>
-[ApiController]
 [Route("auth")]
-public class AuthController : ControllerBase
+public class AuthController : AppControllerBase
 {
     private readonly IGoogleLoginUseCase _googleLoginUseCase;
     private readonly ILogoutUseCase _logoutUseCase;
@@ -46,12 +47,7 @@ public class AuthController : ControllerBase
 
         if (!result.IsSuccess)
         {
-            return result.ErrorType switch
-            {
-                UseCaseErrorType.Unauthorized => Unauthorized(result.ErrorMessage),
-                UseCaseErrorType.NotFound => NotFound(result.ErrorMessage),
-                _ => BadRequest(result.ErrorMessage)
-            };
+            return HandleError(result);
         }
 
         // セッションにユーザー情報を保存
@@ -75,6 +71,7 @@ public class AuthController : ControllerBase
     /// ログアウト
     /// </summary>
     [HttpPost("logout")]
+    [SessionAuthorize]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -96,11 +93,7 @@ public class AuthController : ControllerBase
 
         if (!result.IsSuccess)
         {
-            return result.ErrorType switch
-            {
-                UseCaseErrorType.NotFound => NotFound(result.ErrorMessage),
-                _ => BadRequest(result.ErrorMessage)
-            };
+            return HandleError(result);
         }
 
         // セッションをクリア

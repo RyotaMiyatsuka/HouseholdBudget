@@ -1,8 +1,8 @@
-using HouseholdBudget.Core.Application.Common.Models;
 using HouseholdBudget.Core.Application.Transactions.Commands;
 using HouseholdBudget.Core.Application.Transactions.Interfaces;
 using HouseholdBudget.Presentation.DTOs.Transactions;
 using HouseholdBudget.Presentation.Filters;
+
 using Microsoft.AspNetCore.Mvc;
 
 namespace HouseholdBudget.Presentation.Controllers;
@@ -10,10 +10,9 @@ namespace HouseholdBudget.Presentation.Controllers;
 /// <summary>
 /// カテゴリコントローラー
 /// </summary>
-[ApiController]
 [Route("category")]
 [SessionAuthorize]
-public class CategoryController : ControllerBase
+public class CategoryController : AppControllerBase
 {
     private readonly IListCategoriesUseCase _listCategoriesUseCase;
     private readonly ICreateCategoryUseCase _createCategoryUseCase;
@@ -111,29 +110,5 @@ public class CategoryController : ControllerBase
         }
 
         return NoContent();
-    }
-
-    private IActionResult HandleError<T>(UseCaseResult<T> result)
-    {
-        return result.ErrorType switch
-        {
-            UseCaseErrorType.Unauthorized => Unauthorized(result.ErrorMessage),
-            UseCaseErrorType.NotFound => NotFound(result.ErrorMessage),
-            UseCaseErrorType.Conflict => Conflict(result.ErrorMessage),
-            UseCaseErrorType.Validation => BadRequest(result.ErrorMessage),
-            _ => BadRequest(result.ErrorMessage)
-        };
-    }
-
-    private IActionResult HandleError(UseCaseResult result)
-    {
-        return result.ErrorType switch
-        {
-            UseCaseErrorType.Unauthorized => Unauthorized(result.ErrorMessage),
-            UseCaseErrorType.NotFound => NotFound(result.ErrorMessage),
-            UseCaseErrorType.Conflict => Conflict(result.ErrorMessage),
-            UseCaseErrorType.Validation => BadRequest(result.ErrorMessage),
-            _ => BadRequest(result.ErrorMessage)
-        };
     }
 }
