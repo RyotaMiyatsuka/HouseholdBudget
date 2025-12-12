@@ -5,6 +5,7 @@ using HouseholdBudget.Core.Application.Common.Models;
 using HouseholdBudget.Core.Domain.Auth.Entities;
 using HouseholdBudget.Core.Domain.Auth.Interfaces;
 using HouseholdBudget.Core.Domain.Common.Interfaces;
+using HouseholdBudget.Core.Domain.Users.Entities;
 using HouseholdBudget.Core.Domain.Users.ValueObjects;
 
 namespace HouseholdBudget.Core.Application.Auth.UseCases;
@@ -36,9 +37,12 @@ public class GoogleLoginUseCase : IGoogleLoginUseCase
         var emailVo = Email.Create(email);
         var user = await _unitOfWork.Users.GetByEmailAsync(emailVo, cancellationToken);
 
+        // ユーザーが存在しない場合は新規作成
         if (user == null)
         {
-            return UseCaseResult<AuthResultData>.NotFound("User not found. Please register first.");
+            var userName = UserName.Create(emailVo.GetLocalPart());
+            user = User.Create(emailVo, userName);
+            await _unitOfWork.Users.AddAsync(user, cancellationToken);
         }
 
         // 既存のアクティブなセッションがあれば無効化

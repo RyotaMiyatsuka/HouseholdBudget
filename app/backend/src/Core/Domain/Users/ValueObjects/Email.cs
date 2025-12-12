@@ -34,6 +34,15 @@ public partial class Email : ValueObject
 
     public override string ToString() => Value;
 
+    /// <summary>
+    /// メールアドレスのローカルパート（@より前の部分）を取得する
+    /// </summary>
+    public string GetLocalPart()
+    {
+        var atIndex = Value.IndexOf('@');
+        return atIndex > 0 ? Value[..atIndex] : Value;
+    }
+
     [GeneratedRegex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$", RegexOptions.IgnoreCase)]
     private static partial Regex EmailRegex();
 }
