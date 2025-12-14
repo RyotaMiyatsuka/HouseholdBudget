@@ -400,12 +400,45 @@ paths:
         default:
           description: 未定義のレスポンス
 components:
+  schemas:
+    ErrorResponse:
+      type: object
+      description: エラーレスポンス
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          description: エラーコード
+          example: "NotFound"
+        message:
+          type: string
+          description: エラーメッセージ
+          example: "Resource not found."
+        errors:
+          type:
+            - object
+            - "null"
+          description: バリデーションエラーの詳細（ValidationError の場合のみ）
+          additionalProperties:
+            type: array
+            items:
+              type: string
   responses:
     OK:
       description: 成功
+    BadRequest:
+      $ref: "responses/BadRequest.yml"
     Unauthorized:
-      description: 認証失敗
+      $ref: "responses/Unauthorized.yml"
     NotFound:
-      description: 見つからない
+      $ref: "responses/NotFound.yml"
+    Conflict:
+      $ref: "responses/Conflict.yml"
+    ValidationError:
+      $ref: "responses/ValidationError.yml"
     UnprocessableEntity:
-      description: バリデーションエラー
+      $ref: "responses/ValidationError.yml"
+    InternalServerError:
+      $ref: "responses/InternalServerError.yml"

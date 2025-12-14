@@ -1,0 +1,21 @@
+description: リソースが見つからない
+content:
+  application/json:
+    schema:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        errors:
+          type:
+            - object
+            - "null"
+    example:
+      code: "NotFound"
+      message: "Resource not found."
+      errors: null

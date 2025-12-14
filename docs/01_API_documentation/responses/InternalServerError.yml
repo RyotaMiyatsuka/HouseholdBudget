@@ -1,0 +1,21 @@
+description: サーバー内部エラー
+content:
+  application/json:
+    schema:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        errors:
+          type:
+            - object
+            - "null"
+    example:
+      code: "InternalServerError"
+      message: "An unexpected error occurred."
+      errors: null
