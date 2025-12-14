@@ -46,7 +46,8 @@
                 "cyrilletuzi.angular-schematics",
                 "mikestead.dotenv",
                 "editorconfig.editorconfig",
-                "eamodio.gitlens"
+                "eamodio.gitlens",
+                "bierner.markdown-mermaid"
             ],
             "settings": {
                 "terminal.integrated.defaultProfile.linux": "bash",

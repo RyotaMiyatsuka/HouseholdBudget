@@ -10,10 +10,11 @@ RUN wget https://packages.microsoft.com/config/debian/12/packages-microsoft-prod
     && apt-get -y clean \
     && rm -rf /var/lib/apt/lists/*
 
+
 USER node
 
 # dotnet-ef インストール
-RUN dotnet tool install --global dotnet-ef
+RUN dotnet tool install --global dotnet-ef --version 9.0.11
 
 # Angular CLI / Gemini CLI / prism インストール
 # hadolint ignore=DL3016
@@ -22,8 +23,6 @@ RUN npm install -g \
         npm@11.4.2 \
         @google/gemini-cli \
         @stoplight/prism-cli
-
-
 
 # uv インストール
 RUN curl -LsSf https://astral.sh/uv/install.sh | sh

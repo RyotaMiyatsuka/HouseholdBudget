@@ -1,106 +1,100 @@
+using HouseholdBudget.Core.Domain.Common;
 using HouseholdBudget.Core.Domain.Transactions.ValueObjects;
-using HouseholdBudget.Core.Domain.Users.ValueObjects;
+using HouseholdBudget.Defines.Enums;
 
 namespace HouseholdBudget.Core.Domain.Transactions.Entities;
 
 /// <summary>
 /// 取引エンティティ
 /// </summary>
-public class Transaction
+public class Transaction : Entity<Guid>
 {
-    /// <summary>
-    /// Id.
-    /// </summary>
-    public string Id { get; private set; }
-    /// <summary>
-    /// 取引を記録したユーザーのログインId.
-    /// </summary>
-    public LoginId UserId { get; private set; }
-    /// <summary>
-    /// csv取り込みした取引と紐づく
-    /// </summary>
-    public string? CsvImportId { get; private set; }
-    /// <summary>
-    /// 定期取引と紐づく
-    /// </summary>
-    public string? RecurringTransactionId { get; private set; }
-    /// <summary>
-    /// 取引額
-    /// </summary>
-    public Price Price { get; set; }
-    /// <summary>
-    /// 取引種別
-    /// </summary>
-    public string TransactionType { get; set; }
-    /// <summary>
-    /// 取引カテゴリ
-    /// </summary>
-    public string CategoryId { get; set; }
-    /// <summary>
-    /// 取引に付属するメモ
-    /// </summary>
-    public string Memo { get; set; }
-    /// <summary>
-    /// 取引の場所
-    /// </summary>
-    public string Place { get; set; }
-    /// <summary>
-    /// 削除フラグ
-    /// </summary>
-    public bool IsDeleted { get; set; }
+    public const int MaxMemoLength = 500;
+    public const int MaxPlaceLength = 100;
 
-    /// <summary>
-    /// コンストラクタ (ユニークキー自動生成)
-    /// </summary>
-    public Transaction(
-        LoginId userId,
-        Price price,
-        string categoryId,
-        string memo,
-        string place,
-        string transactionType,
-        string? csvImportId = null,
-        string? recurringTransactionId = null,
-        bool isDeleted = false
-    )
+    public Money Money { get; private set; } = null!;
+    public TransactionDate Date { get; private set; } = null!;
+    public TransactionType TransactionType { get; private set; }
+    public Guid CategoryId { get; private set; }
+    public string? Memo { get; private set; }
+    public string? Place { get; private set; }
+    public Guid UserId { get; private set; }
+
+    private Transaction() : base()
     {
-        this.Id = Guid.NewGuid().ToString();
-        this.UserId = userId;
-        this.Price = price;
-        this.TransactionType = transactionType;
-        this.CsvImportId = csvImportId;
-        this.RecurringTransactionId = recurringTransactionId;
-        this.CategoryId = categoryId;
-        this.Memo = memo;
-        this.Place = place;
-        this.IsDeleted = isDeleted;
     }
 
-    /// <summary>
-    /// コンストラクタ (ユニークキー指定時)
-    /// </summary>
-    public Transaction(
-        string id,
-        LoginId userId,
-        Price price,
-        string categoryId,
-        string memo,
-        string place,
-        string transactionType,
-        string? csvImportId = null,
-        string? recurringTransactionId = null,
-        bool isDeleted = false
-    )
+    private Transaction(
+        Guid id,
+        Money money,
+        TransactionDate date,
+        TransactionType transactionType,
+        Guid categoryId,
+        string? memo,
+        string? place,
+        Guid userId) : base(id)
     {
-        this.Id = id;
-        this.UserId = userId;
-        this.Price = price;
-        this.TransactionType = transactionType;
-        this.CsvImportId = csvImportId;
-        this.RecurringTransactionId = recurringTransactionId;
-        this.CategoryId = categoryId;
-        this.Memo = memo;
-        this.Place = place;
-        this.IsDeleted = isDeleted;
+        Money = money;
+        Date = date;
+        TransactionType = transactionType;
+        CategoryId = categoryId;
+        Memo = memo;
+        Place = place;
+        UserId = userId;
+    }
+
+    public static Transaction Create(
+        Money money,
+        TransactionDate date,
+        TransactionType transactionType,
+        Guid categoryId,
+        Guid userId,
+        string? memo = null,
+        string? place = null)
+    {
+        ValidateMemo(memo);
+        ValidatePlace(place);
+
+        return new Transaction(
+            Guid.NewGuid(),
+            money,
+            date,
+            transactionType,
+            categoryId,
+            memo?.Trim(),
+            place?.Trim(),
+            userId);
+    }
+
+    public void Update(
+        Money money,
+        TransactionDate date,
+        TransactionType transactionType,
+        Guid categoryId,
+        string? memo,
+        string? place)
+    {
+        ValidateMemo(memo);
+        ValidatePlace(place);
+
+        Money = money;
+        Date = date;
+        TransactionType = transactionType;
+        CategoryId = categoryId;
+        Memo = memo?.Trim();
+        Place = place?.Trim();
+        SetUpdatedAt();
+    }
+
+    private static void ValidateMemo(string? memo)
+    {
+        if (memo != null && memo.Length > MaxMemoLength)
+            throw new Defines.Exceptions.ValidationException($"Memo must not exceed {MaxMemoLength} characters.");
+    }
+
+    private static void ValidatePlace(string? place)
+    {
+        if (place != null && place.Length > MaxPlaceLength)
+            throw new Defines.Exceptions.ValidationException($"Place must not exceed {MaxPlaceLength} characters.");
     }
 }

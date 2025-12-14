@@ -1,3 +1,4 @@
+using HouseholdBudget.Core.Domain.Common;
 using HouseholdBudget.Core.Domain.Users.ValueObjects;
 
 namespace HouseholdBudget.Core.Domain.Users.Entities;
@@ -5,93 +6,29 @@ namespace HouseholdBudget.Core.Domain.Users.Entities;
 /// <summary>
 /// ユーザーエンティティ
 /// </summary>
-public class User
+public class User : Entity<Guid>
 {
-    /// <summary>
-    /// Id. 不変のId.
-    /// </summary>
-    public string Id { get; private set; }
-    /// <summary>
-    /// ユーザーによって設定、変更可能なId.
-    /// </summary>
-    public LoginId LoginId { get; private set; }
-    /// <summary>
-    /// ユーザー名.
-    /// </summary>
-    public UserName UserName { get; private set; }
-    /// <summary>
-    /// メールアドレス.
-    /// </summary>
-    public string MailAddress { get; private set; }
-    /// <summary>
-    /// 認証済みであるかどうか
-    /// </summary>
-    public bool IsVerified { get; private set; }
+    public Email Email { get; private set; } = null!;
+    public UserName UserName { get; private set; } = null!;
 
-    /// <summary>
-    /// コンストラクタ (ユニークキー自動生成)
-    /// </summary>
-    /// <param name="loginId"></param>
-    /// <param name="userName"></param>
-    /// <param name="mailAddress"></param>
-    public User(LoginId loginId, UserName userName, string mailAddress)
+    private User() : base()
     {
-        this.Id = Guid.NewGuid().ToString();
-        this.LoginId = loginId;
-        this.UserName = userName;
-        this.MailAddress = mailAddress;
-        this.IsVerified = false;
     }
 
-    /// <summary>
-    /// コンストラクタ (ユニークキー指定時)
-    /// </summary>
-    /// <param name="id"></param>
-    /// <param name="loginId"></param>
-    /// <param name="userName"></param>
-    /// <param name="mailAddress"></param>
-    public User(string id, LoginId loginId, UserName userName, string mailAddress)
+    private User(Guid id, Email email, UserName userName) : base(id)
     {
-        this.Id = id;
-        this.LoginId = loginId;
-        this.UserName = userName;
-        this.MailAddress = mailAddress;
-        this.IsVerified = false;
+        Email = email;
+        UserName = userName;
     }
 
-    /// <summary>
-    /// ユーザー名を変更する
-    /// </summary>
-    /// <param name="userName">変更後のユーザー名</param>
-    public void ChangeUserName(string userName)
+    public static User Create(Email email, UserName userName)
     {
-        this.UserName = new UserName(userName);
+        return new User(Guid.NewGuid(), email, userName);
     }
 
-    /// <summary>
-    /// ログインIdを変更する
-    /// </summary>
-    /// <param name="loginId"></param>
-    public void ChangeLoginId(string loginId)
+    public void UpdateUserName(UserName userName)
     {
-        this.LoginId = new LoginId(loginId);
-    }
-
-    /// <summary>
-    /// メールアドレスを変更する
-    /// </summary>
-    /// <param name="loginId"></param>
-    public void ChangeMailAddress(string mailAddress)
-    {
-        this.MailAddress = mailAddress;
-        this.IsVerified = false; // メールアドレス変更後は再検証が必要
-    }
-
-    /// <summary>
-    /// 認証済みユーザーに変更する
-    /// </summary>
-    public void Verify()
-    {
-        this.IsVerified = true;
+        UserName = userName;
+        SetUpdatedAt();
     }
 }

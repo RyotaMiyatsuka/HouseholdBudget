@@ -6,7 +6,8 @@
     "service": "backend",
     "workspaceFolder": "/workspace",
     "features": {
-        "ghcr.io/dhoeric/features/hadolint:1": {}
+        "ghcr.io/dhoeric/features/hadolint:1": {},
+        "ghcr.io/anthropics/devcontainer-features/claude-code:1.0": {}
     },
     "customizations": {
         "vscode": {
@@ -43,7 +44,8 @@
                 "cyrilletuzi.angular-schematics",
                 "mikestead.dotenv",
                 "editorconfig.editorconfig",
-                "eamodio.gitlens"
+                "eamodio.gitlens",
+                "bierner.markdown-mermaid"
             ],
             "settings": {
                 "terminal.integrated.defaultProfile.linux": "bash",

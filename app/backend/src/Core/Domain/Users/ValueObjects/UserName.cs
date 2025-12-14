@@ -1,30 +1,37 @@
+using HouseholdBudget.Core.Domain.Common;
+using HouseholdBudget.Defines.Exceptions;
+
 namespace HouseholdBudget.Core.Domain.Users.ValueObjects;
 
-public record UserName
+/// <summary>
+/// ユーザー名を表すValueObject
+/// </summary>
+public class UserName : ValueObject
 {
-    private const int MIN_LENGTH = 1;
-    private const int MAX_LENGTH = 20;
+    public const int MaxLength = 100;
+
     public string Value { get; }
 
-    /// <summary>
-    /// バリデーションを行う.
-    /// </summary>
-    /// <param name="value"></param>
-    /// <exception cref="ArgumentException">バリデーションエラー</exception>
-    public UserName(string value)
+    private UserName(string value)
     {
-        // TODO: エラーメッセージ共通化
-        string lengthErrorMessage = "{0} は {1} 文字以上 {2} 文字以下である必要があります。";
-
-        // 文字数バリデーション
-        if (string.IsNullOrWhiteSpace(value) || value.Length < MIN_LENGTH || value.Length > MAX_LENGTH)
-        {
-            throw new ArgumentException(string.Format(lengthErrorMessage, nameof(UserName), MIN_LENGTH, MAX_LENGTH));
-        }
-
-        // TODO: 文字数種別バリデーション
-
-        // 全ての検証をパスした場合にプロパティに値を代入
         Value = value;
     }
+
+    public static UserName Create(string value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+            throw new ValidationException("User name is required.");
+
+        if (value.Length > MaxLength)
+            throw new ValidationException($"User name must not exceed {MaxLength} characters.");
+
+        return new UserName(value.Trim());
+    }
+
+    protected override IEnumerable<object?> GetEqualityComponents()
+    {
+        yield return Value;
+    }
+
+    public override string ToString() => Value;
 }

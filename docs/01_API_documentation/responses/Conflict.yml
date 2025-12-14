@@ -1,0 +1,21 @@
+description: リソースの競合
+content:
+  application/json:
+    schema:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        errors:
+          type:
+            - object
+            - "null"
+    example:
+      code: "Conflict"
+      message: "Resource already exists."
+      errors: null

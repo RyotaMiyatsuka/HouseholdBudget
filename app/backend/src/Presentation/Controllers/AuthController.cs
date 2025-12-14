@@ -1,37 +1,107 @@
-// using Microsoft.AspNetCore.Mvc;
+using HouseholdBudget.Core.Application.Auth.Commands;
+using HouseholdBudget.Core.Application.Auth.Interfaces;
+using HouseholdBudget.Core.Application.Common.Models;
+using HouseholdBudget.Presentation.Filters;
 
-// namespace Presentation.Controllers;
+using Microsoft.AspNetCore.Mvc;
 
-// [ApiController]
-// [Route("api/[controller]")]
-// public class AuthController : ControllerBase
-// {
-//     // POST /api/auth/login
-//     [HttpPost("login")]
-//     public IActionResult Login([FromBody] LoginRequest loginRequest)
-//     {
-//         // Mock implementation
-//         if (loginRequest.Email == "test@example.com" && loginRequest.Password == "password")
-//         {
-//             var response = new LoginResponse
-//             {
-//                 Token = "dummy-jwt-token"
-//             };
-//             return Ok(response);
-//         }
-//         return Unauthorized();
-//     }
-// }
+namespace HouseholdBudget.Presentation.Controllers;
 
-// // --- DTOs based on openapi.yml ---
+/// <summary>
+/// 認証コントローラー
+/// </summary>
+[Route("auth")]
+public class AuthController : AppControllerBase
+{
+    private readonly IGoogleLoginUseCase _googleLoginUseCase;
+    private readonly ILogoutUseCase _logoutUseCase;
 
-// public class LoginRequest
-// {
-//     public string Email { get; set; }
-//     public string Password { get; set; }
-// }
+    public AuthController(IGoogleLoginUseCase googleLoginUseCase, ILogoutUseCase logoutUseCase)
+    {
+        _googleLoginUseCase = googleLoginUseCase;
+        _logoutUseCase = logoutUseCase;
+    }
 
-// public class LoginResponse
-// {
-//     public string Token { get; set; }
-// }
+    /// <summary>
+    /// Googleログイン
+    /// </summary>
+    [HttpPost("google-login")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GoogleLogin(CancellationToken cancellationToken)
+    {
+        var authorization = Request.Headers.Authorization.ToString();
+        if (string.IsNullOrWhiteSpace(authorization))
+        {
+            return UnauthorizedError("Authorization header is required.");
+        }
+
+        var token = authorization.Replace("Bearer ", "", StringComparison.OrdinalIgnoreCase).Trim();
+        if (string.IsNullOrEmpty(token))
+        {
+            return UnauthorizedError("Authorization token is required.");
+        }
+
+        var result = await _googleLoginUseCase.ExecuteAsync(new GoogleLoginCommand(token), cancellationToken);
+
+        if (!result.IsSuccess)
+        {
+            return HandleUseCaseError(result);
+        }
+
+        // セッションにユーザー情報を保存
+        HttpContext.Session.SetString("UserId", result.Data!.UserId.ToString());
+        HttpContext.Session.SetString("SessionId", result.Data.SessionId);
+
+        // セッションIDをCookieに設定
+        Response.Cookies.Append("sessionId", result.Data.SessionId, new CookieOptions
+        {
+            HttpOnly = true,
+            Secure = true,
+            SameSite = SameSiteMode.Strict,
+            Path = "/",
+            Expires = DateTimeOffset.UtcNow.AddHours(24)
+        });
+
+        return Ok();
+    }
+
+    /// <summary>
+    /// ログアウト
+    /// </summary>
+    [HttpPost("logout")]
+    [SessionAuthorize]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Logout(CancellationToken cancellationToken)
+    {
+        var sessionId = HttpContext.Session.GetString("SessionId");
+        if (string.IsNullOrEmpty(sessionId))
+        {
+            // Cookieからも試行
+            sessionId = Request.Cookies["sessionId"];
+        }
+
+        if (string.IsNullOrEmpty(sessionId))
+        {
+            return UnauthorizedError("Session ID is required.");
+        }
+
+        var result = await _logoutUseCase.ExecuteAsync(new LogoutCommand(sessionId), cancellationToken);
+
+        if (!result.IsSuccess)
+        {
+            return HandleUseCaseError(result);
+        }
+
+        // セッションをクリア
+        HttpContext.Session.Clear();
+
+        // Cookieを削除
+        Response.Cookies.Delete("sessionId");
+
+        return NoContent();
+    }
+}

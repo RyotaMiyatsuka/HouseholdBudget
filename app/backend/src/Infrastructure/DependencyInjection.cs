@@ -1,34 +1,54 @@
-// using HouseholdBudget.Core.Domain.Users.Interfaces;
+using HouseholdBudget.Core.Application.Common.Interfaces;
+using HouseholdBudget.Core.Domain.Auth.Interfaces;
+using HouseholdBudget.Core.Domain.Common.Interfaces;
 using HouseholdBudget.Core.Domain.Transactions.Interfaces;
-using HouseholdBudget.Infrastructure.EFCore;
-using HouseholdBudget.Infrastructure.EFCore.Repositories;
+using HouseholdBudget.Core.Domain.Users.Interfaces;
+using HouseholdBudget.Infrastructure.Repositories.EFCore;
+using HouseholdBudget.Infrastructure.Repositories.EFCore.Repositories;
+using HouseholdBudget.Infrastructure.Services;
 
-// using HouseholdBudget.Infrastructure.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace HouseholdBudget.Infrastructure;
 
-public static class InfrastructureDI
+/// <summary>
+/// Infrastructure層の依存性注入設定
+/// </summary>
+public static class DependencyInjection
 {
-    /// <summary>
-    /// Infrastructure 層のDI
-    /// </summary>
-    /// <param name="services"></param>
-    /// <param name="configuration"></param>
-    /// <returns></returns>
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
-        // DBコンテキストの登録
+        // DbContext
         var connectionString = configuration.GetConnectionString("DbConnection");
         services.AddDbContext<AppDbContext>(options =>
-            options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
-                   .UseSnakeCaseNamingConvention()
-        );
+        {
+            if (string.IsNullOrEmpty(connectionString))
+            {
+                // 開発環境でのインメモリDB使用
+                options.UseInMemoryDatabase("HouseholdBudgetDb");
+            }
+            else
+            {
+                options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
+                    .UseSnakeCaseNamingConvention();
+            }
+        });
 
-        // リポジトリの登録
+        // Repositories
+        services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<ISessionRepository, SessionRepository>();
+        services.AddScoped<ITransactionRepository, TransactionRepository>();
+        services.AddScoped<ICategoryRepository, CategoryRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+        // Services
+        services.AddScoped<IGoogleAuthService, GoogleAuthService>();
+        services.AddScoped<ICurrentUserService, CurrentUserService>();
+
+        // HttpContextAccessor
+        services.AddHttpContextAccessor();
 
         return services;
     }

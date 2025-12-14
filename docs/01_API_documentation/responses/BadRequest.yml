@@ -1,0 +1,21 @@
+description: リクエストが不正
+content:
+  application/json:
+    schema:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        errors:
+          type:
+            - object
+            - "null"
+    example:
+      code: "BadRequest"
+      message: "Invalid date format. Use YYYY-MM-DD."
+      errors: null

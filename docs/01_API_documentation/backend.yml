@@ -258,14 +258,13 @@ paths:
       description: 指定されたカテゴリを削除する。
       operationId: deleteCategory
       parameters:
-        - name: id
+        - name: categoryName
           in: query
-          description: カテゴリID
+          description: カテゴリ名
           required: true
           schema:
             type: string
-            format: uuid
-          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+          example: 食費
       responses:
         "204":
           description: 削除成功
@@ -301,9 +300,26 @@ paths:
       tags:
         - ユーザー
       summary: Google ログイン API
-      description: Google アカウントを使用してログインする。※ 後々実装予定
+      description: Google アカウントを使用してログインまたは登録する。
       operationId: googleLogin
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          schema:
+            type: string
+          description: "Bearer <Google OAuth 2.0 Token>"
       responses:
+        "200":
+          description: ログイン成功
+          headers:
+            Set-Cookie:
+              description: セッションIDを格納したCookie
+              schema:
+                type: string
+                example: "sessionId=abcde12345; Path=/; HttpOnly; Secure; SameSite=Strict"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
         default:
           description: 未定義のレスポンス
   /auth/logout:
@@ -327,11 +343,34 @@ paths:
       tags:
         - ユーザー
       summary: ユーザー登録 API
-      description: 新しいユーザーを登録する。※ 後々実装予定
+      description: 新しいユーザーを登録する。
       operationId: createUser
+      parameters:
+        - in: header
+          name: Authorization
+          required: false
+          schema:
+            type: string
+          description: "Bearer <Google OAuth 2.0 Token>"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "schemas/Users/UserCreateRequest.yml"
       responses:
-        default:
-          description: 未定義のレスポンス
+        "201":
+          description: ユーザー登録成功
+          headers:
+            Set-Cookie:
+              description: セッションIDを格納したCookie
+              schema:
+                type: string
+                example: "sessionId=abcde12345; Path=/; HttpOnly; Secure; SameSite=Strict"
+        "409":
+          description: Googleアカウントが既に存在します
+        "422":
+          $ref: "#/components/responses/UnprocessableEntity"
     delete:
       tags:
         - ユーザー
@@ -361,12 +400,45 @@ paths:
         default:
           description: 未定義のレスポンス
 components:
+  schemas:
+    ErrorResponse:
+      type: object
+      description: エラーレスポンス
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          description: エラーコード
+          example: "NotFound"
+        message:
+          type: string
+          description: エラーメッセージ
+          example: "Resource not found."
+        errors:
+          type:
+            - object
+            - "null"
+          description: バリデーションエラーの詳細（ValidationError の場合のみ）
+          additionalProperties:
+            type: array
+            items:
+              type: string
   responses:
     OK:
       description: 成功
+    BadRequest:
+      $ref: "responses/BadRequest.yml"
     Unauthorized:
-      description: 認証失敗
+      $ref: "responses/Unauthorized.yml"
     NotFound:
-      description: 見つからない
+      $ref: "responses/NotFound.yml"
+    Conflict:
+      $ref: "responses/Conflict.yml"
+    ValidationError:
+      $ref: "responses/ValidationError.yml"
     UnprocessableEntity:
-      description: バリデーションエラー
+      $ref: "responses/ValidationError.yml"
+    InternalServerError:
+      $ref: "responses/InternalServerError.yml"

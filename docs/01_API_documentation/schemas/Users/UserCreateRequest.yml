@@ -1,0 +1,14 @@
+title: ユーザー登録リクエスト
+type: object
+properties:
+  email:
+    description: メールアドレス
+    type: string
+    example: test@mail.address.com
+  userName:
+    description: ユーザー名
+    type: string
+    example: テストユーザー
+required:
+  - email
+  - userName
