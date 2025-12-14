@@ -45,7 +45,7 @@ public class UsersController : AppControllerBase
 
         if (!result.IsSuccess)
         {
-            return HandleError(result);
+            return HandleUseCaseError(result);
         }
 
         // セッションにユーザー情報を保存

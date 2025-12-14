@@ -44,7 +44,7 @@ public class CategoryController : AppControllerBase
 
         if (!result.IsSuccess)
         {
-            return HandleError(result);
+            return HandleUseCaseError(result);
         }
 
         var response = result.Data!.Select(c => new CategoryResponse(c.CategoryId, c.CategoryName));
@@ -65,7 +65,7 @@ public class CategoryController : AppControllerBase
 
         if (!result.IsSuccess)
         {
-            return HandleError(result);
+            return HandleUseCaseError(result);
         }
 
         return StatusCode(StatusCodes.Status201Created);
@@ -85,7 +85,7 @@ public class CategoryController : AppControllerBase
 
         if (!result.IsSuccess)
         {
-            return HandleError(result);
+            return HandleUseCaseError(result);
         }
 
         var response = new CategoryResponse(result.Data!.CategoryId, result.Data.CategoryName);
@@ -106,7 +106,7 @@ public class CategoryController : AppControllerBase
 
         if (!result.IsSuccess)
         {
-            return HandleError(result);
+            return HandleUseCaseError(result);
         }
 
         return NoContent();

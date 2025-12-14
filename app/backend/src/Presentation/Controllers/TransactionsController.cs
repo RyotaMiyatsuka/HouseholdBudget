@@ -48,7 +48,7 @@ public class TransactionsController : AppControllerBase
 
         if (!result.IsSuccess)
         {
-            return HandleError(result);
+            return HandleUseCaseError(result);
         }
 
         var response = result.Data!.Select(MapToResponse);
@@ -69,7 +69,7 @@ public class TransactionsController : AppControllerBase
 
         if (!result.IsSuccess)
         {
-            return HandleError(result);
+            return HandleUseCaseError(result);
         }
 
         var response = result.Data!.Select(MapToResponse);
@@ -87,7 +87,7 @@ public class TransactionsController : AppControllerBase
     {
         if (!DateOnly.TryParse(request.Date, out var date))
         {
-            return BadRequest("Invalid date format. Use YYYY-MM-DD.");
+            return BadRequestError("Invalid date format. Use YYYY-MM-DD.");
         }
 
         var command = new CreateTransactionCommand(
@@ -103,7 +103,7 @@ public class TransactionsController : AppControllerBase
 
         if (!result.IsSuccess)
         {
-            return HandleError(result);
+            return HandleUseCaseError(result);
         }
 
         var response = MapToResponse(result.Data!);
@@ -121,7 +121,7 @@ public class TransactionsController : AppControllerBase
     {
         if (!DateOnly.TryParse(request.Date, out var date))
         {
-            return BadRequest("Invalid date format. Use YYYY-MM-DD.");
+            return BadRequestError("Invalid date format. Use YYYY-MM-DD.");
         }
 
         var command = new UpdateTransactionCommand(
@@ -138,7 +138,7 @@ public class TransactionsController : AppControllerBase
 
         if (!result.IsSuccess)
         {
-            return HandleError(result);
+            return HandleUseCaseError(result);
         }
 
         var response = MapToResponse(result.Data!);
@@ -159,7 +159,7 @@ public class TransactionsController : AppControllerBase
 
         if (!result.IsSuccess)
         {
-            return HandleError(result);
+            return HandleUseCaseError(result);
         }
 
         return NoContent();

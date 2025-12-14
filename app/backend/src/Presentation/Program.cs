@@ -60,6 +60,10 @@ builder.Services.AddSwaggerGen(options =>
 
 var app = builder.Build();
 
+// カスタムミドルウェア追加
+app.UseRequestLogging();
+app.UseGlobalExceptionHandler();
+
 // Swagger UI を有効化
 if (app.Environment.IsDevelopment())
 {

@@ -1,3 +1,5 @@
+using HouseholdBudget.Presentation.Middlewares;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
@@ -15,7 +17,10 @@ public class SessionAuthorizeAttribute : Attribute, IAuthorizationFilter
         var userId = context.HttpContext.Session.GetString("UserId");
         if (string.IsNullOrEmpty(userId))
         {
-            context.Result = new UnauthorizedResult();
+            context.Result = new JsonResult(new ErrorResponse("Unauthorized", "Unauthorized access."))
+            {
+                StatusCode = StatusCodes.Status401Unauthorized
+            };
         }
     }
 }

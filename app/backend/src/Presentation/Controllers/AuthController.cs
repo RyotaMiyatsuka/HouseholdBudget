@@ -34,20 +34,20 @@ public class AuthController : AppControllerBase
         var authorization = Request.Headers.Authorization.ToString();
         if (string.IsNullOrWhiteSpace(authorization))
         {
-            return Unauthorized();
+            return UnauthorizedError("Authorization header is required.");
         }
 
         var token = authorization.Replace("Bearer ", "", StringComparison.OrdinalIgnoreCase).Trim();
         if (string.IsNullOrEmpty(token))
         {
-            return Unauthorized();
+            return UnauthorizedError("Authorization token is required.");
         }
 
         var result = await _googleLoginUseCase.ExecuteAsync(new GoogleLoginCommand(token), cancellationToken);
 
         if (!result.IsSuccess)
         {
-            return HandleError(result);
+            return HandleUseCaseError(result);
         }
 
         // セッションにユーザー情報を保存
@@ -86,14 +86,14 @@ public class AuthController : AppControllerBase
 
         if (string.IsNullOrEmpty(sessionId))
         {
-            return Unauthorized();
+            return UnauthorizedError("Session ID is required.");
         }
 
         var result = await _logoutUseCase.ExecuteAsync(new LogoutCommand(sessionId), cancellationToken);
 
         if (!result.IsSuccess)
         {
-            return HandleError(result);
+            return HandleUseCaseError(result);
         }
 
         // セッションをクリア
